@@ -12,7 +12,8 @@ Response time to communication expectations
 24 hours
 
 Definition of done: when is a task complete? (hint: "I'm done with that but I didn't check it in to github" is not done.)
-
+A task is complete when it has first been commited to Github, requested a pull with detailed information on what has been changed,
+and pull request has been approved by at leaste 2 group members.
 
 Scrum meeting format/frequency and distribution of documentation tasks (meeting minutes, updating task board)
 
