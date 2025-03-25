@@ -43,6 +43,19 @@ Conflict Resolution:
 A majority vote is necessary for a policy to be put into place. Ties are insufficient.
 must include at least 3 actions before involving the instructor
 
+Group disciplinary action: 4 step process to deal with a member who is not meeting expectations
+  -Step 1: Inform member in question of the concern that the group has, provide extra 24-48 hours
+  to complete task
+  
+  -Step 2: If group member has not completed work within the time frame, reach out again, provide
+  extra 12-24 hours to complete task
+  
+  -Step 3: Reach out to Scrum Master with details of the member not meeting expectations
+  
+  -Step 4: If problem persists longer than 1 week after contacting Scrum Master, reach out
+  to Product Owner
+
+
 Procedure for handling a member who is not meeting expectations:
 
   1. Identify the Issue: Determine the root cause of the underperformance, whether it's skill gaps, motivation, or external factors.
@@ -52,7 +65,6 @@ Procedure for handling a member who is not meeting expectations:
   3. Encourage Self-Improvement: Implement strategies like pair programming or peer coaching to help the team member improve.
 
   4. Escalate if Necessary: If the issue persists, escalate it to line management for additional support or interventions.
-
 
 
 
