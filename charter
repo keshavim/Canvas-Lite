@@ -32,11 +32,10 @@ Scrum meeting format/frequency and distribution of documentation tasks (meeting 
 - **Meeting Minutes:** Rotating among team members per sprint.
 - **Task Board Updates:** Individual team members regularly update their assigned tasks.
 
-Procedure for adopting policies (e.g. code style, code check-in steps, documentation updates)
-
-
-if you adopt such a policy during the initial meeting, put it here
-
+Policies:
+General adoption policy: a poll will be put into the Discord server with detailed information of the 
+policy being adopted. Any member can suggest a policy. The poll will have a deadline of 48 hours.
+A majority vote is necessary for a policy to be put into place. Ties are insufficient.
 
 Procedure for handling a member who is not meeting expectations:
 
