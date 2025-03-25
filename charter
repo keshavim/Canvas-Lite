@@ -16,7 +16,21 @@ A task is complete when it has first been commited to Github, requested a pull w
 and pull request has been approved by at leaste 2 group members.
 
 Scrum meeting format/frequency and distribution of documentation tasks (meeting minutes, updating task board)
+### Scrum Meeting Format & Frequency
 
+- **Sprint Planning** *(Start of each sprint, ~1 hour)*  
+  Define goals, assign tasks, update task board.
+
+- **Sprint Review** *(End of each sprint, ~30 mins)*  
+  Present progress to stakeholder (Professor) for feedback.
+
+- **Sprint Retrospective** *(End of each sprint, ~30 mins)*  
+  Reflect on performance and suggest improvements.
+
+### Documentation Responsibilities
+
+- **Meeting Minutes:** Rotating among team members per sprint.
+- **Task Board Updates:** Individual team members regularly update their assigned tasks.
 
 Procedure for adopting policies (e.g. code style, code check-in steps, documentation updates)
 
