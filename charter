@@ -15,7 +15,21 @@ Definition of done: when is a task complete? (hint: "I'm done with that but I di
 
 
 Scrum meeting format/frequency and distribution of documentation tasks (meeting minutes, updating task board)
+### Scrum Meeting Format & Frequency
 
+- **Sprint Planning** *(Start of each sprint, ~1 hour)*  
+  Define goals, assign tasks, update task board.
+
+- **Sprint Review** *(End of each sprint, ~30 mins)*  
+  Present progress to stakeholder (Professor) for feedback.
+
+- **Sprint Retrospective** *(End of each sprint, ~30 mins)*  
+  Reflect on performance and suggest improvements.
+
+### Documentation Responsibilities
+
+- **Meeting Minutes:** Rotating among team members per sprint.
+- **Task Board Updates:** Individual team members regularly update their assigned tasks.
 
 Procedure for adopting policies (e.g. code style, code check-in steps, documentation updates)
 
