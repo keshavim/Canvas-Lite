@@ -23,7 +23,16 @@ Procedure for adopting policies (e.g. code style, code check-in steps, documenta
 if you adopt such a policy during the initial meeting, put it here
 
 
-Procedure for handling a member who is not meeting expectations
+Procedure for handling a member who is not meeting expectations:
+
+  1. Identify the Issue: Determine the root cause of the underperformance, whether it's skill gaps, motivation, or external factors.
+
+  2. Team Discussion and Coaching: Use the Sprint Retrospective to discuss the issue and let the Scrum Master coach the team member to improve.
+
+  3. Encourage Self-Improvement: Implement strategies like pair programming or peer coaching to help the team member improve.
+
+  4. Escalate if Necessary: If the issue persists, escalate it to line management for additional support or interventions.
+
 
 
 must include at least 3 actions before involving the instructor
