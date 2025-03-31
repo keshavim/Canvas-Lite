@@ -3,17 +3,27 @@ Updated automatically every 5 minutes
 
 Glorious 361 Group
 
+Mission Statement:
+Our mission is to develop high-quality, scalable, and innovative software solutions that meet user needs while fostering
+a culture of collaboration, continuous learning, and engineering excellence. 
 
+Core Values: 
+Collaboration: We work together and support each other to achieve our goals. 
+  -Innovation: We embrace creativity and strive for continuous improvement. 
+
+  -Accountability: We take ownership of our tasks and responsibilities. 
+
+  -Quality First: We aim for clean, maintainable, and efficient code
 
 Meetings:
-Tuesday after 1:30, Thursday after 4:30, in person and/or zoom
+  -Tuesday after 1:30, Thursday after 4:30, in person and/or Discord. 
 
-Response time to communication expectations
-24 hours
+Meeting Roles: 
+  -Leader: keeps the meeting on track, ensures that team members do not get distracted
 
-Definition of done: when is a task complete? (hint: "I'm done with that but I didn't check it in to github" is not done.)
-A task is complete when it has first been commited to Github, requested a pull with detailed information on what has been changed,
-and pull request has been approved by at leaste 2 group members.
+  -Scribe: takes notes for the meeting (preferably via computer as opposed to by hand)
+
+  -Planner: plans the agenda for the meeting, should coordinate with Leader
 
 Scrum meeting format/frequency and distribution of documentation tasks (meeting minutes, updating task board)
 ### Scrum Meeting Format & Frequency
@@ -39,9 +49,10 @@ Policies:
 General adoption policy: a poll will be put into the Discord server with detailed information of the 
 policy being adopted. Any member can suggest a policy. The poll will have a deadline of 48 hours.
 
-Conflict Resolution:
-A majority vote is necessary for a policy to be put into place. Ties are insufficient.
-must include at least 3 actions before involving the instructor
+Response time to communication expectations: 24 hours
+
+Definition of done: A task is complete when it has first been commited to Github, requested a pull with detailed information on what has been changed,
+and pull request has been approved by at least 2 group members.
 
 Group disciplinary action: 4 step process to deal with a member who is not meeting expectations
   -Step 1: Inform member in question of the concern that the group has, provide extra 24-48 hours
@@ -55,18 +66,8 @@ Group disciplinary action: 4 step process to deal with a member who is not meeti
   -Step 4: If problem persists longer than 1 week after contacting Scrum Master, reach out
   to Product Owner
 
-
-Procedure for handling a member who is not meeting expectations:
-
-  1. Identify the Issue: Determine the root cause of the underperformance, whether it's skill gaps, motivation, or external factors.
-
-  2. Team Discussion and Coaching: Use the Sprint Retrospective to discuss the issue and let the Scrum Master coach the team member to improve.
-
-  3. Encourage Self-Improvement: Implement strategies like pair programming or peer coaching to help the team member improve.
-
-  4. Escalate if Necessary: If the issue persists, escalate it to line management for additional support or interventions.
-
-
+Coding Conventions:
+In general, the principles of SOLID should be followed. Documentation is mandatory for each class, function, and method.
 
 
 Signatures:
