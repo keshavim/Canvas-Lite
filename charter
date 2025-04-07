@@ -1,78 +1,108 @@
+Knights of the Keyboard Charter 
 
-Updated automatically every 5 minutes
+Mission Statement: Our mission is to develop high-quality, scalable, and innovative
+software solutions that meet user needs while fostering a culture of collaboration, 
+continuous learning, and engineering excellence.  
 
-Glorious 361 Group
+Core Values:  
 
-Mission Statement:
-Our mission is to develop high-quality, scalable, and innovative software solutions that meet user needs while fostering
-a culture of collaboration, continuous learning, and engineering excellence. 
+Collaboration: We work together and support each other to achieve our goals.  
 
-Core Values: 
-Collaboration: We work together and support each other to achieve our goals. 
-  -Innovation: We embrace creativity and strive for continuous improvement. 
+Innovation: We embrace creativity and strive for continuous improvement.  
 
-  -Accountability: We take ownership of our tasks and responsibilities. 
+Accountability: We take ownership of our tasks and responsibilities.  
 
-  -Quality First: We aim for clean, maintainable, and efficient code
+Quality First: We aim for clean, maintainable, and efficient code 
 
-Meetings:
-  -Tuesday after 1:30, Thursday after 4:30, in person and/or Discord. 
+Meetings:  
 
-Meeting Roles: 
-  -Leader: keeps the meeting on track, ensures that team members do not get distracted
+Tuesday after 1:30, Thursday after 4:30, in person and/or Discord.  
 
-  -Scribe: takes notes for the meeting (preferably via computer as opposed to by hand)
+Additional meetings may be scheduled as needed during sprints. Team 
+members should be given at least 24 hours' notice. If this amount of 
+notice is not possible, missing this meeting cannot be treated as a 
+minor infraction. 
 
-  -Planner: plans the agenda for the meeting, should coordinate with Leader
+Team members will communicate absences or delays ahead of time, ideally 
+at least 24 hours' notice. In case of extenuating circumstances, absent
+team members must provide reasoning behind their absence. Unexcused 
+absences not given reasoning will be treated as a minor infraction. 
 
-Scrum meeting format/frequency and distribution of documentation tasks (meeting minutes, updating task board)
-### Scrum Meeting Format & Frequency
+Response to Communication: 
 
-- **Weekly Team Meeting** *(Every Tuesday after lab, ~30–45 mins)*  
-  Discuss progress, update tasks, address blockers, document meeting minutes.
+All members must respond to messages in Discord and emails within 24 hours. 
+Failure to do so without valid reasoning will be treated as a minor infraction. 
 
-- **Sprint Planning** *(Start of each sprint, ~1 hour)*  
-  Define sprint goals, assign tasks, update task board.
+Meeting Roles:
+Leader: keeps the meeting on track, ensures that team members do not get distracted 
 
-- **Sprint Review** *(End of each sprint, ~30 mins)*  
-  Present completed tasks to stakeholder (Professor) for feedback.
+Scribe: takes notes for the meeting (preferably via computer as opposed to by hand) 
 
-- **Sprint Retrospective** *(End of each sprint, ~30 mins)*  
-  Reflect on sprint performance and suggest improvements.
+Planner: plans the agenda for the meeting, should coordinate with Leader 
 
-### Documentation Responsibilities
+Scrum meeting format/frequency and distribution of documentation tasks 
+(meeting minutes, updating task board) 
 
-- **Meeting Minutes:** Rotating responsibility each week among team members.
-- **Task Board Updates:** All team members regularly update their own task statuses.
+Scrum Meeting Format & Frequency: 
 
-Policies:
-General adoption policy: a poll will be put into the Discord server with detailed information of the 
-policy being adopted. Any member can suggest a policy. The poll will have a deadline of 48 hours.
+Weekly Team Meeting (Every Tuesday after lab, ~30–45 mins): Discuss progress, 
+update tasks, address blockers, document meeting minutes. 
 
-Response time to communication expectations: 24 hours
+Sprint Planning (Start of each sprint, ~1 hour): Define sprint goals, assign tasks, 
+update task board. 
 
-Definition of done: A task is complete when it has first been commited to Github, requested a pull with detailed information on what has been changed,
-and pull request has been approved by at least 2 group members.
+Sprint Review (End of each sprint, ~30 mins): Present completed tasks to stakeholder 
+(Professor) for feedback. 
 
-Group disciplinary action: 4 step process to deal with a member who is not meeting expectations
-  -Step 1: Inform member in question of the concern that the group has, provide extra 24-48 hours
-  to complete task
-  
-  -Step 2: If group member has not completed work within the time frame, reach out again, provide
-  extra 12-24 hours to complete task
-  
-  -Step 3: Reach out to Scrum Master with details of the member not meeting expectations
-  
-  -Step 4: If problem persists longer than 1 week after contacting Scrum Master, reach out
-  to Product Owner
+Sprint Retrospective (End of each sprint, ~30 mins): Reflect on sprint performance 
+and suggest improvements. 
 
-Coding Conventions:
-In general, the principles of SOLID should be followed. Documentation is mandatory for each class, function, and method.
+Documentation Responsibilities: 
 
+Meeting Minutes: Rotating responsibility each week among team members. 
 
-Signatures:
-Will Peters
-Labib Alam
-Ismael Ovalle  
-Hugo Gonzalez
-Keshab Mondal
+ 
+
+Task Board Updates: All team members regularly update their own task statuses. 
+
+Policies:  
+
+General adoption policy: a poll will be put into the Discord server with detailed 
+information of the policy being adopted. Any member can suggest a policy. The poll will have a deadline of 48 hours. 
+
+Definition of done: A task is complete when it has first been committed to Github, requested 
+a pull with detailed information on what has been changed, and pull request has been approved by at 
+least 2 group members. Any work not committed or reviewed is considered incomplete.
+
+Group disciplinary action (minor infraction): process to deal with a member who is not meeting expectations  
+
+-Step 1: Inform member in question of the concern that the group has, provide extra 24-48 hours to complete task 
+
+-Step 2: If group member has not completed work within the time frame, reach out again, provide extra 12-24 hours to complete task 
+
+-Step 3: Should problems persist over 2 weeks, escalate to a major infraction 
+
+Group disciplinary action (major infraction): process to deal with a team member who has done something serious 
+
+-Step 1: Reach out to Scrum Master with details of the member who has committed the infraction 
+
+-Step 2: If problem persists longer than 1 week after contacting Scrum Master, reach out to Product Owner 
+
+Coding Conventions:  
+
+In general, the principles of SOLID should be followed. Documentation is mandatory for each class, function, 
+and method. Descriptive naming conventions should be followed. Code should be reasonably formatted, clean, and tested before merging. 
+
+Signatures:  
+
+We, the members of the Glorious 361 Group, agree to uphold this charter and collaborate respectfully and responsibly. 
+
+Will Peters  
+
+Labib Alam  
+
+Ismael Ovalle 
+
+Hugo Gonzalez  
+
+Keshab Mondal 
