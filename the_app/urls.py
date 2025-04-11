@@ -1,10 +1,16 @@
 from django.urls import path
-from . import views
+
+from .views import home
+from.views import taLogin
+from.views import instructorLogin
+from.views import supervisorLogin
+
 
 urlpatterns = [
     #the first peramiter is the one you use in html links
-    path('', views.home, name='/'),
-    path('the_app/', views.TheApp, name='the_app'),
-    path('removelater/', views.RemoveThisLater, name='removethislater'),
+    path('', home, name='/'),
+    path('ta/login/', taLogin, name='/ta'),
+    path('instructor/login/', instructorLogin, name='/instructor'),
+    path('supervisor/login/', supervisorLogin, name='/supervisor'),
 
 ]
