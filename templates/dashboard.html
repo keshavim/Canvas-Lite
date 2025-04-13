@@ -1,0 +1,88 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block title %}
+  dashboard
+{% endblock %}
+
+{% block includes %}
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+
+{% endblock %}
+
+{% block content %}
+
+    <!-- Header Section -->
+
+    <header>
+    {% if user.is_authenticated %}
+            <h1>Welcome  {{ user.username }}!</h1>
+
+    {% else %}
+        <h1>Welcome to our Website</h1>
+    {% endif %}
+    </header>
+
+
+
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            {% if user.is_authenticated %}
+                <!-- Logged-in Navigation -->
+                <li><a href="/">Home</a></li>
+                <li><a href="/profile/">Profile</a></li>
+                <li><a href="/settings/">Settings</a></li>
+                <li>
+                    <form action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Log Out</button>
+                    </form>
+                </li>
+            {% else %}
+                <!-- Logged-out Navigation -->
+                <li><a href="/accounts/login/">Login</a></li>
+                <li><a href="/accounts/signup/">Sign Up</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        {% if user.is_authenticated %}
+            <!-- Logged-in Dashboard -->
+            <h2>Hello, {{ user.username }}!</h2>
+            <p>Welcome back to your personalized dashboard.</p>
+
+            <!-- Example Cards -->
+            <div class="card">
+                <h3>Overview</h3>
+                <p>This is your dashboard overview. Here you can see your recent activity and updates.</p>
+            </div>
+
+            <div class="card">
+                <h3>Tasks</h3>
+                <ul>
+                    <li>Task 1 - Complete the assignment</li>
+                    <li>Task 2 - Review the course material</li>
+                    <li>Task 3 - Attend the meeting at 3 PM</li>
+                </ul>
+            </div>
+
+        {% else %}
+            <!-- Logged-out Dashboard -->
+            <h2>You Are Not Logged In</h2>
+            <p>Welcome to our website! Please log in or sign up to access your personalized dashboard.</p>
+
+            <!-- Login and Sign Up Buttons -->
+            <a href="/accounts/login" class="btn">Log In</a>
+            <a href="/accounts/signup" class="btn">Sign Up</a>
+        {% endif %}
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        &copy; 2025 Your Website. All rights reserved.
+    </footer>
+
+{% endblock %}
