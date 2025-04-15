@@ -43,4 +43,10 @@ from django.contrib.auth.admin import UserAdmin
 # admin.site.register(AdministratorProfile)
 # admin.site.register(InstructorProfile)
 # admin.site.register(TeachingAssistantProfile)
+from .models import UserAccount, AdministratorProfile, InstructorProfile, TeachingAssistantProfile
+
+admin.site.register(UserAccount, UserAdmin)
+admin.site.register(AdministratorProfile)
+admin.site.register(InstructorProfile)
+admin.site.register(TeachingAssistantProfile)
 
