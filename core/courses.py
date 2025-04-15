@@ -11,7 +11,7 @@ class CourseManager:
         Parameters:
             course_data (dict): Dictionary of course fields
         """
-        raise NotImplementedError("Course creation not implemented yet.")
+        pass
 
     def assign_instructor(self, course_id, instructor_id):
         """
@@ -21,4 +21,4 @@ class CourseManager:
             course_id (int): The course ID
             instructor_id (int): The instructor's user ID
         """
-        raise NotImplementedError("Instructor assignment not implemented yet.")
+        pass
