@@ -3,8 +3,15 @@ class UserManager:
     """
     Manages user creation, update, and deletion.
     """
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
+        self.firstname = ""
+        self.lastname = ""
+        self.email = ""
 
-    def create_user(self, user_data):
+
+    def login(self, user_data):
         """
         Creates a new user.
 
@@ -13,7 +20,7 @@ class UserManager:
         """
         raise NotImplementedError("User creation not implemented yet.")
 
-    def update_user(self, user_id, updates):
+    def register(self, user_id, updates):
         """
         Updates an existing user's information.
 
