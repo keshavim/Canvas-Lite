@@ -1,44 +1,33 @@
 
-from django.contrib.auth.models import User
-from django.core.exceptions import ObjectDoesNotExist
-
 class UserManager:
     """
-    Handles user creation, update, and deletion.
+    Manages user creation, update, and deletion.
     """
 
     def create_user(self, user_data):
         """
-        Creates a new user using the built-in User model.
+        Creates a new user.
+
+        Parameters:
+            user_data (dict): A dictionary of user fields
         """
-        return User.objects.create_user(
-            username=user_data.get("username"),
-            email=user_data.get("email"),
-            password=user_data.get("password"),
-            first_name=user_data.get("first_name", ""),
-            last_name=user_data.get("last_name", "")
-        )
+        raise NotImplementedError("User creation not implemented yet.")
 
     def update_user(self, user_id, updates):
         """
-        Updates existing user information.
+        Updates an existing user's information.
+
+        Parameters:
+            user_id (int): The ID of the user to update
+            updates (dict): Dictionary of fields to update
         """
-        try:
-            user = User.objects.get(id=user_id)
-            for key, value in updates.items():
-                setattr(user, key, value)
-            user.save()
-            return user
-        except ObjectDoesNotExist:
-            return None
+        raise NotImplementedError("User update not implemented yet.")
 
     def delete_user(self, user_id):
         """
-        Deletes a user if found.
+        Deletes a user from the system.
+
+        Parameters:
+            user_id (int): The ID of the user to delete
         """
-        try:
-            user = User.objects.get(id=user_id)
-            user.delete()
-            return True
-        except ObjectDoesNotExist:
-            return False
+        raise NotImplementedError("User deletion not implemented yet.")
