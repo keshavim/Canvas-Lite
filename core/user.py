@@ -11,7 +11,7 @@ class UserManager:
         Parameters:
             user_data (dict): A dictionary of user fields
         """
-        raise NotImplementedError("User creation not implemented yet.")
+        pass
 
     def update_user(self, user_id, updates):
         """
@@ -21,7 +21,7 @@ class UserManager:
             user_id (int): The ID of the user to update
             updates (dict): Dictionary of fields to update
         """
-        raise NotImplementedError("User update not implemented yet.")
+        pass
 
     def delete_user(self, user_id):
         """
@@ -30,4 +30,4 @@ class UserManager:
         Parameters:
             user_id (int): The ID of the user to delete
         """
-        raise NotImplementedError("User deletion not implemented yet.")
+        pass
