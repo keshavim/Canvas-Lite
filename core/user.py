@@ -4,7 +4,7 @@ class UserManager:
     Manages user creation, update, and deletion.
     """
 
-    def create_user(self, user_data):
+    def register(self, user_data):
         """
         Creates a new user.
 
@@ -13,7 +13,7 @@ class UserManager:
         """
         pass
 
-    def update_user(self, user_id, updates):
+    def update(self, user_id, updates):
         """
         Updates an existing user's information.
 
@@ -23,7 +23,7 @@ class UserManager:
         """
         pass
 
-    def delete_user(self, user_id):
+    def delete(self, user_id):
         """
         Deletes a user from the system.
 
@@ -31,3 +31,25 @@ class UserManager:
             user_id (int): The ID of the user to delete
         """
         pass
+
+class User:
+    def __init__(self):
+        self.username = ""
+        self.password = ""
+        self.firstname = ""
+        self.lastname = ""
+        self.email = ""
+        self.phone_number = 0
+
+        self.course = Course()
+        self.labsection
+
+class TA(User):
+    def __init__(self):
+        super().__init__()
+
+
+class Instructor(User):
+    def __init__(self):
+        super().__init__()
+
