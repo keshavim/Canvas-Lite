@@ -11,7 +11,7 @@ class SectionManager:
         Parameters:
             section_data (dict): Dictionary of lab section fields
         """
-        raise NotImplementedError("Section creation not implemented yet.")
+        pass
 
     def assign_ta(self, lab_id, ta_id):
         """
@@ -21,4 +21,4 @@ class SectionManager:
             lab_id (int): The lab section ID
             ta_id (int): The TA's user ID
         """
-        raise NotImplementedError("TA assignment not implemented yet.")
+        pass
