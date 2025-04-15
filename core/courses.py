@@ -22,3 +22,49 @@ class CourseManager:
             instructor_id (int): The instructor's user ID
         """
         raise NotImplementedError("Instructor assignment not implemented yet.")
+
+class Course:
+    def __init__(self):
+        self.course_id = None
+        self.course_code = None
+        self.title = None
+        self.semester = None
+        self.instructor_id = None
+
+    # Add methods as needed
+    pass
+
+
+class LabSection:
+    def __init__(self):
+        self.lab_id = None
+        self.section_number = None
+        self.course_id = None
+        self.assigned_ta_id = None
+
+    # Add methods as needed
+    pass
+
+
+class Assignment:
+    def __init__(self):
+        self.assignment_id = None
+        self.ta_id = None
+        self.course_id = None
+        self.type = None
+        self.num_labs = None
+
+    # Add methods as needed
+    pass
+
+
+class Notification:
+    def __init__(self):
+        self.notification_id = None
+        self.sender_id = None
+        self.recipient_id = None
+        self.message = None
+        self.timestamp = None
+
+    # Add methods as needed
+    pass
