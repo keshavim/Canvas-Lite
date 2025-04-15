@@ -1,7 +1,4 @@
 
-from BMIApp.models import LabSection
-from django.core.exceptions import ObjectDoesNotExist
-
 class SectionManager:
     """
     Manages lab section creation and TA assignments.
@@ -10,21 +7,18 @@ class SectionManager:
     def create_section(self, section_data):
         """
         Creates a new lab section.
+
+        Parameters:
+            section_data (dict): Dictionary of lab section fields
         """
-        return LabSection.objects.create(
-            section_number=section_data.get("section_number"),
-            course_id=section_data.get("course_id"),
-            assigned_ta_id=section_data.get("assigned_ta_id", None)
-        )
+        raise NotImplementedError("Section creation not implemented yet.")
 
     def assign_ta(self, lab_id, ta_id):
         """
-        Assigns a TA to an existing lab section.
+        Assigns a TA to a lab section.
+
+        Parameters:
+            lab_id (int): The lab section ID
+            ta_id (int): The TA's user ID
         """
-        try:
-            section = LabSection.objects.get(id=lab_id)
-            section.assigned_ta_id = ta_id
-            section.save()
-            return section
-        except ObjectDoesNotExist:
-            return None
+        raise NotImplementedError("TA assignment not implemented yet.")
