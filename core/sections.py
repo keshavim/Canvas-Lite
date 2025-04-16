@@ -19,6 +19,6 @@ class SectionManager:
 
         Parameters:
             lab_id (int): The lab section ID
-            ta_id (int): The TA's user ID
+            ta_id (int): The TA's webapp ID
         """
         pass

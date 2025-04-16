@@ -19,7 +19,7 @@ class CourseManager:
 
         Parameters:
             course_id (int): The course ID
-            instructor_id (int): The instructor's user ID
+            instructor_id (int): The instructor's webapp ID
         """
         pass
 

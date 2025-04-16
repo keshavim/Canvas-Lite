@@ -1,34 +1,34 @@
 
 class UserManager:
     """
-    Manages user creation, update, and deletion.
+    Manages webapp creation, update, and deletion.
     """
 
     def register(self, user_data):
         """
-        Creates a new user.
+        Creates a new webapp.
 
         Parameters:
-            user_data (dict): A dictionary of user fields
+            user_data (dict): A dictionary of webapp fields
         """
         pass
 
     def update(self, user_id, updates):
         """
-        Updates an existing user's information.
+        Updates an existing webapp's information.
 
         Parameters:
-            user_id (int): The ID of the user to update
+            user_id (int): The ID of the webapp to update
             updates (dict): Dictionary of fields to update
         """
         pass
 
     def delete(self, user_id):
         """
-        Deletes a user from the system.
+        Deletes a webapp from the system.
 
         Parameters:
-            user_id (int): The ID of the user to delete
+            user_id (int): The ID of the webapp to delete
         """
         pass
 

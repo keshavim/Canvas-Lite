@@ -5,24 +5,24 @@ from django.views.generic import TemplateView
 
 class AuthService:
     """
-    Handles user authentication.
+    Handles webapp authentication.
     """
 
     def login(self, request, email, password):
         """
-        Authenticates and logs in a user.
+        Authenticates and logs in a webapp.
         Returns True if login is successful, False otherwise.
         """
-        # user = authenticate(request, username=email, password=password)
-        # if user is not None:
-        #     login(request, user)
+        # webapp = authenticate(request, username=email, password=password)
+        # if webapp is not None:
+        #     login(request, webapp)
         #     return True
         # return False
         pass
 
     def logout(self, request):
         """
-        Logs out the current user.
+        Logs out the current webapp.
         Always returns True.
         """
         pass
