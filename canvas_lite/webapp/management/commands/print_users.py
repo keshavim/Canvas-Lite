@@ -4,17 +4,15 @@ from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 """
 current users
+
 mike
-keshavim123
+Tf-&_'neA6~!^;9P2,cu$)
 
-superkesha
-kesha123
 
-jacky
-123
+keshab
+keshab123
 
-bob12
-1234
+
 """
 
 class Command(BaseCommand):

@@ -4,7 +4,13 @@ from django.db import models
 
 
 class Course(models.Model):
-    def __init__(self, *args: Any, **kwargs: Any):
-        super().__init__(*args, **kwargs)
-        self.id = models.IntegerField(primary_key=True)
-        self.name = models.CharField(max_length=30)
+    name = models.CharField(max_length=50)
+    description = models.TextField(blank=True)
+
+    def get_sections(self):
+        # Returns all sections for this course
+        return self.sections.all()
+
+    def __str__(self):
+        return self.name
+

@@ -10,7 +10,7 @@ class UserRegistrationForm(forms.Form):
 
     def getUsername(self):
         return self.username
-    def save(self):
+    def create_user(self):
         # Create the webapp instance and save it to the database
         user = User.objects.create_user(
             username=self.cleaned_data['username'],
