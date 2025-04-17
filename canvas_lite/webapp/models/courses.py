@@ -4,7 +4,7 @@ from django.db import models
 
 
 class Course(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(default=None, max_length=50)
     description = models.TextField(blank=True)
 
     def get_sections(self):

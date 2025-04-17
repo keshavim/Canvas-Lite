@@ -5,7 +5,6 @@ from django.db import models
 
 class User(AbstractUser):
     sections = models.ManyToManyField('Section', blank=True)
-    notifications = models.ManyToManyField('Notification', blank=True)
 
     def get_sections_assigned(self):
         """
