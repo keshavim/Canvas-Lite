@@ -33,14 +33,6 @@ class CourseModelTests(TestCase):
         self.assertEqual(section.instructor, self.user1)
         self.assertEqual(section.schedule, schedule)
 
-    def test_add_section_with_assistants(self):
-        assistants = [self.user1, self.user2]
-        section = self.course.add_section(
-            name="Section C",
-            assistants=assistants
-        )
-        self.assertEqual(set(section.assistants.all()), set(assistants))
-
     def test_get_section_with_id(self):
         section = self.course.add_section(name="Section D")
         fetched = self.course.get_section_with_id(section.id)

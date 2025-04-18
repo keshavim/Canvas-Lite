@@ -21,9 +21,7 @@ class Section(models.Model):
         blank=True,
         related_name='sections_taught'
     )
-    assistants = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, blank=True, related_name='sections_ta_for'
-    )
+
     schedule = models.JSONField(default=dict)
 
     def assign_instructor(self, user):
@@ -34,24 +32,6 @@ class Section(models.Model):
             return None
         self.instructor = user
         self.save(update_fields=['instructor'])
-
-    def assign_assistants(self, assistants):
-        """
-        Set the assistants for this section.
-        assistants can be an iterable of User instances, or one user.
-        """
-        if isinstance(assistants, User):
-            assistants_list = [assistants]
-        elif isinstance(assistants, Iterable) and not isinstance(assistants, (str, dict)):
-            assistants_list = list(assistants)
-        else:
-            return None
-
-        for assistant in assistants_list:
-            if not isinstance(assistant, User):
-                assistants_list.remove(assistant)
-
-        self.assistants.set(assistants_list)
 
     def set_schedule(self, schedule_dict):
         """

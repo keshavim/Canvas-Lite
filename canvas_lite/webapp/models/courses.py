@@ -15,7 +15,7 @@ class Course(models.Model):
     def get_section_with_name(self, section_name):
         return self.sections.get(name__exact=section_name)
 
-    def add_section(self, name, instructor=None, assistants=None, schedule=None):
+    def add_section(self, name, instructor=None, schedule=None):
         """
         Create and add a new section to this course.
         """
@@ -26,8 +26,6 @@ class Course(models.Model):
             instructor=instructor,
             schedule=schedule or {}
         )
-        if assistants:
-            section.assistants.set(assistants)
         return section
 
     def remove_section(self, section_id):
