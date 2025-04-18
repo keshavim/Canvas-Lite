@@ -1,24 +1,27 @@
+from django.conf import settings
+from django.db import models
 
-class SectionManager:
-    """
-    Manages lab section creation and TA assignments.
-    """
 
-    def create_section(self, section_data):
-        """
-        Creates a new lab section.
+class Section(models.Model):
+    course = models.ForeignKey('Course', on_delete=models.CASCADE, related_name='sections')
+    name = models.CharField(max_length=100)
+    instructor = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='sections_taught'
+    )
+    assistants = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, blank=True, related_name='sections_ta_for'
+    )
+    schedule = models.JSONField(default=dict)
 
-        Parameters:
-            section_data (dict): Dictionary of lab section fields
-        """
+    def assign_instructor(self, user):
         pass
 
-    def assign_ta(self, lab_id, ta_id):
-        """
-        Assigns a TA to a lab section.
+    def assign_assistants(self, assistants):
+        pass
 
-        Parameters:
-            lab_id (int): The lab section ID
-            ta_id (int): The TA's webapp ID
-        """
+    def set_schedule(self, schedule_dict):
         pass

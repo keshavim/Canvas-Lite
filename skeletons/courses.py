@@ -1,72 +1,22 @@
+from django.db import models
 
-class CourseManager:
-    """
-    Manages course creation and instructor assignment.
-    """
 
-    def create_course(self, course_data):
-        """
-        Creates a new course.
+class Course(models.Model):
+    name = models.CharField(default=None, max_length=50)
+    description = models.TextField(blank=True)
 
-        Parameters:
-            course_data (dict): Dictionary of course fields
-        """
+    def get_sections(self):
         pass
 
-    def assign_instructor(self, course_id, instructor_id):
-        """
-        Assigns an instructor to a course.
-
-        Parameters:
-            course_id (int): The course ID
-            instructor_id (int): The instructor's webapp ID
-        """
+    def get_section_with_id(self, section_id):
         pass
 
+    def get_section_with_name(self, section_name):
+        pass
 
-class Course:
-    def __init__(self):
-        self.course_id = None
-        self.course_code = None
-        self.title = None
-        self.semester = None
-        self.instructor_id = None
+    def add_section(self, name, instructor=None, assistants=None, schedule=None):
+        pass
 
-    # Add methods as needed
-    pass
-
-
-class LabSection:
-    def __init__(self):
-        self.lab_id = None
-        self.section_number = None
-        self.course_id = None
-        self.assigned_ta_id = None
-
-    # Add methods as needed
-    pass
-
-
-class Assignment:
-    def __init__(self):
-        self.assignment_id = None
-        self.ta_id = None
-        self.course_id = None
-        self.type = None
-        self.num_labs = None
-
-    # Add methods as needed
-    pass
-
-
-class Notification:
-    def __init__(self):
-        self.notification_id = None
-        self.sender_id = None
-        self.recipient_id = None
-        self.message = None
-        self.timestamp = None
-
-    # Add methods as needed
-    pass
+    def remove_section(self, section_id):
+        pass
 
