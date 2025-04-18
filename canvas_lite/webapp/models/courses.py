@@ -2,6 +2,11 @@
 
 from django.db import models
 
+"""
+Class that contains basic information about a course.
+It has links to sections which store more information.
+Can create and remove sections.
+"""
 class Course(models.Model):
     name = models.CharField(default=None, max_length=50)
     description = models.TextField(blank=True)

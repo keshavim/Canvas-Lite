@@ -7,8 +7,8 @@ from webapp.models.courses import Course
 from webapp.models.users import User
 
 """
-Model is a section of the Course Model. It contains the instructor, assistants, and schedule
-it also controls the assignment of these variables
+Model is a section of the Course Model. It contains the instructor (User of either ta group or instructor group)
+and schedule. it also controls the assignment of these variables
 Each Section is unique to to a course and cannot be copied to another course.
 """
 class Section(models.Model):
