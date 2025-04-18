@@ -4,7 +4,7 @@ from django.db import models
 
 """
 Class that contains basic information about a course.
-It has links to sections which store more information.
+It has links to a Section object.
 Can create and remove sections.
 """
 class Course(models.Model):
@@ -12,9 +12,15 @@ class Course(models.Model):
     description = models.TextField(blank=True)
 
     def get_sections(self):
-        # Returns all sections for this course
+        """
+        returns all sections with a link to this course
+        """
         return self.sections.all()
     def get_section_with_id(self, section_id):
+        """
+        returns section with given id.
+        raise doesNotExit if not found
+        """
         return self.sections.get(id=section_id)
 
     def get_section_with_name(self, section_name):
@@ -36,6 +42,7 @@ class Course(models.Model):
     def remove_section(self, section_id):
         """
         Remove a section from this course by ID.
+        If found, return true and delete, else return false.
         """
         section = self.sections.filter(id=section_id).first()
         if section:

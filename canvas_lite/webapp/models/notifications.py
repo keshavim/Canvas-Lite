@@ -8,6 +8,14 @@ from django.utils import timezone
 """
 This class creates notifications and sends them to users
 Uses UserNotification class to mark as read
+
+Variables:
+sender: link to the user that sent/will send the notification
+recipients: list of links to the users that received/will receive the notification
+the link is made through the UserNotification class
+
+subject: small field for quick information
+message: Big text field that contains full message
 """
 class Notification(models.Model):
     sender = models.ForeignKey(
@@ -86,11 +94,14 @@ class Notification(models.Model):
         return self.get_user_notification(user).is_read()
 
     def __str__(self):
-        return f"To {self.subject or self.message[:30]}"
+        return f"{self.subject or self.message[:30]}"
 
 """
 this class is used to make unique links between users and notifications.
 It handles marking notifications as read
+
+user: link to the user receiving the notification
+notification: link to the notification
 """
 class UserNotification(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

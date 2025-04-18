@@ -12,6 +12,12 @@ class CourseModelTests(TestCase):
     def test_str_representation(self):
         self.assertEqual(str(self.course), "Biology 101")
 
+    def test_change_name(self):
+        self.course.name = "Chemistry 102"
+        self.assertEqual(self.course.name, "Chemistry 102")
+    def test_change_description(self):
+        self.course.description = "worrrrrrds"
+        self.assertEqual(self.course.description, "worrrrrrds")
     def test_get_sections_empty(self):
         self.assertEqual(self.course.get_sections().count(), 0)
 

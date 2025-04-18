@@ -14,6 +14,7 @@ class Course(models.Model):
     def get_section_with_name(self, section_name):
         pass
 
+
     def add_section(self, name, instructor=None, assistants=None, schedule=None):
         pass
 

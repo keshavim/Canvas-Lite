@@ -19,15 +19,16 @@ class SectionModelTests(TestCase):
     def test_assign_instructor_valid(self):
         result = self.section.assign_instructor(self.user1)
         self.assertEqual(self.section.instructor, self.user1)
-        self.assertIsNone(result)
+        self.assertTrue(result)
 
     def test_assign_instructor_none(self):
-        self.section.assign_instructor(None)
+        result = self.section.assign_instructor(None)
+        self.assertTrue(result)
         self.assertIsNone(self.section.instructor)
 
     def test_assign_instructor_invalid(self):
         result = self.section.assign_instructor("not a user")
-        self.assertIsNone(result)
+        self.assertFalse(result)
         self.assertIsNone(self.section.instructor)
 
     # --- set_schedule ---
@@ -35,11 +36,11 @@ class SectionModelTests(TestCase):
         schedule = {"day": "Monday", "time": "09:00"}
         result = self.section.set_schedule(schedule)
         self.assertEqual(self.section.schedule, schedule)
-        self.assertIsNone(result)
+        self.assertTrue(result)
 
     def test_set_schedule_invalid(self):
         result = self.section.set_schedule("not a dict")
-        self.assertIsNone(result)
+        self.assertFalse(result)
         # Should remain unchanged (default is {})
         self.assertEqual(self.section.schedule, {})
 
