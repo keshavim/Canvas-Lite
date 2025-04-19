@@ -1,5 +1,6 @@
+from unittest.mock import MagicMock
 
-
+from django.contrib.auth.models import Group
 from django.test import TestCase
 from webapp.models import Course, Section, User, Notification, UserNotification
 from django.utils import timezone
@@ -44,6 +45,14 @@ class UserSectionMethodTests(TestCase):
         sections2 = self.instructor2.get_assigned_sections()
         self.assertEqual(sections2.count(), 1)
         self.assertIn(self.section2, sections2)
+    def test_get_section_by_id(self):
+        section_id = self.section2.id
+        section = self.instructor2.get_assigned_section_id(section_id)
+        self.assertEqual(section, self.section2)
+
+        section_id = self.section1.id
+        section = self.instructor2.get_assigned_section_id(section_id)
+        self.assertNotEqual(section, self.section2)
 
     def test_get_assigned_courses(self):
         courses = self.instructor1.get_assigned_courses()
@@ -126,3 +135,76 @@ class NotificationMethodTests(TestCase):
         unreads2 = self.recipient2.get_unread_notifications()
         self.assertEqual(unreads2.count(), 1)
         self.assertEqual(unreads2[0].notification, self.n3)
+
+
+class UserGroupFuncTests(TestCase):
+    def setUp(self):
+        # Create groups
+        self.admin_group = Group.objects.create(name='Admin')
+        self.instructor_group = Group.objects.create(name='Instructor')
+        self.ta_group = Group.objects.create(name='TA')
+
+        # Create users
+        self.admin = User.objects.create(username='admin')
+        self.instructor = User.objects.create(username='instructor')
+        self.ta = User.objects.create(username='ta')
+
+        # Assign groups
+        self.admin.groups.add(self.admin_group)
+        self.instructor.groups.add(self.instructor_group)
+        self.ta.groups.add(self.ta_group)
+
+        # Create a section and relate it to instructor
+        self.course = Course.objects.create(name='Test Course')
+
+        self.section = Section.objects.create(name='Section 1', course=self.course)
+        if hasattr(self.instructor, 'sections_taught'):
+            self.instructor.sections_taught.add(self.section)
+
+    def test_get_user_group(self):
+        self.assertEqual(self.admin.get_user_group(), 'Admin')
+        self.assertEqual(self.instructor.get_user_group(), 'Instructor')
+        self.assertEqual(self.ta.get_user_group(), 'TA')
+
+    def test_set_user_group_assigns_correct_group(self):
+        self.admin.set_user_group('TA')
+        self.assertEqual(self.admin.get_user_group(), 'TA')
+        self.admin.set_user_group('Instructor')
+        self.assertEqual(self.admin.get_user_group(), 'Instructor')
+        self.admin.set_user_group('Admin')
+        self.assertEqual(self.admin.get_user_group(), 'Admin')
+
+    def test_set_user_group_removes_other_groups(self):
+        self.ta.set_user_group('Instructor')
+        self.assertEqual(self.ta.get_user_group(), 'Instructor')
+        self.assertFalse(self.ta.groups.filter(name='TA').exists())
+        self.ta.set_user_group('Admin')
+        self.assertEqual(self.ta.get_user_group(), 'Admin')
+        self.assertFalse(self.ta.groups.filter(name='Instructor').exists())
+
+    def test_set_user_group_invalid_group(self):
+        with self.assertRaises(ValueError):
+            self.instructor.set_user_group('NotAGroup')
+
+    def test_ta_cannot_assign_user(self):
+        result = self.ta.assign_user_to_section(self.instructor, self.section.id)
+        self.assertIsInstance(result, PermissionError)
+        self.assertEqual(str(result), "TA can not assign Users to section")
+
+    def test_instructor_cannot_assign_admin(self):
+        result = self.instructor.assign_user_to_section(self.admin, self.section.id)
+        self.assertIsInstance(result, PermissionError)
+        self.assertEqual(str(result), "Instructor can not assign this user to section")
+
+    def test_instructor_cannot_assign_instructor(self):
+        result = self.instructor.assign_user_to_section(self.instructor, self.section.id)
+        self.assertIsInstance(result, PermissionError)
+        self.assertEqual(str(result), "Instructor can not assign this user to section")
+
+    # If you have a way for instructor to assign TA, and instructor is in the section:
+    def test_instructor_can_assign_ta(self):
+        # Make sure instructor is in the section
+        if hasattr(self.instructor, 'is_in_section'):
+            self.assertTrue(self.instructor.is_in_section(self.section.id))
+        result = self.instructor.assign_user_to_section(self.ta, self.section.id)
+        self.assertIsNone(result)  # Should succeed if logic allows

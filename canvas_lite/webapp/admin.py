@@ -1,9 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-#
-# from .models import UserAccount, AdministratorProfile, InstructorProfile, TeachingAssistantProfile
 
-from .models.users import User
+
+from .models import *
 from .forms import UserRegistrationForm
 
 class CustomUserAdmin(UserAdmin):
@@ -12,4 +11,7 @@ class CustomUserAdmin(UserAdmin):
     list_display = ["username", "email", "is_staff", "is_active"]
 
 admin.site.register(User, CustomUserAdmin)
+admin.site.register(Course)
+admin.site.register(Section)
+admin.site.register(Notification)
 
