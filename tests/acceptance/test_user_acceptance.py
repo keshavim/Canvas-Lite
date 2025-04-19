@@ -1,10 +1,9 @@
 from django.test import TestCase, Client
-from django.contrib.auth import get_user_model
-from django.urls import reverse
+from webapp.models import User
 
-User = get_user_model()
 
 class UserCreationAcceptanceTest(TestCase):
+    user_create_url = '/admin/webapp/user/add/' # Replace with actual URL if different
     def setUp(self):
         self.client = Client()
 
@@ -20,7 +19,7 @@ class UserCreationAcceptanceTest(TestCase):
         """
         Acceptance test: Admin should be able to access the user creation page
         """
-        response = self.client.get('/user/create/')  # Replace with actual URL if different
+        response = self.client.get(self.user_create_url)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "<form")  # Assuming there's a form tag in the page
 
@@ -34,7 +33,7 @@ class UserCreationAcceptanceTest(TestCase):
             'password1': 'StrongPass123!',
             'password2': 'StrongPass123!',
         }
-        response = self.client.post('/user/create/', new_user_data, follow=True)  # Replace with actual URL
+        response = self.client.post(self.user_create_url, new_user_data, follow=True)  # Replace with actual URL
         self.assertEqual(response.status_code, 200)
         self.assertTrue(User.objects.filter(username='newfaculty').exists())
 
@@ -48,7 +47,7 @@ class UserCreationAcceptanceTest(TestCase):
             'password1': 'Pass123!',
             'password2': 'WrongPass!',
         }
-        response = self.client.post('/user/create/', invalid_data)
+        response = self.client.post(self.user_create_url, invalid_data)
         self.assertEqual(response.status_code, 200)
         self.assertFalse(User.objects.filter(username='baduser').exists())
         self.assertContains(response, "The two password fields didn’t match")  # Django default error
