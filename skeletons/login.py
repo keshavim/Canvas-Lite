@@ -42,7 +42,11 @@
 
 
 def login(username, password, current_users, users):
-    pass
+    for user in users:
+        if user.username == username and user not in current_users and user.password == password:
+            current_users.append(user)
+            return True
+    return False
 
 
 """
@@ -58,4 +62,8 @@ def login(username, password, current_users, users):
 
 
 def logout(username, current_users):
-    pass
+    for user in current_users:
+        if user.username == username:
+            current_users.remove(user)
+            return True
+    return False
