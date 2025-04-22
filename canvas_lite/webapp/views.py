@@ -10,7 +10,6 @@ from .forms import UserRegistrationForm
 
 
 def user_home(request):
-
     return render(request, "dashboard.html")
 def user_login(request):
     """
@@ -30,6 +29,8 @@ def user_login(request):
     else:
         form = AuthenticationForm()
     return render(request, 'registration/login.html', {'form': form})
+
+
 def user_register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
