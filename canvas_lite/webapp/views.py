@@ -1,7 +1,7 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, forms, login
+from django.contrib.auth import login
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.models import User
+from .models import User
 from django.shortcuts import render, redirect
 
 from .forms import UserRegistrationForm
@@ -28,6 +28,7 @@ def user_login(request):
             messages.error(request, "Invalid username or password.")
     else:
         form = AuthenticationForm()
+
     return render(request, 'registration/login.html', {'form': form})
 
 

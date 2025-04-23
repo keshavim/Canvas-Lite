@@ -1,10 +1,11 @@
 from django.test import TestCase, Client
-from django.contrib.auth import get_user_model
+from webapp.models import User
 from django.urls import reverse
 
-User = get_user_model()
+
 
 class CreateCourseAcceptanceTest(TestCase):
+    course_add_url = '/admin/webapp/course/add/'
     def setUp(self):
         self.client = Client()
         self.admin = User.objects.create_superuser(
@@ -15,21 +16,21 @@ class CreateCourseAcceptanceTest(TestCase):
         self.client.login(username='admin', password='adminpass123')
 
     def test_access_course_creation_page(self):
-        response = self.client.get('/course/create/')  # Adjust if different
+        response = self.client.get(self.course_add_url)  # Adjust if different
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "<form")
 
     def test_create_course_successfully(self):
-        response = self.client.post('/course/create/', {
+        response = self.client.post(self.course_add_url, {
             'name': 'COMPSCI 361',
             'description': 'Software engineering course'
         }, follow=True)
         self.assertEqual(response.status_code, 200)
-        from canvas_lite.models import Course
+        from webapp.models import Course
         self.assertTrue(Course.objects.filter(name='COMPSCI 361').exists())
 
     def test_create_course_with_blank_name_fails(self):
-        response = self.client.post('/course/create/', {
+        response = self.client.post(self.course_add_url, {
             'name': '',
             'description': 'This should fail'
         })
