@@ -6,79 +6,102 @@
 {% endblock %}
 
 {% block includes %}
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-
+    <link rel="stylesheet" href="{% static 'css/base_theme.css' %}">
+    <style>
+      /* Basic layout for dashboard with notifications sidebar */
+      .dashboard-wrapper {
+        display: flex;
+        gap: 20px;
+      }
+      .main-content {
+        flex: 3;
+      }
+      .notifications-sidebar {
+        flex: 1;
+        border-left: 1px solid #ccc;
+        padding-left: 15px;
+      }
+      .notifications-sidebar h3 {
+        margin-top: 0;
+      }
+    </style>
 {% endblock %}
 
 {% block content %}
 
-    <!-- Header Section -->
-
-    <header>
     {% if user.is_authenticated %}
-            <h1>Welcome  {{ user.username }}!</h1>
-
-    {% else %}
-        <h1>Welcome to our Website</h1>
-    {% endif %}
-    </header>
-
-
-
-    <!-- Navigation Bar -->
-    <nav>
-        <ul>
-            {% if user.is_authenticated %}
-                <!-- Logged-in Navigation -->
+        <!-- Header Section -->
+        <header>
+            <h1>Welcome {{ user.username }}!</h1>
+        </header>
+        <!-- Navigation Bar -->
+        <nav>
+            <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="/profile/">Profile</a></li>
                 <li><a href="/settings/">Settings</a></li>
                 <li>
                     <form action="{% url 'logout' %}" method="post">
                         {% csrf_token %}
-                        <button type="submit">Log Out</button>
+                        <button type="submit" >Log Out</button>
                     </form>
+
                 </li>
-            {% else %}
-                <!-- Logged-out Navigation -->
+            </ul>
+        </nav>
+
+        <!-- Dashboard Content with Notifications Sidebar -->
+        <div class="dashboard-wrapper">
+            <!-- Main Content -->
+            <div class="main-content container">
+                <h2>Hello, {{ user.username }}!</h2>
+                <p>Welcome back to your personalized dashboard.</p>
+
+                <!-- Example Cards -->
+                <div class="card">
+                    <h3>Overview</h3>
+                    <p>This is your dashboard overview. Here you can see your recent activity and updates.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Tasks</h3>
+                    <ul>
+                        <li>Task 1 - Complete the assignment</li>
+                        <li>Task 2 - Review the course material</li>
+                        <li>Task 3 - Attend the meeting at 3 PM</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Notifications Sidebar -->
+            <aside class="notifications-sidebar">
+                <h3>Notifications</h3>
+                <!-- Empty for now -->
+                <p>No new notifications.</p>
+            </aside>
+        </div>
+
+    {% else %}
+        <!-- Header Section -->
+        <header>
+            <h1>Welcome to our Website</h1>
+        </header>
+        <!-- Navigation Bar -->
+        <nav>
+            <ul>
                 <li><a href="/webapp/login/">Login</a></li>
                 <li><a href="/webapp/register/">Sign Up</a></li>
-            {% endif %}
-        </ul>
-    </nav>
+            </ul>
+        </nav>
 
-    <!-- Main Content -->
-    <div class="container">
-        {% if user.is_authenticated %}
-            <!-- Logged-in Dashboard -->
-            <h2>Hello, {{ user.username }}!</h2>
-            <p>Welcome back to your personalized dashboard.</p>
-
-            <!-- Example Cards -->
-            <div class="card">
-                <h3>Overview</h3>
-                <p>This is your dashboard overview. Here you can see your recent activity and updates.</p>
-            </div>
-
-            <div class="card">
-                <h3>Tasks</h3>
-                <ul>
-                    <li>Task 1 - Complete the assignment</li>
-                    <li>Task 2 - Review the course material</li>
-                    <li>Task 3 - Attend the meeting at 3 PM</li>
-                </ul>
-            </div>
-
-        {% else %}
-            <!-- Logged-out Dashboard -->
+        <!-- Main Content -->
+        <div class="container">
             <h2>You Are Not Logged In</h2>
             <p>Welcome to our website! Please log in or sign up to access your personalized dashboard.</p>
-
-            <!-- Login and Sign Up Buttons -->
             <a href="/webapp/login/" class="btn">Log In</a>
             <a href="/webapp/register/" class="btn">Sign Up</a>
-        {% endif %}
-    </div>
+        </div>
+    {% endif %}
 
     <!-- Footer Section -->
     <footer>
