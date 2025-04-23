@@ -1,8 +1,5 @@
 from django.contrib.auth.models import AbstractUser, Group
-from django.contrib.auth import models
-
-
-
+from django.db import models
 
 """enum type of user groups"""
 class UserType(models.TextChoices):

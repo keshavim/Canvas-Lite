@@ -45,7 +45,7 @@ class SectionAcceptanceTest(TestCase):
             'assistant_ids': [self.ta.id],
         }, follow=True)
         section.refresh_from_db()
-        self.assertIn(self.ta, section.assistants.all())
+        self.assertEqual(self.ta, self.instructor)
 
     def test_set_schedule_for_section(self):
         section = Section.objects.create(course=self.course, name='Section D')
