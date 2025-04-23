@@ -1,9 +1,8 @@
 from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
-from django.urls import reverse
-from canvas_lite.models import Course
+from webapp.models import Course, User
 
-User = get_user_model()
+
 
 class CreateSectionAcceptanceTest(TestCase):
     def setUp(self):
@@ -33,7 +32,7 @@ class CreateSectionAcceptanceTest(TestCase):
             'schedule': '{}',  # or any required fields
         }, follow=True)
         self.assertEqual(response.status_code, 200)
-        from canvas_lite.models import Section
+        from webapp.models import Section
         self.assertTrue(Section.objects.filter(name='Section A').exists())
 
     def test_create_section_with_missing_name_fails(self):
