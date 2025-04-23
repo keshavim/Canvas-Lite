@@ -1,0 +1,28 @@
+
+{% extends "master.html" %}
+{% load static %}
+
+{% block title %}
+    Admin Dashboard
+{% endblock %}
+
+{% block includes %}
+    <link rel="stylesheet" href="{% static 'css/base_theme.css' %}">
+
+{% endblock %}
+
+{% block content %}
+    <h1>Admin Dashboard</h1>
+    <ul>
+        {% for model in models %}
+          <li>
+            <a href="{{ model.admin_url }}">{{ model.name }}</a>
+          </li>
+        {% endfor %}
+    </ul>
+    <!-- Add more dashboard widgets here -->
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit" >Log Out</button>
+    </form>
+{% endblock %}
