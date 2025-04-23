@@ -5,6 +5,8 @@ from django.contrib.auth.admin import UserAdmin
 from .models import *
 from .forms import UserRegistrationForm
 
+
+
 class CustomUserAdmin(UserAdmin):
     register_form = UserRegistrationForm
     model = User

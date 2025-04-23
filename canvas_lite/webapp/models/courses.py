@@ -1,6 +1,7 @@
 
 
 from django.db import models
+from django.utils.text import normalize_newlines
 
 """
 Class that contains basic information about a course.
@@ -31,13 +32,7 @@ class Course(models.Model):
         Create and add a new section to this course.
         """
         from . import Section  # Avoid circular import
-        section = Section.objects.create(
-            course=self,
-            name=name,
-            instructor=instructor,
-            schedule=schedule or {}
-        )
-        return section
+        return Section.create_main_section(self, name, instructor, schedule)
 
     def remove_section(self, section_id):
         """
