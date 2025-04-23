@@ -7,7 +7,7 @@ from webapp.models.users import User
 
 
 
-
+"""enum type of section types"""
 class SectionType(models.TextChoices):
     LECTURE = "LEC", "Lecture"
     LAB = "LAB", "Lab"
@@ -18,6 +18,8 @@ Model is a section of the Course Model.
 It contains the instructor (User of either ta group or instructor group) and schedule.
 It also controls the assignment of these variables
 Each Section is unique to to a course and cannot be copied to another course.
+each section can be of three types and can be a main or a sub.
+sub sections must be made from main
 """
 class Section(models.Model):
     name = models.CharField(max_length=100)
