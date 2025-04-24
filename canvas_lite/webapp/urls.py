@@ -1,14 +1,19 @@
 from django.urls import path
 
-from webapp.views import user_login, user_register, user_home, user_admin_home
-
-
+from webapp import views
 
 urlpatterns = [
-    path("", user_home, name="dashboard"),
-    path("sudo/", user_admin_home, name="dashboard"),
+    path("", views.user_home, name="home"),
+    path("sudo/", views.admin_home, name="admin_home"),
+    path('sudo/<str:app_label>/<str:model_name>/',
+         views.generic_list_view,
+         name='admin_model_list'),
+    path('admin/<str:app_label>/<str:model_name>/<int:object_id>/edit/',
+         views.generic_edit_view,
+         name='admin_model_edit'),
+    path('admin/<str:app_label>/<str:model_name>/create/',
+         views.generic_create_view,
+         name='admin_model_create'),
 
-    path("login/", user_login, name="login"),
-    path("register/", user_register, name="signup"),
-
+    path("login/", views.user_login, name="user_login"),
 ]
