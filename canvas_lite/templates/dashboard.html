@@ -85,18 +85,14 @@
         </header>
         <!-- Navigation Bar -->
         <nav>
-            <ul>
-                <li><a href="/login/">Login</a></li>
-                <li><a href="/register/">Sign Up</a></li>
-            </ul>
+
         </nav>
 
         <!-- Main Content -->
         <div class="container">
             <h2>You Are Not Logged In</h2>
             <p>Welcome to our website! Please log in or sign up to access your personalized dashboard.</p>
-            <a href="/login/" class="btn">Log In</a>
-            <a href="/register/" class="btn">Sign Up</a>
+            <a href="{% url 'user_login' %}" class="btn">Log In</a>
         </div>
     {% endif %}
 

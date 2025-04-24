@@ -3,7 +3,7 @@ from django import forms
 from django.contrib.auth import get_user_model, authenticate, password_validation
 from django.core.exceptions import ValidationError
 
-from .models import User
+from webapp.models import User
 
 """
 form for athenticating the user
