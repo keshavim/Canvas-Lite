@@ -1,3 +1,5 @@
+<!--this is for ta and instructor-->
+
 {% extends "master.html" %}
 {% load static %}
 
@@ -37,9 +39,11 @@
         <!-- Navigation Bar -->
         <nav>
             <ul>
-                <li><a href="/">Home</a></li>
+                <li><a href="/">dashboard</a></li>
                 <li><a href="/profile/">Profile</a></li>
-                <li><a href="/settings/">Settings</a></li>
+                <li><a href="/courses/">courses</a></li>
+                <li><a href="/calender/">calender</a></li>
+                <li><a href="/inbox/">inbox</a></li>
                 <li>
                     <form action="{% url 'logout' %}" method="post">
                         {% csrf_token %}
@@ -59,23 +63,16 @@
 
                 <!-- Example Cards -->
                 <div class="card">
-                    <h3>Overview</h3>
-                    <p>This is your dashboard overview. Here you can see your recent activity and updates.</p>
+                    <h3>Course Overview</h3>
+
                 </div>
 
-                <div class="card">
-                    <h3>Tasks</h3>
-                    <ul>
-                        <li>Task 1 - Complete the assignment</li>
-                        <li>Task 2 - Review the course material</li>
-                        <li>Task 3 - Attend the meeting at 3 PM</li>
-                    </ul>
-                </div>
+
             </div>
 
             <!-- Notifications Sidebar -->
             <aside class="notifications-sidebar">
-                <h3>Notifications</h3>
+                <h3>Recent Notifications</h3>
                 <!-- Empty for now -->
                 <p>No new notifications.</p>
             </aside>
@@ -84,13 +81,13 @@
     {% else %}
         <!-- Header Section -->
         <header>
-            <h1>Welcome to our Website</h1>
+            <h1>Welcome to our Canvas-lite</h1>
         </header>
         <!-- Navigation Bar -->
         <nav>
             <ul>
-                <li><a href="/webapp/login/">Login</a></li>
-                <li><a href="/webapp/register/">Sign Up</a></li>
+                <li><a href="/login/">Login</a></li>
+                <li><a href="/register/">Sign Up</a></li>
             </ul>
         </nav>
 
@@ -98,8 +95,8 @@
         <div class="container">
             <h2>You Are Not Logged In</h2>
             <p>Welcome to our website! Please log in or sign up to access your personalized dashboard.</p>
-            <a href="/webapp/login/" class="btn">Log In</a>
-            <a href="/webapp/register/" class="btn">Sign Up</a>
+            <a href="/login/" class="btn">Log In</a>
+            <a href="/register/" class="btn">Sign Up</a>
         </div>
     {% endif %}
 

@@ -2,7 +2,7 @@ from django.test import TestCase
 from webapp.models import User
 
 class LoginLogoutAcceptanceTest(TestCase):
-    login_url = '/webapp/login/'
+    login_url = '/login/'
     def setUp(self):
 
         self.credentials = {
@@ -28,7 +28,7 @@ class LoginLogoutAcceptanceTest(TestCase):
         self.assertFalse(response.context['user'].is_authenticated)
 
 class LogoutAcceptanceTest(TestCase):
-    login_url = '/webapp/login/'
+    login_url = '/login/'
     logout_url = '/accounts/logout/'
 
     def setUp(self):
