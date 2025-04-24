@@ -5,7 +5,11 @@ from django.core.exceptions import ValidationError
 
 from .models import User
 
-# Suppose your custom user uses email for login
+"""
+form for athenticating the user
+can take either email or username as an identifier
+
+"""
 class UserAuthenticationForm(forms.Form):
     identifier = forms.CharField(label="Username or Email")
     password = forms.CharField(widget=forms.PasswordInput)
@@ -15,6 +19,7 @@ class UserAuthenticationForm(forms.Form):
         self.user = None
         super().__init__(*args, **kwargs)
 
+    #runs during init
     def clean(self):
         identifier = self.cleaned_data.get('identifier')
         password = self.cleaned_data.get('password')
@@ -40,6 +45,10 @@ class UserAuthenticationForm(forms.Form):
     def get_user(self):
         return self.user
 
+"""
+creates a user with the information given
+validates username and password
+"""
 class UserRegistrationForm(forms.Form):
     first_name = forms.CharField(max_length=30, required=True, label="First Name")
     last_name = forms.CharField(max_length=30, required=True, label="Last Name")
@@ -60,10 +69,6 @@ class UserRegistrationForm(forms.Form):
         except ValidationError as e:
             raise forms.ValidationError(e.messages)
         return password
-
-    @property
-    def get_username(self):
-        return self.cleaned_data.get('username')
 
     def create_user(self):
         # Create the user instance and save it to the database
