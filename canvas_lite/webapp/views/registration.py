@@ -1,15 +1,12 @@
-from django.apps import apps
 from django.contrib import messages
 from django.contrib.auth import login
-from django.contrib.auth.decorators import login_required
-
-from webapp.models import User
 from django.shortcuts import render, redirect
 
 from webapp.forms import UserRegistrationForm, UserAuthenticationForm
 
 
 def user_home(request):
+    """shows instructor and ta dashboard. shows signup page if not logged in"""
     return render(request, "dashboard.html")
 
 def user_login(request):
@@ -36,6 +33,11 @@ def user_login(request):
 
 
 def user_register(request):
+    """
+    creates a user with the information given
+    logs in user and redirects to dashboard if sucessful.
+    refreshes page with error message otherwise.
+    """
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
