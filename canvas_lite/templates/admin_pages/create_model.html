@@ -1,0 +1,27 @@
+
+{% extends "master.html" %}
+{% load static %}
+
+{% block title %}
+    Admin model users
+{% endblock %}
+
+{% block includes %}
+    <link rel="stylesheet" href="{% static 'css/base_theme.css' %}">
+
+{% endblock %}
+
+{% block content %}
+
+    <h2>Create New {{ model_name|title }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create</button>
+    </form>
+    <a href="{% url 'admin_model_list' app_label model_name %}">Back to list</a>
+
+
+    <!-- Add more dashboard widgets here -->
+    <a href="{% url 'admin_home' %}">home</a>
+{% endblock %}
