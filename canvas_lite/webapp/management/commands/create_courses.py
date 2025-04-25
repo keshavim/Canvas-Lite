@@ -32,12 +32,20 @@ class Command(BaseCommand):
                 'sections': [
                     {
                         'name': 'LEC-01',
-                        'schedule': {},  # Empty schedule
+                        'schedule': {
+                            'days': ['Mon', 'Wed'],
+                            'time': '10:00-11:30',
+                            'location': 'Building A, Room 101'
+                        },
                         'section_type': 'LEC'
                     },
                     {
                         'name': 'LAB-01',
-                        'schedule': {},
+                        'schedule': {
+                            'days': ['Fri'],
+                            'time': '14:00-16:00',
+                            'location': 'Computer Lab 3'
+                        },
                         'section_type': 'LAB',
                         'main_section': 'LEC-01'
                     }
@@ -48,12 +56,20 @@ class Command(BaseCommand):
                 'sections': [
                     {
                         'name': 'LEC-01',
-                        'schedule': {},
+                        'schedule': {
+                            'days': ['Tue', 'Thu'],
+                            'time': '13:00-14:30',
+                            'location': 'Building C, Room 202'
+                        },
                         'section_type': 'LEC'
                     },
                     {
                         'name': 'DIS-01',
-                        'schedule': {},
+                        'schedule': {
+                            'days': ['Wed'],
+                            'time': '15:00-16:00',
+                            'location': 'Building C, Room 205'
+                        },
                         'section_type': 'DIS',
                         'main_section': 'LEC-01'
                     }
