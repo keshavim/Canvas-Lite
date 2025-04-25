@@ -1,0 +1,28 @@
+
+{% extends "master.html" %}
+{% load static %}
+
+{% block title %}
+    Admin model users
+{% endblock %}
+
+{% block includes %}
+    <link rel="stylesheet" href="{% static 'css/base_theme.css' %}">
+
+{% endblock %}
+
+{% block content %}
+    <a href="{% url 'admin_home' %}">home</a>
+
+
+    <h1>Edit Section: {{ section.name }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Save Changes</button>
+    </form>
+
+    <a href="{% url 'courses_list' %}">Back to Courses</a>
+
+
+{% endblock %}

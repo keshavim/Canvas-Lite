@@ -2,11 +2,13 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.shortcuts import render, redirect
 
-from webapp.forms import UserRegistrationForm, UserAuthenticationForm
+from webapp.forms import UserAuthenticationForm
 
 
 def user_home(request):
     """shows instructor and ta dashboard. shows signup page if not logged in"""
+    if request.user.groups.filter(name='Admin').exists():
+        return redirect("admin_home")
     return render(request, "dashboard.html")
 
 def user_login(request):

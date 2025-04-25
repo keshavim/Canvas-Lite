@@ -1,0 +1,26 @@
+
+{% extends "master.html" %}
+{% load static %}
+
+{% block title %}
+    Admin model users
+{% endblock %}
+
+{% block includes %}
+    <link rel="stylesheet" href="{% static 'css/base_theme.css' %}">
+
+{% endblock %}
+
+{% block content %}
+    <a href="{% url 'admin_home' %}">home</a>
+
+    <h1>Add Section to {{ course.name }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn">Add Section</button>
+    </form>
+    <a href="{% url 'courses_list' %}" class="btn">Cancel</a>
+
+
+{% endblock %}
