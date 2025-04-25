@@ -34,16 +34,16 @@
     {% if user.is_authenticated %}
         <!-- Header Section -->
         <header>
-            <h1>Welcome {{ user.username }}!</h1>
+            <h1>Welcome, {{ user.username }}!</h1>
         </header>
         <!-- Navigation Bar -->
         <nav>
             <ul>
-                <li><a href="/">dashboard</a></li>
+                <li><a href="/">Dashboard</a></li>
                 <li><a href="/profile/">Profile</a></li>
-                <li><a href="/courses/">courses</a></li>
-                <li><a href="/calender/">calender</a></li>
-                <li><a href="/inbox/">inbox</a></li>
+                <li><a href="/courses/">Courses</a></li>
+                <li><a href="/calender/">Calender</a></li>
+                <li><a href="/inbox/">Inbox</a></li>
                 <li>
                     <form action="{% url 'logout' %}" method="post">
                         {% csrf_token %}
@@ -98,7 +98,7 @@
 
     <!-- Footer Section -->
     <footer>
-        &copy; 2025 Your Website. All rights reserved.
+        &copy; 2025 Canvas-lite. All rights reserved.
     </footer>
 
 {% endblock %}

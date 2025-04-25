@@ -7,7 +7,7 @@ body {
 }
 
 header {
-    background-color: #4CAF50;
+    background-color: #FFD700;
     color: white;
     padding: 10px 20px;
     text-align: center;
@@ -33,6 +33,10 @@ nav ul li {
 nav ul li a {
     color: white;
     text-decoration: none;
+}
+
+a:hover {
+    color: mediumpurple;
 }
 
 /* Container Styles */
