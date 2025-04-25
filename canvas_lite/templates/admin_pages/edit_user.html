@@ -12,16 +12,16 @@
 {% endblock %}
 
 {% block content %}
+    <a href="{% url 'admin_home' %}">home</a>
 
-    <h2>Create New {{ model_name|title }}</h2>
+   <h1>Edit User: {{ user.username }}</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Create</button>
+        <button type="submit">Save Changes</button>
     </form>
-    <a href="{% url 'admin_model_list' app_label model_name %}">Back to list</a>
+    <a href="{% url 'user_list' %}">Back to Users</a>
+    <a href="{% url 'delete_user' user.id %}" class="btn btn-danger">Delete User</a>
 
 
-    <!-- Add more dashboard widgets here -->
-    <a href="{% url 'admin_home' %}">home</a>
 {% endblock %}

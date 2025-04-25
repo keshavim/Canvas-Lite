@@ -3,6 +3,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, get_object_or_404, redirect
 from django.forms import modelform_factory
+from django.urls import reverse_lazy
+from django.views.generic import DeleteView
 
 from webapp.forms import *
 from webapp.models import *
@@ -44,17 +46,6 @@ def edit_course(request, course_id):
         form = CourseForm(instance=course)
     return render(request, 'admin_pages/edit_course.html', {'form': form, 'course': course})
 
-def edit_section(request, section_id):
-    section = get_object_or_404(Section, id=section_id)
-    if request.method == 'POST':
-        form = SectionForm(request.POST, instance=section)
-        if form.is_valid():
-            form.save()
-            return redirect('courses_list')
-    else:
-        form = SectionForm(instance=section)
-    return render(request, 'admin_pages/edit_section.html', {'form': form, 'section': section})
-
 def add_course(request):
     if request.method == 'POST':
         form = CourseForm(request.POST)
@@ -65,6 +56,23 @@ def add_course(request):
     else:
         form = CourseForm()
     return render(request, 'admin_pages/add_course.html', {'form': form})
+
+class delete_course(DeleteView):
+    model = Course
+    template_name = 'admin_pages/confirm_delete.html'
+    success_url = reverse_lazy('courses_list')
+
+
+def edit_section(request, section_id):
+    section = get_object_or_404(Section, id=section_id)
+    if request.method == 'POST':
+        form = SectionForm(request.POST, instance=section)
+        if form.is_valid():
+            form.save()
+            return redirect('courses_list')
+    else:
+        form = SectionForm(instance=section)
+    return render(request, 'admin_pages/edit_section.html', {'form': form, 'section': section})
 
 def add_section(request, course_id):
     course = get_object_or_404(Course, id=course_id)
@@ -85,66 +93,47 @@ def add_section(request, course_id):
         'course': course
     })
 
+class delete_section(DeleteView):
+    model = Section
+    template_name = 'admin_pages/confirm_delete.html'
+    success_url = reverse_lazy('courses_list')
 
 
 
-
-@in_groups(["Admin"])
-def generic_list_view(request, app_label, model_name):
-    model = apps.get_model(app_label, model_name)
-    objects = model.objects.all()
-    return render(request, 'admin_pages/list_model.html', {
-        'objects': objects,
-        'model_name': model_name,
-        'app_label': app_label,
+def user_list(request):
+    users = User.objects.all()
+    return render(request, 'admin_pages/list_user.html', {
+        'users': users,
     })
 
-in_groups(["Admin"])(generic_list_view)
-def generic_create_view(request, app_label, model_name):
-    model = apps.get_model(app_label, model_name)
-    # You can customize fields per model if needed
-    fields = '__all__'
-    form_class = modelform_factory(model, fields=fields)
+def edit_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+
     if request.method == 'POST':
-        form = form_class(request.POST)
+        form = UserForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
-            return redirect('admin_model_list', app_label=app_label, model_name=model_name)
+            return redirect('user_list')
     else:
-        form = form_class()
-    return render(request, 'admin_pages/create_model.html', {
+        form = UserForm(instance=user)
+    return render(request, 'admin_pages/edit_user.html', {
         'form': form,
-        'model_name': model_name,
-        'app_label': app_label,
+        'user': user,
     })
 
-
-# Define which fields to show for each model
-EDITABLE_FIELDS = {
-    'user': ['first_name', 'last_name', 'email', 'group_name', 'is_active'],
-    'course': ['name', 'description'],
-    'section': ['name', 'schedule', 'section_type', 'course', 'instructor', 'main_section'],
-    'notification': ['subject', 'message', 'sender', 'recipients'],
-    # etc.
-}
-
-@in_groups(["Admin"])
-def generic_edit_view(request, app_label, model_name, object_id):
-    model = apps.get_model(app_label, model_name)
-    instance = get_object_or_404(model, id=object_id)
-    fields = EDITABLE_FIELDS.get(model_name.lower(), '__all__')
-    form_class = modelform_factory(model, fields=fields)
+def add_user(request):
     if request.method == 'POST':
-        form = form_class(request.POST, instance=instance)
+        form = UserForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('admin_model_list', app_label=app_label, model_name=model_name)
+            user = form.save(commit=False)
+            user.save()
+            return redirect('user_list')
     else:
-        form = form_class(instance=instance)
-    return render(request, 'admin_pages/edit_model.html', {
+        form = UserForm()
+    return render(request, 'admin_pages/add_user.html', {
         'form': form,
-        'object': instance,
-        'model_name': model_name,
-        'app_label': app_label,
     })
-
+class delete_user(DeleteView):
+    model = User
+    template_name = 'admin_pages/confirm_delete.html'
+    success_url = reverse_lazy('user_list')

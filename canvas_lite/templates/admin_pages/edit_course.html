@@ -21,6 +21,8 @@
         <button type="submit">Save Changes</button>
     </form>
 
+    <a href="{% url 'delete_course' course.id %}" class="btn btn-danger" style="margin-left:10px;">Delete Course</a>
+
     <a href="{% url 'courses_list' %}">Back to Courses</a>
 
 

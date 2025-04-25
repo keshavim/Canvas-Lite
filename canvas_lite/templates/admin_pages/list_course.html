@@ -14,9 +14,8 @@
 
 {% block content %}
     <h1>Courses</h1>
+    <a href="{% url 'admin_home' %}">home</a><br>
     <a href="{% url 'add_course' %}" class="btn">Add New Course</a>
-
-    <a href="{% url 'admin_home' %}">home</a>
 
 
     {% for course in courses %}
@@ -25,22 +24,29 @@
         <h2>
             <a href="{% url 'edit_course' course.id %}">{{ course.name }}</a>
         </h2>
+
+
         <p>{{ course.description }}</p>
+
+
+
+
+        <!--section info-->
         <a href="{% url 'add_section' course.id %}" class="btn">
             Add Section
         </a>
-
-        <!--section info-->
         <div class="sections-list">
             <h3>Sections:</h3>
             <ul>
                 {% for section in course.sections.all %}
                 <li>
-                    <a href="{% url 'edit_section' course.id section.id %}">
+                    <a href="{% url 'edit_section' section.id %}">
                         {{ section.name }} ({{ section.get_section_type_display }})
                     </a>
+
                     <div class="schedule">
-                        {{ section.schedule|format_schedule }}
+                        instructor: {{ section.instructor }}<br>
+                        schedule: {{ section.schedule|format_schedule }}
                     </div>
                 </li>
                 {% empty %}
