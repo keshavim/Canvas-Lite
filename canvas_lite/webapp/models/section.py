@@ -1,6 +1,7 @@
 from collections.abc import Iterable
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 
 from webapp.models.users import User
@@ -105,6 +106,15 @@ class Section(models.Model):
         self.schedule = schedule_dict
         self.save(update_fields=['schedule'])
         return True
+
+    def clean(self):
+        super().clean()
+        required_fields = ['days', 'start_time', 'end_time', 'semester', 'year']
+
+        if not all(field in self.schedule for field in required_fields):
+            raise ValidationError(
+                "Schedule must include: days, start_time, end_time, semester, year"
+            )
 
     def __str__(self):
         if self.is_sub_section():

@@ -1,0 +1,56 @@
+
+{% extends "master.html" %}
+{% load static %}
+{% load site_tags %}
+
+{% block title %}
+    Admin model users
+{% endblock %}
+
+{% block includes %}
+    <link rel="stylesheet" href="{% static 'css/base_theme.css' %}">
+
+{% endblock %}
+
+{% block content %}
+    <h1>Courses</h1>
+    <a href="{% url 'add_course' %}" class="btn">Add New Course</a>
+
+    <a href="{% url 'admin_home' %}">home</a>
+
+
+    {% for course in courses %}
+    <div class="course-card">
+    <!--course info-->
+        <h2>
+            <a href="{% url 'edit_course' course.id %}">{{ course.name }}</a>
+        </h2>
+        <p>{{ course.description }}</p>
+        <a href="{% url 'add_section' course.id %}" class="btn">
+            Add Section
+        </a>
+
+        <!--section info-->
+        <div class="sections-list">
+            <h3>Sections:</h3>
+            <ul>
+                {% for section in course.sections.all %}
+                <li>
+                    <a href="{% url 'edit_section' course.id section.id %}">
+                        {{ section.name }} ({{ section.get_section_type_display }})
+                    </a>
+                    <div class="schedule">
+                        {{ section.schedule|format_schedule }}
+                    </div>
+                </li>
+                {% empty %}
+                    <li>None</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endfor %}
+
+
+
+{% endblock %}
