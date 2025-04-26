@@ -10,6 +10,7 @@ urlpatterns = [
 #admin urls
     path("sudo/", views.admin_home, name="admin_home"),
 
+#admin stuff do not touch
     path('sudo/course/', views.courses_list, name='courses_list'),
     path('sudo/course/add/', views.add_course, name='add_course'),
     path('sudo/course/<int:course_id>/edit/', views.edit_course, name='edit_course'),
@@ -24,5 +25,8 @@ urlpatterns = [
     path('sudo/user/<int:user_id>/edit/', views.edit_user, name='edit_user'),
     path('sudo/user/<int:pk>/delete/', views.delete_user.as_view(), name='delete_user'),
 
+    path('sudo/notification/', views.user_notification_list, name='user_notification_list'),
+    path('sudo/notification/send/', views.send_notification, name='send_notification'),
+#now you can touch
 
 ]
