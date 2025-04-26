@@ -2,6 +2,7 @@ from typing import Any
 
 from django.conf import settings
 from django.db import models
+from django.db.models import QuerySet
 from django.utils import timezone
 
 
@@ -38,29 +39,23 @@ class Notification(models.Model):
 
     @classmethod
     def create_and_send(cls, recipients, subject=None, message=None, sender=None):
-        """
-        Creates a notification and associates it with one or more users.
-        Args:
-            recipients: A user instance or an iterable of users.
-            subject: The notification subject.
-            message: The notification message.
-            sender: The user sending the notification (optional).
-        Returns:
-            Notification: The created notification instance.
-        """
         notif = cls.objects.create(subject=subject, message=message, sender=sender)
+
+        # Handle both QuerySet and individual instances
         if recipients is None:
             return notif
-        if subject is None and message is None:
-            return notif
-        # Normalize recipients to a list
-        if not isinstance(recipients, (list, tuple, set)):
+
+        # Convert single user to list
+        if not isinstance(recipients, (list, tuple, set, QuerySet)):
             recipients = [recipients]
+
+        # Handle QuerySet specifically
+        if isinstance(recipients, QuerySet):
+            recipients = list(recipients)
 
         # Remove duplicates and None values
         recipients = [user for user in set(recipients) if user is not None]
 
-        # Bulk create UserNotification links
         user_notifications = [
             UserNotification(user=user, notification=notif)
             for user in recipients
