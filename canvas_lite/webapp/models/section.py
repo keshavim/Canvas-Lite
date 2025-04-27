@@ -8,6 +8,24 @@ from webapp.models.users import User
 
 
 
+WEEKDAY_CHOICES = [
+    ('mon', 'Monday'),
+    ('tue', 'Tuesday'),
+    ('wed', 'Wednesday'),
+    ('thu', 'Thursday'),
+    ('fri', 'Friday'),
+    ('sat', 'Saturday'),
+    ('sun', 'Sunday'),
+]
+
+SEASON_CHOICES = [
+    ('spr', 'Spring'),
+    ('sum', 'Summer'),
+    ('aut', 'Autumn'),
+    ('win', 'Winter'),
+]
+
+
 """enum type of section types"""
 class SectionType(models.TextChoices):
     LECTURE = "LEC", "Lecture"

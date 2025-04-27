@@ -1,7 +1,10 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 from django import forms
 
+import json
+
 from webapp.models import *
+from webapp.widgets import ScheduleWidget
 
 
 class AdminUserEditForm(forms.ModelForm):
@@ -9,15 +12,40 @@ class AdminUserEditForm(forms.ModelForm):
         model = User
         fields = ['first_name', 'last_name', 'email']
 
+
+# forms.py
 class CourseForm(forms.ModelForm):
     class Meta:
         model = Course
         fields = ['name', 'description']
 
+    def save(self, request=None, commit=True):
+        instance = super().save(commit=commit)
+        if request and not self.instance.pk:  # Only for creation
+            messages.success(request, 'Course added successfully!')
+        return instance
+
+
 class SectionForm(forms.ModelForm):
     class Meta:
         model = Section
         fields = ['name', 'schedule', 'section_type', 'instructor']
+        widgets = {
+            'schedule': ScheduleWidget(),
+        }
+    def __init__(self, *args, **kwargs):
+        self.course = kwargs.pop('course', None)  # Remove course from kwargs
+        super().__init__(*args, **kwargs)  # Now passes clean kwargs
+        self.fields['schedule'].required = False  # Make entire JSON optional
+
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        if self.course:
+            instance.course = self.course
+        if commit:
+            instance.save()
+        return instance
+
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(
