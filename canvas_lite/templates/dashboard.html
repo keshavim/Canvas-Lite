@@ -8,25 +8,7 @@
 {% endblock %}
 
 {% block includes %}
-    <link rel="stylesheet" href="{% static 'css/base_theme.css' %}">
-    <style>
-      /* Basic layout for dashboard with notifications sidebar */
-      .dashboard-wrapper {
-        display: flex;
-        gap: 20px;
-      }
-      .main-content {
-        flex: 3;
-      }
-      .notifications-sidebar {
-        flex: 1;
-        border-left: 1px solid #ccc;
-        padding-left: 15px;
-      }
-      .notifications-sidebar h3 {
-        margin-top: 0;
-      }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/dashboard.css' %}">
 {% endblock %}
 
 {% block content %}

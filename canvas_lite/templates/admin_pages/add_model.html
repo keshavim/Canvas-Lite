@@ -1,0 +1,35 @@
+{% extends "master.html" %}
+{% load static %}
+
+{% block title %}
+    Admin model users
+{% endblock %}
+
+{% block includes %}
+
+{% endblock %}
+
+{% block content %}
+    <h1>Add New {{ model_name|title }}</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        {% if model_name == 'section' %}
+            <input type="hidden" name="course_id" value="{{ course_id }}">
+        {% endif %}
+
+        <button type="submit">Create {{ model_name|title }}</button>
+    </form>
+
+    {% if model_name == 'course' or model_name == 'section' %}
+        <a href="{% url 'courses_list' %}">Back to Courses</a>
+    {% elif model_name == 'user' %}
+        <a href="{% url 'user_list' %}">Back to Users</a>
+    {% endif %}
+
+
+
+
+{% endblock %}

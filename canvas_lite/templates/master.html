@@ -1,5 +1,4 @@
-
-
+{% load static %}
 <!--this is a master file. it contains all common elements -->
 
 <!DOCTYPE html>
@@ -10,21 +9,22 @@
     <title>{% block title %}{% endblock %}</title>
 
     <!-- for styles and js-->
+    <link rel="stylesheet" href="{% static 'css/base_theme.css' %}">
     {% block includes %}
     {% endblock %}
 
 </head>
 <body>
 
-{% block content %}
-{% endblock %}
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
 
-{% block footer %}
-    <!-- Footer Section -->
-    <footer>
-        &copy; 2025 Canvas-lite. All rights reserved.
-    </footer>
-{% endblock %}
+
+<footer>
+    &copy; 2025 Canvas-lite. All rights reserved.
+</footer>
 
 </body>
 </html>

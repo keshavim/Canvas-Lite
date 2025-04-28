@@ -12,18 +12,17 @@ urlpatterns = [
 
 #admin stuff do not touch
     path('sudo/course/', views.courses_list, name='courses_list'),
-    path('sudo/course/add/', views.add_course, name='add_course'),
-    path('sudo/course/<int:course_id>/edit/', views.edit_course, name='edit_course'),
-    path('sudo/course/<int:pk>/delete/', views.delete_course.as_view(), name='delete_course'),
-
-    path('sudo/course/<int:course_id>/sections/add/', views.add_section, name='add_section'),
-    path('sudo/section/<int:section_id>/edit/', views.edit_section, name='edit_section'),
-    path('sudo/section/<int:pk>/delete/', views.delete_section.as_view(), name='delete_section'),
 
     path('sudo/user/', views.user_list, name='user_list'),
-    path('sudo/user/add/', views.add_user, name='add_user'),
-    path('sudo/user/<int:user_id>/edit/', views.edit_user, name='edit_user'),
-    path('sudo/user/<int:pk>/delete/', views.delete_user.as_view(), name='delete_user'),
+
+    path('add/<str:model_name>/', views.add_model, name='add_model_generic'),
+    path('add/<str:model_name>/<int:course_id>/', views.add_model, name='add_model_section'),
+
+    path('sudo/<str:model_name>/<int:model_id>/edit', views.edit_model, name='edit_model'),
+
+    path('sudo/<str:model_name>/delete/<int:pk>/', views.UniversalDeleteView.as_view(), name='delete_model'),
+
+
 
     path('sudo/notification/', views.user_notification_list, name='user_notification_list'),
     path('sudo/notification/send/', views.send_notification, name='send_notification'),

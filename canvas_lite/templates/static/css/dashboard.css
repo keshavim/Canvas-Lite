@@ -1,0 +1,15 @@
+.dashboard-wrapper {
+    display: flex;
+    gap: 20px;
+}
+.main-content {
+    flex: 3;
+}
+.notifications-sidebar {
+    flex: 1;
+    border-left: 1px solid #ccc;
+    padding-left: 15px;
+}
+.notifications-sidebar h3 {
+    margin-top: 0;
+}
