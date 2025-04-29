@@ -1,5 +1,6 @@
 {% extends "master.html" %}
 {% load static %}
+{% load site_tags %}
 
 {% block title %}
   Course View
@@ -11,36 +12,55 @@
 
 {% block content %}
 
-    {% if user.is_authenticated %}
-        <!-- Header Section -->
-        <header>
-            <h1>Course View</h1>
-        </header>
-        <!-- Navigation Bar -->
-        <nav>
+    <!-- Header Section -->
+    <header>
+        <h1>Course View</h1>
+    </header>
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><a href="/">Dashboard</a></li>
+            <li><a href="/profile/">Profile</a></li>
+            <li><a href="/courses/">Courses</a></li>
+            <li><a href="/calendar/">Calender</a></li>
+            <li><a href="/inbox/">Inbox</a></li>
+            <li>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" >Log Out</button>
+                </form>
+
+            </li>
+        </ul>
+    </nav>
+    <div class="dashboard-wrapper">
+        <!-- Main Content -->
+        <div class="main-content container">
+            <h2>Hello, {{ user.username }}!</h2>
+            <p>This is your course view.</p>
+
+        <!-- Course View -->
+        {% for course in courses %}
+        <div class="course-card">
+        <!--course info-->
+            <h3>{{ course.id }} {{ course.name }}</h3>
+            <h4>{{ course.description }}</h4>
             <ul>
-                <li><a href="/">Dashboard</a></li>
-                <li><a href="/profile/">Profile</a></li>
-                <li><a href="/courses/">Courses</a></li>
-                <li><a href="/calendar/">Calender</a></li>
-                <li><a href="/inbox/">Inbox</a></li>
-                <li>
-                    <form action="{% url 'logout' %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" >Log Out</button>
-                    </form>
-
-                </li>
+                Sections:
+                {% for section in course.sections.all %}
+                    <li>
+                    {{ section.name }} ({{ section.get_section_type_display }})
+                    <div class="schedule">
+                        instructor: {{ section.instructor }}<br>
+                        schedule: {{ section.schedule|format_schedule }}
+                    </div>
+                    </li>
+                {% endfor %}
             </ul>
-        </nav>
-
-        <div class="dashboard-wrapper">
-            <!-- Main Content -->
-            <div class="main-content container">
-                <h2>Hello, {{ user.username }}!</h2>
-                <p>This is your course view.</p>
-            </div>
         </div>
-    {% endif %}
+        {% endfor %}
+        </div>
+    </div>
+
 
 {% endblock %}
