@@ -28,4 +28,15 @@ urlpatterns = [
     path('sudo/notification/send/', views.send_notification, name='send_notification'),
 #now you can touch
 
+    # standard_pages for non-admin users
+    path('calendar/', views.user_calendar, name='user_calendar'),
+
+    path('courses/', views.user_courses, name='user_courses'),
+
+    path('inbox/', views.user_inbox, name='user_inbox'),
+
+
+    path('profile/', views.user_profile, name='user_profile'),
+
+
 ]
