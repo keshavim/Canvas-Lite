@@ -2,6 +2,8 @@
 from django import forms
 from django.contrib.auth import get_user_model, authenticate, password_validation
 from django.core.exceptions import ValidationError
+from django.contrib.auth.forms import PasswordChangeForm
+
 
 from webapp.models import User
 
@@ -80,3 +82,4 @@ class UserRegistrationForm(forms.Form):
             email=self.cleaned_data.get('email', '')
         )
         return user
+
