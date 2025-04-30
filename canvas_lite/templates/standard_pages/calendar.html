@@ -11,36 +11,34 @@
 
 {% block content %}
 
-    {% if user.is_authenticated %}
-        <!-- Header Section -->
-        <header>
-            <h1>Calendar</h1>
-        </header>
-        <!-- Navigation Bar -->
-        <nav>
-            <ul>
-                <li><a href="/">Dashboard</a></li>
-                <li><a href="/profile/">Profile</a></li>
-                <li><a href="/courses/">Courses</a></li>
-                <li><a href="/calendar/">Calender</a></li>
-                <li><a href="/inbox/">Inbox</a></li>
-                <li>
-                    <form action="{% url 'logout' %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" >Log Out</button>
-                    </form>
+    <!-- Header Section -->
+    <header>
+        <h1>Calendar</h1>
+    </header>
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><a href="/">Dashboard</a></li>
+            <li><a href="/profile/">Profile</a></li>
+            <li><a href="/courses/">Courses</a></li>
+            <li><a href="/calendar/">Calender</a></li>
+            <li><a href="/inbox/">Inbox</a></li>
+            <li>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" >Log Out</button>
+                </form>
 
-                </li>
-            </ul>
-        </nav>
+            </li>
+        </ul>
+    </nav>
 
-        <div class="dashboard-wrapper">
-            <!-- Main Content -->
-            <div class="main-content container">
-                <h2>Hello, {{ user.username }}!</h2>
-                <p>This is your calendar.</p>
-            </div>
+    <div class="dashboard-wrapper">
+        <!-- Main Content -->
+        <div class="main-content container">
+            <h2>Hello, {{ user.username }}!</h2>
+            <p>This is your calendar.</p>
         </div>
-    {% endif %}
+    </div>
 
 {% endblock %}
