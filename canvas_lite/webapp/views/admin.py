@@ -34,12 +34,30 @@ def admin_home(request):
 
 
 def courses_list(request):
-    courses = Course.objects.all().prefetch_related('sections')
+    courses = Course.objects.prefetch_related('sections').all()
     return render(request, 'admin_pages/list_course.html', {'courses': courses})
 
+def sections_list(request,model_name, id):
+    model = None
+    if model_name == "user":
+        model = get_object_or_404(User, id=id)
+    elif model_name == "course":
+        model = get_object_or_404(Course, id=id)
+    else:
+        Http404("invalid model name")
+
+
+    sections = model.get_sections().all()
+    return render(request, 'admin_pages/list_sections.html', {
+        'model': model,
+        'sections': sections,
+        "model_name": model_name,
+    })
 
 def user_list(request):
-    users = User.objects.all()
+    users = User.objects.prefetch_related(
+        'sections_taught'
+    ).all()
     return render(request, 'admin_pages/list_user.html', {
         'users': users,
     })
