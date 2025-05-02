@@ -19,6 +19,8 @@ Admin can add and remove courses
 Admin can assign instructor to sections
 """
 class User(AbstractUser):
+    phone_number = models.CharField(max_length=15, blank=True, verbose_name='phone_number', null=True)
+    description = models.TextField(blank=True, null=True, verbose_name='description')
 
     group_name = models.CharField(
         max_length=1,
@@ -52,11 +54,12 @@ class User(AbstractUser):
         group = Group.objects.get(name=group_name)
         self.groups.add(group)
         
-    def get_assigned_sections(self):
+    def get_sections(self):
         """
         gets the sections this user teaches
         """
-        return self.sections_taught.all()
+        return self.sections_taught
+
     def get_assigned_section_id(self, section_id):
         """
         gets the sections this user teaches from the id given. return none if not found
@@ -86,6 +89,16 @@ class User(AbstractUser):
         """
         return self.sections_taught.filter(id=section_id).exists()
 
+    def get_schedules(self):
+        """
+        Gets all schedules from sections taught by this user.
+        Returns a list of schedule objects or an empty list if none exist.
+        """
+        return [
+            schedule
+            for section in self.get_assigned_sections()
+            for schedule in section.schedule.all()  # Or your related_name
+        ]
     def get_notifications(self):
         """
             Returns all notifications (UserNotification objects) for this user.

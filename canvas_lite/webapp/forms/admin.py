@@ -36,6 +36,13 @@ class SectionForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.course = kwargs.pop('course', None)  # Remove course from kwargs
         super().__init__(*args, **kwargs)  # Now passes clean kwargs
+
+        # Filter instructors excluding Admin group members
+        if 'instructor' in self.fields:
+            self.fields['instructor'].queryset = self.fields['instructor'].queryset.exclude(
+                groups__name='Admin'
+            )
+
         self.fields['schedule'].required = False  # Make entire JSON optional
 
     def save(self, commit=True):
@@ -65,4 +72,4 @@ class UserForm(forms.ModelForm):
         return user
     class Meta:
         model = User
-        fields = ['username', 'password', 'email', 'first_name', 'last_name', 'group_name', 'is_active' ]
+        fields = ['first_name', 'last_name', 'username', 'password', 'email', 'phone_number', 'group_name', 'is_active', "date_joined", "description" ]

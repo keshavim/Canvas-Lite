@@ -1,0 +1,28 @@
+{% extends "master.html" %}
+{% load static %}
+{% load site_tags %}
+
+{% block title %}Claim Available Sections{% endblock %}
+
+{% block content %}
+    <a href="{% url 'user_list' %}">Back to User Page</a>
+    <h1>Available Sections to Teach</h1>
+
+    {% for section in sections %}
+        <div class="section-card">
+            <h3>{{ section.name }}</h3>
+            <p>
+                Course: {{ section.course.name }}<br>
+                Type: {{ section.get_section_type_display }}<br>
+                Schedule: {{ section.schedule|format_schedule|default:"Not scheduled" }}
+            </p>
+            <form action="{% url 'claim_section' user_id section.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn-claim">Claim Section</button>
+            </form>
+            <hr>
+        </div>
+    {% empty %}
+        <p>No available sections to claim at this time.</p>
+    {% endfor %}
+{% endblock %}
