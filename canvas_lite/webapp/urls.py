@@ -16,6 +16,7 @@ urlpatterns = [
     path('sudo/user/', views.user_list, name='user_list'),
     path('sudo/<str:model_name>/<int:id>/section/', views.sections_list, name='sections_list'),
 
+
     path('sudo/create/<str:model_name>/', views.create_model, name='create_model'),
     path('sudo/create/section/<int:course_id>/', views.create_section, name='create_model_section'),
 
