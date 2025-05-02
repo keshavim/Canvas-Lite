@@ -15,13 +15,18 @@
     <a href="{% url 'admin_home' %}">home</a><br><br>
 
      {% if model_name == 'user' %}
-        Sections Taught by {{ model.username }}
+        Sections Taught by {{ model_name }}
          <a href="{% url 'user_list' %}">Back to Users</a>
+         <a href="{% url "claim_section_list" model.id%}"> Claim Section</a>
+
     {% elif model_name == 'course'%}
         Sections in Course: {{ model.name }}<br>
-            <a href="{% url 'courses_list' %}">Back to courses</a>
+         <a href="{% url 'courses_list' %}">Back to courses</a>
+         <a href="{% url "create_model_section" model.id%}"> create Section</a>
+
     {% endif %}
     <br><br>
+
 
     {% for section in sections %}
 
@@ -33,7 +38,9 @@
 
 
         {{ section.name }} ({{ section.get_section_type_display }})
-        <a href="{% url 'edit_model' 'section' section.id %}">edit </a>
+        <a href="{% url 'edit_model' 'section' section.id %}">edit</a>
+        <a href="{% url 'unclaim_section' model.id section.id %}">   unclaim</a>
+
 
 
         {% if section.schedule.items %}

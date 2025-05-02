@@ -16,8 +16,12 @@ urlpatterns = [
     path('sudo/user/', views.user_list, name='user_list'),
     path('sudo/<str:model_name>/<int:id>/section/', views.sections_list, name='sections_list'),
 
-    path('add/<str:model_name>/', views.add_model, name='add_model_generic'),
-    path('add/<str:model_name>/<int:course_id>/', views.add_model, name='add_model_section'),
+    path('sudo/create/<str:model_name>/', views.create_model, name='create_model'),
+    path('sudo/create/section/<int:course_id>/', views.create_section, name='create_model_section'),
+
+    path('sudo/<int:user_id>/claim-sections/', views.claim_section_list, name='claim_section_list'),
+    path('sudo/<int:user_id>/claim-section/<int:section_id>/', views.claim_section, name='claim_section'),
+    path('sudo/<int:user_id>/unclaim_claim-section/<int:section_id>/', views.unclaim_section, name='unclaim_section'),
 
     path('sudo/<str:model_name>/<int:model_id>/edit', views.edit_model, name='edit_model'),
 

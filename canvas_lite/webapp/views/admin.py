@@ -1,5 +1,5 @@
 from django.apps import apps
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, login_required
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -32,11 +32,12 @@ def admin_home(request):
     return render(request, "admin_pages/dashboard.html", {'models': model_list})
 
 
-
+@in_groups(["Admin"])
 def courses_list(request):
     courses = Course.objects.prefetch_related('sections').all()
     return render(request, 'admin_pages/list_course.html', {'courses': courses})
 
+@in_groups(["Admin"])
 def sections_list(request,model_name, id):
     model = None
     if model_name == "user":
@@ -54,6 +55,7 @@ def sections_list(request,model_name, id):
         "model_name": model_name,
     })
 
+@in_groups(["Admin"])
 def user_list(request):
     users = User.objects.prefetch_related(
         'sections_taught'
@@ -62,8 +64,58 @@ def user_list(request):
         'users': users,
     })
 
+"""
+claim views are used by the users view to easily add and remove sections from the user
+"""
+@in_groups(["Admin"])
+def claim_section_list(request, user_id):
+    sections = Section.objects.filter(instructor__isnull=True)
+    return render(request, 'admin_pages/claim_section_list.html', {
+        'sections': sections,
+        'user_id': user_id,
+    })
 
-def add_model(request, model_name, course_id=None):
+@in_groups(["Admin"])
+def claim_section(request,user_id, section_id):
+    section = get_object_or_404(Section, id=section_id)
+    model = User.objects.get(id=user_id)
+    if not section.instructor:  # Prevent claiming already assigned sections
+        section.instructor = model
+        section.save()
+    return redirect('claim_section_list', user_id)
+def unclaim_section(request,user_id, section_id):
+    section = get_object_or_404(Section, id=section_id)
+    section.instructor = None
+    section.save()
+    return redirect("sections_list", 'user', user_id)
+
+
+
+@in_groups(["Admin"])
+def create_section(request, course_id):
+    """Handle section creation specifically"""
+    course = get_object_or_404(Course, id=course_id)
+    form_kwargs = {'course': course}
+
+    if request.method == 'POST':
+        form = SectionForm(request.POST, **form_kwargs)
+        if form.is_valid():
+            form.save()
+            return redirect('courses_list')
+    else:
+        form = SectionForm(**form_kwargs)
+
+    context = {
+        'form': form,
+        'model_name': 'section',
+        'course': course,
+        'course_id': course_id,
+    }
+
+    return render(request, 'admin_pages/create_model.html', context)
+
+@in_groups(["Admin"])
+def create_model(request, model_name, course_id=None):
     # Configuration dictionaries
     model_config = {
         'course': {
@@ -72,16 +124,13 @@ def add_model(request, model_name, course_id=None):
             'extra_context': {}
         },
         'section': {
-            'form_class': SectionForm,
-            'success_url': 'courses_list',
-            'extra_context': lambda: {'course': get_object_or_404(Course, id=course_id)},
-            'form_kwargs': lambda: {'course': get_object_or_404(Course, id=course_id)}
+            'handler': lambda req, cid: create_section(req, cid),
         },
         'user': {
             'form_class': UserForm,
             'success_url': 'user_list',
             'extra_context': {},
-            'post_save': lambda form: form.save()  # Custom save for user if needed
+            'post_save': lambda form: form.save()
         }
     }
 
@@ -89,7 +138,13 @@ def add_model(request, model_name, course_id=None):
     if not config:
         raise Http404("Model not supported")
 
-    # Handle form kwargs
+    # Special handling for section using dedicated function
+    if model_name == 'section':
+        if not course_id:
+            raise Http404("Course ID required for sections")
+        return config['handler'](request, course_id)
+
+    # Original handling for other models
     form_kwargs = {}
     if 'form_kwargs' in config:
         form_kwargs = config['form_kwargs']()
@@ -116,13 +171,10 @@ def add_model(request, model_name, course_id=None):
         extra = config['extra_context']() if callable(config['extra_context']) else config['extra_context']
         context.update(extra)
 
-    template_name = 'admin_pages/add_model.html'
-
+    template_name = 'admin_pages/create_model.html'
     return render(request, template_name, context)
 
-
-
-
+@in_groups(["Admin"])
 def edit_model(request, model_name, model_id):
     # Model mapping dictionary
     model_classes = {
@@ -172,7 +224,6 @@ def edit_model(request, model_name, model_id):
     }
 
     return render(request, template_name, context)
-
 
 
 class UniversalDeleteView(DeleteView):
