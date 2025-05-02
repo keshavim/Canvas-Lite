@@ -74,7 +74,7 @@ class User(AbstractUser):
         """
         from . import Course
         return (Course.objects
-                .filter(sections__in=self.get_assigned_sections())
+                .filter(sections__in=self.get_sections())
                 .distinct())
 
     def is_in_course(self, course_id):
