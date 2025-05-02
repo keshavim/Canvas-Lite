@@ -38,7 +38,7 @@ def courses_list(request):
     return render(request, 'admin_pages/list_course.html', {'courses': courses})
 
 @in_groups(["Admin"])
-def sections_list(request,model_name, id):
+def sections_list(request, model_name, id):
     model = None
     if model_name == "user":
         model = get_object_or_404(User, id=id)
@@ -48,7 +48,7 @@ def sections_list(request,model_name, id):
         Http404("invalid model name")
 
 
-    sections = model.get_sections().all()
+    sections = model.get_sections()
     return render(request, 'admin_pages/list_sections.html', {
         'model': model,
         'sections': sections,
@@ -59,21 +59,91 @@ def sections_list(request,model_name, id):
 def user_list(request):
     users = User.objects.prefetch_related(
         'sections_taught'
-    ).all()
+    )
     return render(request, 'admin_pages/list_user.html', {
         'users': users,
     })
+
+
+
+
+
+"""
+helper functions ffor fitering sections by schedules
+
+I will probably move them somewhere else
+"""
+from datetime import time
+
+def parse_time(t):
+    """Helper to parse time string (e.g., '13:00') into a time object."""
+    if not t:
+        return None
+    if isinstance(t, time):
+        return t
+    return time.fromisoformat(t)
+
+def schedules_overlap(sch1, sch2):
+    """
+    sch1, sch2: dicts with keys 'days', 'start_time', 'end_time'
+    Returns True if they overlap.
+    """
+    # If any schedule is missing days or times, treat as non-overlapping
+    if not sch1.get('days') or not sch1.get('start_time') or not sch1.get('end_time'):
+        return False
+    if not sch2.get('days') or not sch2.get('start_time') or not sch2.get('end_time'):
+        return False
+
+    # Check if any days overlap
+    days1 = set(sch1['days'])
+    days2 = set(sch2['days'])
+    if not days1.intersection(days2):
+        return False
+
+    # Check if time ranges overlap
+    start1 = parse_time(sch1['start_time'])
+    end1 = parse_time(sch1['end_time'])
+    start2 = parse_time(sch2['start_time'])
+    end2 = parse_time(sch2['end_time'])
+
+    # Overlap if start1 < end2 and start2 < end1
+    return start1 < end2 and start2 < end1
+
+
+
+
+
+
+
 
 """
 claim views are used by the users view to easily add and remove sections from the user
 """
 @in_groups(["Admin"])
 def claim_section_list(request, user_id):
-    sections = Section.objects.filter(instructor__isnull=True)
+    target_user = get_object_or_404(User, id=user_id)
+    user_schedules = target_user.get_schedules()
+    available_sections = Section.objects.filter(instructor__isnull=True)
+
+    def is_eligible(section):
+        sch = section.schedule  # Assuming this is a dict/JSON
+        # If any key is missing or empty, always eligible
+        if not sch or not sch.get('days') or not sch.get('start_time') or not sch.get('end_time'):
+            return True
+        # Check for overlap with any of the user's schedules
+        for user_sch in user_schedules:
+            if schedules_overlap(sch, user_sch):
+                return False
+        return True
+
+    filtered_sections = [section for section in available_sections if is_eligible(section)]
+
     return render(request, 'admin_pages/claim_section_list.html', {
-        'sections': sections,
+        'sections': filtered_sections,
+        'target_user': target_user,
         'user_id': user_id,
     })
+
 
 @in_groups(["Admin"])
 def claim_section(request,user_id, section_id):
@@ -101,7 +171,7 @@ def create_section(request, course_id):
         form = SectionForm(request.POST, **form_kwargs)
         if form.is_valid():
             form.save()
-            return redirect('courses_list')
+            return redirect('sections_list', 'course', course_id)
     else:
         form = SectionForm(**form_kwargs)
 
