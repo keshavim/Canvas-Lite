@@ -16,7 +16,7 @@ class Course(models.Model):
         """
         returns all sections with a link to this course
         """
-        return self.sections
+        return self.sections.all()
     def get_section_with_id(self, section_id):
         """
         returns section with given id.

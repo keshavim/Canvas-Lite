@@ -39,7 +39,9 @@
 
         {{ section.name }} ({{ section.get_section_type_display }})
         <a href="{% url 'edit_model' 'section' section.id %}">edit</a>
-        <a href="{% url 'unclaim_section' model.id section.id %}">   unclaim</a>
+        {% if model_name == 'user' %}
+            <a href="{% url 'unclaim_section' model.id section.id %}">   unclaim</a>
+        {% endif %}
 
 
 

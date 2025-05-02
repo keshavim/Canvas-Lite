@@ -58,7 +58,7 @@ class User(AbstractUser):
         """
         gets the sections this user teaches
         """
-        return self.sections_taught
+        return self.sections_taught.all()
 
     def get_assigned_section_id(self, section_id):
         """
@@ -92,13 +92,9 @@ class User(AbstractUser):
     def get_schedules(self):
         """
         Gets all schedules from sections taught by this user.
-        Returns a list of schedule objects or an empty list if none exist.
+        Returns a list of schedule dicts or an empty list if none exist.
         """
-        return [
-            schedule
-            for section in self.get_assigned_sections()
-            for schedule in section.schedule.all()  # Or your related_name
-        ]
+        return [section.schedule for section in self.get_sections()]
     def get_notifications(self):
         """
             Returns all notifications (UserNotification objects) for this user.

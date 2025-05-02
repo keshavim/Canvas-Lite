@@ -23,10 +23,12 @@
         <button type="submit">Create {{ model_name|title }}</button>
     </form>
 
-    {% if model_name == 'course' or model_name == 'section' %}
+    {% if model_name == 'course' %}
         <a href="{% url 'courses_list' %}">Back to Courses</a>
     {% elif model_name == 'user' %}
         <a href="{% url 'user_list' %}">Back to Users</a>
+    {% elif model_name == 'section' %}
+        <a href="{% url 'sections_list' 'course' course_id%}">Back to Users</a>
     {% endif %}
 
 
