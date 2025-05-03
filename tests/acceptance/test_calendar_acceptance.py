@@ -1,5 +1,5 @@
 from django.test import TestCase, Client
-from django.contrib.auth.models import User
+from webapp.models import User
 
 class CalendarPageAcceptanceTest(TestCase):
     def setUp(self):
