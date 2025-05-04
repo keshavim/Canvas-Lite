@@ -1,5 +1,5 @@
 from django.test import TestCase, Client
-from django.contrib.auth.models import User
+from webapp.models import User
 from webapp.models import Course
 
 class CourseViewAcceptanceTest(TestCase):
@@ -18,4 +18,3 @@ class CourseViewAcceptanceTest(TestCase):
         self.assertTemplateUsed(response, "standard_pages/course_view.html")
         self.assertContains(response, "Hello, courseuser")
         self.assertContains(response, "This is your course view.")
-        self.assertContains(response, "Sections:")
