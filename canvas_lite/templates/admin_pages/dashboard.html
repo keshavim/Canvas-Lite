@@ -7,43 +7,30 @@
 {% endblock %}
 
 {% block includes %}
-        <link rel="stylesheet" type="text/css" href="{% static 'css/dashboard.css' %}">
-
+    <link rel="stylesheet" type="text/css" href="{% static 'css/admin_dashboard.css' %}">
 {% endblock %}
 
 {% block content %}
-    <header>
-        <h1>Admin Dashboard</h1>
-    </header>
-    <nav>
-        <ul>
-            <li><a href="{% url "admin_home" %}">Dashboard</a></li>
-            {% for model in models %}
-              <li>
-                <a href="{{ model.admin_url }}">{{ model.name }}</a>
-              </li>
-            {% endfor %}
-            <!-- Add more dashboard widgets here -->
-            <li>
-                <form action="{% url 'logout' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" >Log Out</button>
-                </form>
-            </li>
-        </ul>
-    </nav>
-    <!-- Dashboard Content with Notifications Sidebar -->
-    <div class="dashboard-wrapper">
-        <!-- Main Content -->
-        <div class="main-content container">
-            <h2>Hello, {{ user.username }}!</h2>
-            <p>Welcome back to your personalized dashboard.</p>
-        </div>
-        <!-- Notifications Sidebar -->
-        <aside class="notifications-sidebar">
-            <h3>Recent Notifications</h3>
-            <!-- Empty for now -->
-            <p>No new notifications.</p>
-        </aside>
+<header>
+    <h1>Admin Dashboard</h1>
+</header>
+<nav>
+    <ul>
+        <li><a href="{% url "admin_home" %}">Dashboard</a></li>
+        {% for model in models %}
+            <li><a href="{{ model.admin_url }}">{{ model.name }}</a></li>
+        {% endfor %}
+        <li>
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn">Log Out</button>
+            </form>
+        </li>
+    </ul>
+</nav>
+<div class="dashboard-wrapper container">
+    <div class="main-content">
+        <h2>Hello, {{ user.username }}!</h2>
     </div>
+</div>
 {% endblock %}

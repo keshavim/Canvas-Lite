@@ -2,39 +2,32 @@
 {% load static %}
 
 {% block title %}
-    Admin model users
-{% endblock %}
-
-{% block includes %}
-
+    Admin edit model
 {% endblock %}
 
 {% block content %}
+<header>
     <h1>
         Edit
         {% if model_name == 'course' %}{{ course.name }}
-            {% elif model_name == 'section' %}{{ section.name }}
-            {% elif model_name == 'user' %}{{ user.username }}
+        {% elif model_name == 'section' %}{{ section.name }}
+        {% elif model_name == 'user' %}{{ user.username }}
         {% endif %}
     </h1>
-
-    <form method="post">
+</header>
+<div class="container">
+    <form method="post" class="form-card">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Save Changes</button>
+        <button type="submit" class="btn">Save Changes</button>
+        <a href="{% url 'delete_model' model_name=model_name pk=object.id %}" class="btn btn-danger">Delete {{ model_name|title }}</a>
     </form>
-
-    <a href="{% url 'delete_model' model_name=model_name pk=object.id %}" class="btn btn-danger"
-       style="margin-left:10px;">
-        Delete {{ model_name|title }}
-    </a>
-
-    {% if model_name == 'course' or model_name == 'section' %}
-        <a href="{% url 'courses_list' %}">Back to Courses</a>
-    {% elif model_name == 'user' %}
-        <a href="{% url 'user_list' %}">Back to Users</a>
-    {% endif %}
-
-
-
+    <nav style="margin-top: 1rem;">
+        {% if model_name == 'course' or model_name == 'section' %}
+            <a href="{% url 'courses_list' %}" class="btn btn-secondary">Back to Courses</a>
+        {% elif model_name == 'user' %}
+            <a href="{% url 'user_list' %}" class="btn btn-secondary">Back to Users</a>
+        {% endif %}
+    </nav>
+</div>
 {% endblock %}
