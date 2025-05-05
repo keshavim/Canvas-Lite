@@ -9,18 +9,18 @@
     <title>{% block title %}{% endblock %}</title>
 
     <!-- for styles and js-->
-    <link rel="stylesheet" href="{% static 'css/base_theme.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base_dark.css' %}">
     {% block includes %}
     {% endblock %}
 
 </head>
 <body>
 
-<main>
-    {% block content %}
-    {% endblock %}
-</main>
 
+    {% block content %}
+
+
+    {% endblock %}
 
 <footer>
     &copy; 2025 Canvas-lite. All rights reserved.

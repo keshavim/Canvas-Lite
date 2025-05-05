@@ -4,33 +4,28 @@
 {% load site_tags %}
 
 {% block title %}
-    Admin model users
-{% endblock %}
-
-{% block includes %}
-
+    Admin model courses
 {% endblock %}
 
 {% block content %}
+<header>
     <h1>Courses</h1>
-    <a href="{% url 'admin_home' %}">home</a><br>
+</header>
+<nav>
+    <a href="{% url 'admin_home' %}" class="btn">Home</a>
     <a href="{% url 'create_model' model_name="course" %}" class="btn">Create New Course</a>
-
+</nav>
+<div class="container">
     {% for course in courses %}
-        <div class="course-card">
-        <!--course info-->
+        <div class="card course-card">
             <h2>
-                <a href="{% url 'edit_model' 'course' course.id %}">{{ course.name }}</a>
+                {{ course.name }}
+                <a href="{% url 'edit_model' 'course' course.id %}" class="btn">Edit</a>
+
             </h2>
-
-
             <p>{{ course.description }}</p>
-                <a href="{% url 'sections_list' 'course' course.id %}">View Sections</a>
-
+            <a href="{% url 'sections_list' 'course' course.id %}" class="btn">View Sections</a>
         </div>
-        <br>
     {% endfor %}
-
-
-
+</div>
 {% endblock %}
