@@ -1,0 +1,98 @@
+
+{% extends "master.html" %}
+{% load static %}
+
+{% block title %}
+    Admin model users
+{% endblock %}
+
+{% block include %}
+<link  rel="stylesheet" href="{% static 'css/inbox.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<nav>
+    <a href="{% url 'admin_home' %}" class="btn">Home</a>
+</nav>
+<div class="container">
+    <div class="row">
+        <!-- User List -->
+        <div class="col user-list-col">
+            <h2>Users</h2>
+            <form method="GET" action=".">
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search users..." name="search" value="{{ request.GET.search }}">
+                    <button class="btn" type="submit">Search</button>
+                </div>
+            </form>
+            <ul class="list user-list">
+                {% for user in user_page %}
+                <li class="list-item {% if selected_user and user.id == selected_user.id %}active{% endif %}">
+                    <a href="?user={{ user.id }}&user_page={{ user_page.number }}">{{ user.username }} ({{ user.get_group_name_display }})</a>
+                </li>
+                {% endfor %}
+            </ul>
+            <nav class="pagination-nav">
+                <ul class="pagination">
+                    {% if user_page.has_previous %}
+                        <li class="page-item"><a class="page-link" href="?user_page={{ user_page.previous_page_number }}&user={{ selected_user.id|default:'' }}">Previous</a></li>
+                    {% endif %}
+                    {% for num in user_page.paginator.page_range %}
+                        <li class="page-item {% if num == user_page.number %}active{% endif %}">
+                            <a class="page-link" href="?user_page={{ num }}&user={{ selected_user.id|default:'' }}">{{ num }}</a>
+                        </li>
+                    {% endfor %}
+                    {% if user_page.has_next %}
+                        <li class="page-item"><a class="page-link" href="?user_page={{ user_page.next_page_number }}&user={{ selected_user.id|default:'' }}">Next</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Sent Messages Content -->
+        <div class="col notifications-col">
+            {% if selected_user %}
+                <h2>Messages sent by {{ selected_user.username }}</h2>
+                <div class="list notifications-list mb-4">
+                    {% for notification in notification_page %}
+                    <div class="list-item notification-item">
+                        <div class="d-flex justify-between">
+                            <h5>{{ notification.subject }}</h5>
+                            <small>{{ notification.created_at|timesince }} ago</small>
+                        </div>
+                        <p>{{ notification.message }}</p>
+                        <small>
+                            Sent to:
+                            {% for recipient in notification.recipients.all %}
+                                {{ recipient.username }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </small>
+                    </div>
+                    {% empty %}
+                    <div class="alert alert-info">No messages found</div>
+                    {% endfor %}
+                </div>
+                <nav class="pagination-nav">
+                    <ul class="pagination">
+                        {% if notification_page.has_previous %}
+                            <li class="page-item"><a class="page-link" href="?notification_page={{ notification_page.previous_page_number }}&user={{ selected_user.id }}">Previous</a></li>
+                        {% endif %}
+                        {% for num in notification_page.paginator.page_range %}
+                            <li class="page-item {% if num == notification_page.number %}active{% endif %}">
+                                <a class="page-link" href="?notification_page={{ num }}&user={{ selected_user.id }}">{{ num }}</a>
+                            </li>
+                        {% endfor %}
+                        {% if notification_page.has_next %}
+                            <li class="page-item"><a class="page-link" href="?notification_page={{ notification_page.next_page_number }}&user={{ selected_user.id }}">Next</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% else %}
+                <div class="alert alert-info">Select a user to view sent messages.</div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+

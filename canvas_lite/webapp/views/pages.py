@@ -1,3 +1,6 @@
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.http import JsonResponse
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth.forms import PasswordChangeForm
@@ -27,12 +30,6 @@ def user_courses(request):
 def user_profile(request):
     if request.user.is_authenticated:
         return render(request, "standard_pages/user_profile.html")
-    else:
-        return redirect("/login")
-
-def user_inbox(request):
-    if request.user.is_authenticated:
-        return render(request, "standard_pages/inbox.html")
     else:
         return redirect("/login")
 
