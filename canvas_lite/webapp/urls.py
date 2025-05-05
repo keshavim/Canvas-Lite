@@ -28,21 +28,20 @@ urlpatterns = [
 
     path('sudo/<str:model_name>/delete/<int:pk>/', views.UniversalDeleteView.as_view(), name='delete_model'),
 
+    path('sudo/notification/', views.inbox, name='admin_inbox'),
+    path('sudo/all_messages/', views.messages_list, name='messages_list'),
 
-
-    path('sudo/notification/', views.user_notification_list, name='user_notification_list'),
-    path('sudo/notification/send/', views.send_notification, name='send_notification'),
-#now you can touch
+    path('send-notification/', views.send_notification, name='send_notification'),
+    path('inbox/', views.inbox, name='user_inbox'),
 
     # standard_pages for non-admin users
     path('calendar/', views.user_calendar, name='user_calendar'),
 
     path('courses/', views.user_courses, name='user_courses'),
 
-    path('inbox/', views.user_inbox, name='user_inbox'),
-
-
     path('profile/', views.user_profile, name='user_profile'),
+
+    path('inbox/', views.inbox, name='user_inbox'),
 
     path('change_password/', views.change_password, name='change_password'),
 

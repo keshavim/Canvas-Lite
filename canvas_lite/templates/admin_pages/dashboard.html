@@ -21,6 +21,12 @@
             <li><a href="{{ model.admin_url }}">{{ model.name }}</a></li>
         {% endfor %}
         <li>
+            <a href="{% url "admin_inbox" %}">Inbox</a>
+        </li>
+        <li>
+            <a href="{% url "messages_list" %}">Messages List</a>
+        </li>
+        <li>
             <form action="{% url 'logout' %}" method="post">
                 {% csrf_token %}
                 <button type="submit" class="btn">Log Out</button>

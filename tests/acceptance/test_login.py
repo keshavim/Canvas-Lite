@@ -3,7 +3,7 @@ from django.urls import reverse
 
 from webapp.models import User
 
-class LoginLogoutAcceptanceTest(TestCase):
+class LoginAcceptanceTest(TestCase):
     def setUp(self):
 
         self.credentials = {

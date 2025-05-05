@@ -1,5 +1,6 @@
 from django.apps import apps
 from django.contrib.auth.decorators import user_passes_test, login_required
+from django.core.paginator import Paginator
 from django.http import Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -13,7 +14,7 @@ def in_groups(group_names):
         return user.groups.filter(name__in=group_names).exists()
     return user_passes_test(check)
 
-EXCLUDED_MODELS = {"section", "usernotification"}
+EXCLUDED_MODELS = {"section", "usernotification", "notification"}
 @in_groups(["Admin"])
 def admin_home(request):
     """shows the admin home page"""
@@ -108,11 +109,6 @@ def schedules_overlap(sch1, sch2):
 
     # Overlap if start1 < end2 and start2 < end1
     return start1 < end2 and start2 < end1
-
-
-
-
-
 
 
 
@@ -316,3 +312,37 @@ class UniversalDeleteView(DeleteView):
             return reverse_lazy('user_list')
         return reverse_lazy('courses_list')
 
+
+
+
+
+@in_groups(['Admin'])
+def messages_list(request):
+    users = User.objects.all().order_by('username')
+    search = request.GET.get('search', '')
+    if search:
+        users = users.filter(username__icontains=search)
+    selected_user_id = request.GET.get('user')
+    sent_notifications = []
+
+    if selected_user_id:
+        selected_user = User.objects.get(id=selected_user_id)
+        # Only show messages SENT by this user
+        sent_notifications = Notification.objects.filter(sender=selected_user).order_by('-created_at')
+    else:
+        selected_user = None
+
+    # Pagination
+    user_paginator = Paginator(users, 20)
+    user_page_number = request.GET.get('user_page')
+    user_page = user_paginator.get_page(user_page_number)
+
+    notification_paginator = Paginator(sent_notifications, 10)
+    notification_page_number = request.GET.get('notification_page')
+    notification_page = notification_paginator.get_page(notification_page_number)
+
+    return render(request, 'admin_pages/message_list.html', {
+        'user_page': user_page,
+        'selected_user': selected_user,
+        'notification_page': notification_page,
+    })
