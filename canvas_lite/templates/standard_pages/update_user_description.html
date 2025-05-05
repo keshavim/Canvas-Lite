@@ -36,10 +36,12 @@
             </li>
         </ul>
     </nav>
-    <br><a href="/profile/">Back to Profile</a>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Update</button>
-    </form>
+    <div class="main-content container">
+        <br><a href="/profile/">Back to Profile</a>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Update</button>
+        </form>
+    </div>
 {% endblock %}
