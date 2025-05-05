@@ -2,18 +2,22 @@
 {% load static %}
 
 {% block title %}
-  Profile
+  Update Description
 {% endblock %}
 
 {% block includes %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/dashboard.css' %}">
+    <style>
+        label, input {
+            display: block;
+            margin-bottom: 10px;
+        }
+    </style>
 {% endblock %}
-
 {% block content %}
-
-    <!-- Header Section -->
+     <!-- Header Section -->
     <header>
-        <h1>Your Profile</h1>
+        <h1>Update Profile</h1>
     </header>
     <!-- Navigation Bar -->
     <nav>
@@ -32,24 +36,10 @@
             </li>
         </ul>
     </nav>
-
-    <div class="dashboard-wrapper">
-        <!-- Main Content -->
-        <div class="main-content container">
-            <h2>Hello, {{ user.username }}!</h2>
-            <p>This is your profile view.</p>
-        </div>
-    </div>
-    <div class="card">
-        <a href="/change_password/">Change Password</a>
-    </div>
-    <div class="card">
-        <h2>Your Information</h2>
-        <p>Username: {{ user.username }}</p>
-        <p>Email: {{ user.email }}</p>
-        <p>Phone Number: {{ user.phone_number }}</p>
-        <p>Information: {{ user.description }}</p>
-        <p><a href="/update_description/">Update Information</a></p>
-    </div>
-
+    <br><a href="/profile/">Back to Profile</a>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update</button>
+    </form>
 {% endblock %}
