@@ -6,6 +6,10 @@ from django.shortcuts import render, redirect
 from webapp.models import User, Notification
 
 
+def user_in_group(request, group_name):
+    user = request.user
+    return user.is_authenticated and user.groups.filter(name=group_name).exists()
+
 @login_required
 def inbox(request):
     # Only show messages where the current user is a recipient
@@ -18,8 +22,15 @@ def inbox(request):
 
     # For the send form
     users = User.objects.exclude(id=request.user.id).order_by('username')
+    
+    tempplate_name =  None
+    if user_in_group(request, 'Admin'):
+        tempplate_name = 'admin_pages/inbox.html'
+    else:
+        tempplate_name = 'standard_pages/inbox.html'
 
-    return render(request, 'standard_pages/inbox.html', {
+
+    return render(request, tempplate_name, {
         'notification_page': notification_page,
         'users': users,
     })
