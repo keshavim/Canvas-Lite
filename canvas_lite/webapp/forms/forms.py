@@ -83,3 +83,9 @@ class UserRegistrationForm(forms.Form):
         )
         return user
 
+class UpdateProfileForm(forms.ModelForm):
+    phone_number = forms.CharField(max_length=20, required=False, label="Updated Phone Number")
+    description = forms.CharField(widget=forms.Textarea(attrs={'rows': 5, 'cols': 40}) ,max_length=150, required=False, label="Updated Information")
+    class Meta:
+        model = User
+        fields = ['phone_number', 'description']

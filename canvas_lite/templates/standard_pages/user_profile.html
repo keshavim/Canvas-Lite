@@ -81,5 +81,13 @@
     <div class="card">
         <a href="/change_password/">Change Password</a>
     </div>
+    <div class="card">
+        <h2>Your Information</h2>
+        <p>Username: {{ user.username }}</p>
+        <p>Email: {{ user.email }}</p>
+        <p>Phone Number: {{ user.phone_number }}</p>
+        <p>Information: {{ user.description }}</p>
+        <p><a href="/update_description/">Update Information</a></p>
+    </div>
 
 {% endblock %}
