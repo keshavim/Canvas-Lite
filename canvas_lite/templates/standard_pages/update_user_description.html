@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-  Change Password
+  Update Description
 {% endblock %}
 
 {% block includes %}
@@ -14,12 +14,10 @@
         }
     </style>
 {% endblock %}
-
 {% block content %}
-
-    <!-- Header Section -->
+     <!-- Header Section -->
     <header>
-        <h1>Change Password</h1>
+        <h1>Update Profile</h1>
     </header>
     <!-- Navigation Bar -->
     <nav>
@@ -38,15 +36,12 @@
             </li>
         </ul>
     </nav>
-
-
     <div class="main-content container">
         <br><a href="/profile/">Back to Profile</a>
         <form method="post">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Change password</button>
+            <button type="submit">Update</button>
         </form>
     </div>
-
 {% endblock %}

@@ -8,6 +8,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
+from webapp.forms import UserForm, UpdateProfileForm
 from webapp.models import *
 
 # views for non-admin users
@@ -48,3 +49,17 @@ def change_password(request):
         return render(request, 'standard_pages/change_password.html', {'form': form})
     else:
         return redirect("/login")
+
+def update_user_profile(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = UpdateProfileForm(request.POST, instance=request.user)
+            if form.is_valid():
+                form.save()
+                return redirect("/profile") # Redirect to a success page
+        else:
+            form = UpdateProfileForm(instance=request.user)
+        return render(request, 'standard_pages/update_user_description.html', {'form': form})
+    else:
+        return redirect("/login")
+
