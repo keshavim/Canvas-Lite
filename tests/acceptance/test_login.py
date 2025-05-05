@@ -1,8 +1,9 @@
 from django.test import TestCase
+from django.urls import reverse
+
 from webapp.models import User
 
 class LoginLogoutAcceptanceTest(TestCase):
-    login_url = '/login/'
     def setUp(self):
 
         self.credentials = {
@@ -10,6 +11,7 @@ class LoginLogoutAcceptanceTest(TestCase):
             'password': 'keshab123'
         }
         User.objects.create_user(**self.credentials)
+        self.login_url = reverse("login")
 
 
     def test_login_success(self):

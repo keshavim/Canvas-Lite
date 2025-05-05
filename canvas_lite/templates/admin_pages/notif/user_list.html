@@ -7,53 +7,48 @@
 {% endblock %}
 
 {% block includes %}
-    <link rel="stylesheet" href="{% static 'css/base_theme.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/admin_notifications.css' %}">
 
 {% endblock %}
-
 {% block content %}
-
+<nav>
+    <a href="{% url 'admin_home' %}" class="btn">Home</a>
+</nav>
 <div class="container">
     <div class="row">
         <!-- User List -->
-        <div class="col-md-4">
+        <div class="col user-list-col">
             <h2>Users</h2>
             <form method="GET" action=".">
-                <div class="mb-3">
-                    <div class="input-group">
-                        <label>
-                            <input type="text" class="form-control" placeholder="Search users..." name="search">
-                        </label>
-                        <button class="btn btn-primary" type="submit">Search</button>
-                    </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Search users..." name="search">
+                    <button class="btn" type="submit">Search</button>
                 </div>
             </form>
-
-            <ul class="list-group">
+            <ul class="list user-list">
                 {% for user in user_page %}
-                <li class="list-group-item {% if selected_user and user.id == selected_user.id %}active{% endif %}">
-                    <a href="?user={{ user.id }}" class="text-decoration-none">
+                <li class="list-item {% if selected_user and user.id == selected_user.id %}active{% endif %}">
+                    <a href="?user={{ user.id }}">
                         {{ user.username }} ({{ user.get_group_name_display }})
-                        <span class="badge bg-danger float-end">
+                        {% if user.get_unread_notifications.count %}
+                        <span class="badge badge-danger float-end">
                             {{ user.get_unread_notifications.count }}
                         </span>
+                        {% endif %}
                     </a>
                 </li>
                 {% endfor %}
             </ul>
-
-            <nav aria-label="User pagination">
+            <nav class="pagination-nav">
                 <ul class="pagination">
                     {% if user_page.has_previous %}
                         <li class="page-item"><a class="page-link" href="?user_page={{ user_page.previous_page_number }}&user={{ selected_user.id|default:'' }}">Previous</a></li>
                     {% endif %}
-
                     {% for num in user_page.paginator.page_range %}
                         <li class="page-item {% if num == user_page.number %}active{% endif %}">
                             <a class="page-link" href="?user_page={{ num }}&user={{ selected_user.id|default:'' }}">{{ num }}</a>
                         </li>
                     {% endfor %}
-
                     {% if user_page.has_next %}
                         <li class="page-item"><a class="page-link" href="?user_page={{ user_page.next_page_number }}&user={{ selected_user.id|default:'' }}">Next</a></li>
                     {% endif %}
@@ -62,23 +57,22 @@
         </div>
 
         <!-- Notification Content -->
-        <div class="col-md-8">
+        <div class="col notifications-col">
             {% if selected_user %}
-                <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="d-flex justify-between align-center mb-3">
                     <h2>Notifications for {{ selected_user.username }}</h2>
-                    <span class="badge bg-{% if selected_user.get_unread_notifications.count %}danger{% else %}success{% endif %}">
+                    <span class="badge {% if selected_user.get_unread_notifications.count %}badge-danger{% else %}badge-success{% endif %}">
                         {{ selected_user.get_unread_notifications.count }} unread
                     </span>
                 </div>
-
-                <div class="list-group mb-4">
+                <div class="list notifications-list mb-4">
                     {% for user_notification in notification_page %}
-                    <div class="list-group-item {% if not user_notification.read %}list-group-item-warning{% endif %}">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mb-1">{{ user_notification.notification.subject }}</h5>
+                    <div class="list-item notification-item {% if not user_notification.read %}unread{% endif %}">
+                        <div class="d-flex justify-between">
+                            <h5>{{ user_notification.notification.subject }}</h5>
                             <small>{{ user_notification.notification.created_at|timesince }} ago</small>
                         </div>
-                        <p class="mb-1">{{ user_notification.notification.message }}</p>
+                        <p>{{ user_notification.notification.message }}</p>
                         <small>
                             From: {{ user_notification.notification.sender.username|default:"System" }}
                             {% if user_notification.read %}
@@ -92,19 +86,16 @@
                     <div class="alert alert-info">No notifications found</div>
                     {% endfor %}
                 </div>
-
-                <nav aria-label="Notification pagination">
+                <nav class="pagination-nav">
                     <ul class="pagination">
                         {% if notification_page.has_previous %}
                             <li class="page-item"><a class="page-link" href="?notification_page={{ notification_page.previous_page_number }}&user={{ selected_user.id }}">Previous</a></li>
                         {% endif %}
-
                         {% for num in notification_page.paginator.page_range %}
                             <li class="page-item {% if num == notification_page.number %}active{% endif %}">
                                 <a class="page-link" href="?notification_page={{ num }}&user={{ selected_user.id }}">{{ num }}</a>
                             </li>
                         {% endfor %}
-
                         {% if notification_page.has_next %}
                             <li class="page-item"><a class="page-link" href="?notification_page={{ notification_page.next_page_number }}&user={{ selected_user.id }}">Next</a></li>
                         {% endif %}
@@ -120,36 +111,29 @@
                 <div class="card-body">
                     <form method="POST" action="{% url 'send_notification' %}">
                         {% csrf_token %}
-
-                        <div class="mb-3">
-                            <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input" name="all_users">
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" name="all_users">
                                 Send to all users
                             </label>
                         </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Select Recipients:</label>
-                            <label>
-                                <select multiple class="form-select" name="recipients" {% if request.POST.all_users %}disabled{% endif %}>
-                                    {% for user in users %}
-                                    <option value="{{ user.id }}">{{ user.username }} ({{ user.get_group_name_display }})</option>
-                                    {% endfor %}
-                                </select>
-                            </label>
+                        <div class="form-group">
+                            <label>Select Recipients:</label>
+                            <select multiple name="recipients" {% if request.POST.all_users %}disabled{% endif %}>
+                                {% for user in users %}
+                                <option value="{{ user.id }}">{{ user.username }} ({{ user.get_group_name_display }})</option>
+                                {% endfor %}
+                            </select>
                         </div>
-
-                        <div class="mb-3">
-                            <label for="subject" class="form-label">Subject</label>
-                            <input type="text" class="form-control" id="subject" name="subject" required>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" required>
                         </div>
-
-                        <div class="mb-3">
-                            <label for="message" class="form-label">Message</label>
-                            <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="4" required></textarea>
                         </div>
-
-                        <button type="submit" class="btn btn-primary">Send Notification</button>
+                        <button type="submit" class="btn">Send Notification</button>
                     </form>
                 </div>
             </div>
@@ -158,10 +142,14 @@
 </div>
 
 <script>
-// Enable/disable recipient select based on "All Users" checkbox
-document.querySelector('[name="all_users"]').addEventListener('change', function() {
-    document.querySelector('[name="recipients"]').disabled = this.checked;
+document.addEventListener('DOMContentLoaded', function() {
+    var allUsersCheckbox = document.querySelector('[name="all_users"]');
+    var recipientsSelect = document.querySelector('[name="recipients"]');
+    if (allUsersCheckbox && recipientsSelect) {
+        allUsersCheckbox.addEventListener('change', function() {
+            recipientsSelect.disabled = this.checked;
+        });
+    }
 });
 </script>
-
 {% endblock %}

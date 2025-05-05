@@ -10,7 +10,7 @@ def in_groups(group_names):
     return user_passes_test(check)
 
 
-@in_groups('Admin')
+@in_groups(['Admin'])
 def user_notification_list(request):
     users = User.objects.all().order_by('username')
     selected_user_id = request.GET.get('user')
@@ -37,7 +37,7 @@ def user_notification_list(request):
         'notification_page': notification_page,
     })
 
-@in_groups('Admin')
+@in_groups(['Admin'])
 @require_http_methods(["POST"])
 def send_notification(request):
     recipient_ids = request.POST.getlist('recipients')

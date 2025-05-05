@@ -4,59 +4,44 @@
 {% load site_tags %}
 
 {% block title %}
-    Admin model users
-{% endblock %}
-
-{% block includes %}
-
+    Admin model section
 {% endblock %}
 
 {% block content %}
-    <a href="{% url 'admin_home' %}">home</a><br><br>
-
-     {% if model_name == 'user' %}
-        Sections Taught by {{ model_name }}
-         <a href="{% url 'user_list' %}">Back to Users</a>
-         <a href="{% url "claim_section_list" model.id%}"> Claim Section</a>
-
+<header>
+    <h1>Sections</h1>
+</header>
+<nav>
+    <a href="{% url 'admin_home' %}" class="btn">Home</a>
+    {% if model_name == 'user' %}
+        <a href="{% url 'user_list' %}" class="btn">Back to Users</a>
+        <a href="{% url "claim_section_list" model.id%}" class="btn">Claim Section</a>
     {% elif model_name == 'course'%}
-        Sections in Course: {{ model.name }}<br>
-         <a href="{% url 'courses_list' %}">Back to courses</a>
-         <a href="{% url "create_model_section" model.id%}"> create Section</a>
-
+        <a href="{% url 'courses_list' %}" class="btn">Back to Courses</a>
+        <a href="{% url "create_model_section" model.id%}" class="btn">Create Section</a>
     {% endif %}
-    <br><br>
-
-
+</nav>
+<div class="container">
     {% for section in sections %}
-
-        {% if model_name == 'user' %}
-            <strong>{{ section.course.name }}</strong> -
-        {% elif model_name == 'course'%}
-            <strong>{{ section.instructor.username|default:"TBA" }}</strong> -
-        {% endif %}
-
-
-        {{ section.name }} ({{ section.get_section_type_display }})
-        <a href="{% url 'edit_model' 'section' section.id %}">edit</a>
-        {% if model_name == 'user' %}
-            <a href="{% url 'unclaim_section' model.id section.id %}">   unclaim</a>
-        {% endif %}
-
-
-
-        {% if section.schedule.items %}
-            <div class="schedule">
-                    schedule: {{ section.schedule|format_schedule }}
-            </div>
-        {% else %}
-            No schedule data
-        {% endif %}
-        <br>
-
+        <div class="card section-card">
+            {% if model_name == 'user' %}
+                <strong>{{ section.course.name }}</strong> -
+            {% elif model_name == 'course'%}
+                <strong>{{ section.instructor.username|default:"TBA" }}</strong> -
+            {% endif %}
+            {{ section.name }} ({{ section.get_section_type_display }})
+            <a href="{% url 'edit_model' 'section' section.id %}" class="btn">Edit</a>
+            {% if model_name == 'user' %}
+                <a href="{% url 'unclaim_section' model.id section.id %}" class="btn">Unclaim</a>
+            {% endif %}
+            {% if section.schedule.items %}
+                <div class="schedule">Schedule: {{ section.schedule|format_schedule }}</div>
+            {% else %}
+                <div class="schedule">No schedule data</div>
+            {% endif %}
+        </div>
     {% empty %}
-        No sections assigned
+        <p>No sections assigned</p>
     {% endfor %}
-
-
+</div>
 {% endblock %}

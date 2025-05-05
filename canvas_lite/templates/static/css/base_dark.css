@@ -1,0 +1,156 @@
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #2f343a;    /* Lighter gray */
+    color: #e1e4e8;         /* Soft off-white */
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background: #3c4148;    /* Medium gray */
+    color: #e1e4e8;
+    padding: 1.2rem 2rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2rem;
+    letter-spacing: 1px;
+}
+
+nav {
+    background: #3a3f46;    /* Medium gray */
+    padding: 0.7rem 2rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    border-bottom: 1px solid #4e545c; /* Softer border */
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 1rem;
+}
+
+nav a,
+nav .btn,
+nav button {
+    text-decoration: none;
+    color: #d1d5db;         /* Lighter gray text */
+    background: #4e545c;    /* Slightly lighter gray */
+    padding: 0.5rem 1.2rem;
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s;
+    font-weight: 500;
+    border: none;
+}
+
+nav a:hover,
+nav .btn:hover,
+nav button:hover {
+    background: #5f656e;    /* Hover medium gray */
+    color: #fff;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.card {
+    background: #3c4148;    /* Medium gray */
+    border: 1px solid #4e545c;
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.18);
+}
+
+.list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #4e545c;
+}
+
+.list li:last-child {
+    border-bottom: none;
+}
+
+/* Improve input/button contrast */
+input, select, textarea {
+    background: #3a3f46;    /* Medium gray */
+    color: #e1e4e8;
+    border: 1px solid #4e545c;
+    border-radius: 4px;
+    padding: 0.4rem;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #7a8ca8;  /* Muted blue-gray for focus */
+}
+
+.btn,
+button.btn {
+    display: inline-block;
+    background: #5a6b8a;    /* Muted blue-gray */
+    color: #e1e4e8 !important;
+    border: none;
+    padding: 0.45rem 1.1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 1rem;
+    margin-right: 0.5rem;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.btn:hover,
+button.btn:hover {
+    background: #7a8ca8;    /* Lighter muted blue-gray */
+}
+
+.btn-danger, button.btn-danger {
+    background: #b94e4e;    /* Softer red */
+    color: #fff !important;
+}
+.btn-danger:hover, button.btn-danger:hover {
+    background: #a71d2a;
+}
+
+.btn-secondary, button.btn-secondary {
+    background: #848b94;    /* Softer gray */
+    color: #fff !important;
+}
+.btn-secondary:hover, button.btn-secondary:hover {
+    background: #5f656e;
+}
+
+.btn-claim, button.btn-claim {
+    background: #5a8a6b;    /* Softer green */
+    color: #fff !important;
+}
+.btn-claim:hover, button.btn-claim:hover {
+    background: #417a5a;
+}
+
+/* Optional: style forms for better appearance */
+.form-card {
+    background: inherit;
+    border: none;
+    padding: 0;
+    margin-bottom: 1rem;
+}
