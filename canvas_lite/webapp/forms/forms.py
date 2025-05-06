@@ -1,11 +1,11 @@
 # forms.py
 from django import forms
 from django.contrib.auth import get_user_model, authenticate, password_validation
-from django.core.exceptions import ValidationError
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
+from django.shortcuts import get_object_or_404, redirect
 
-
-from webapp.models import User
+from webapp.models import User, UserNotification
 
 """
 form for athenticating the user
@@ -47,41 +47,6 @@ class UserAuthenticationForm(forms.Form):
     def get_user(self):
         return self.user
 
-"""
-creates a user with the information given
-validates username and password
-"""
-class UserRegistrationForm(forms.Form):
-    first_name = forms.CharField(max_length=30, required=True, label="First Name")
-    last_name = forms.CharField(max_length=30, required=True, label="Last Name")
-    username = forms.CharField(max_length=150, required=True, label="Username")
-    password = forms.CharField(widget=forms.PasswordInput, required=True, label="Password")
-    email = forms.EmailField(required=False, label="Email")
-
-    def clean_username(self):
-        username = self.cleaned_data['username']
-        if User.objects.filter(username=username).exists():
-            raise forms.ValidationError("This username is already taken.")
-        return username
-
-    def clean_password(self):
-        password = self.cleaned_data.get('password')
-        try:
-            password_validation.validate_password(password)
-        except ValidationError as e:
-            raise forms.ValidationError(e.messages)
-        return password
-
-    def create_user(self):
-        # Create the user instance and save it to the database
-        user = User.objects.create_user(
-            username=self.cleaned_data['username'],
-            password=self.cleaned_data['password'],
-            first_name=self.cleaned_data['first_name'],
-            last_name=self.cleaned_data['last_name'],
-            email=self.cleaned_data.get('email', '')
-        )
-        return user
 
 class UpdateProfileForm(forms.ModelForm):
     phone_number = forms.CharField(max_length=20, required=False, label="Updated Phone Number")
@@ -89,3 +54,36 @@ class UpdateProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['phone_number', 'description']
+
+class SendMessageForm(forms.Form):
+    recipients = forms.ModelMultipleChoiceField(
+        queryset=User.objects.all(),
+        widget=forms.SelectMultiple(attrs={'class': 'form-control'}),
+        required=True,
+        label= 'Recipients',
+        help_text= 'Hold Ctrl (Windows) or Cmd (Mac) to select multiple users.',
+    )
+    subject = forms.CharField(
+        max_length=100,
+        widget=forms.TextInput(attrs={'class': 'form-control'})
+    )
+    message = forms.CharField(
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+        required=True
+    )
+
+    all_users = forms.BooleanField(
+        required=False,
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        label="Send to all users"
+        )
+
+@login_required
+def toggle_notification_read(request, pk):
+    notification = get_object_or_404(UserNotification, pk=pk, user=request.user)
+    if notification.read:
+        notification.mark_as_unread()
+    else:
+        notification.mark_as_read()
+    # Redirect back to the page you came from or a default page
+    return redirect(request.META.get('HTTP_REFERER', 'notifications:list'))

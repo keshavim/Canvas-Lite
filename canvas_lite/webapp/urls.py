@@ -31,8 +31,9 @@ urlpatterns = [
     path('sudo/notification/', views.inbox, name='admin_inbox'),
     path('sudo/all_messages/', views.messages_list, name='messages_list'),
 
-    path('send-notification/', views.send_notification, name='send_notification'),
+    # path('send-notification/', views.send_notification, name='send_notification'),
     path('inbox/', views.inbox, name='user_inbox'),
+    path('inbox/<int:nid>/toggle/', views.toggle_notification_read, name='toggle_notification_read'),
 
     # standard_pages for non-admin users
     path('calendar/', views.user_calendar, name='user_calendar'),
