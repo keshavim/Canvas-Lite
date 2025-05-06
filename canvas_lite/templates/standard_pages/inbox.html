@@ -1,4 +1,4 @@
-{% extends "master.html" %}
+{% extends "master_admin.html" %}
 {% load static %}
 
 {% block title %}
@@ -13,7 +13,11 @@
 
 {% block content %}
 <nav>
-    <a href="{% url 'home' %}" class="btn">Home</a>
+    {% if group_name == 'Admin' %}
+        <a href="{% url 'admin_home' %}" class="btn">Home</a>
+    {% else %}
+        <a href="{% url 'home' %}" class="btn">Home</a>
+    {% endif %}
     <button class="btn" id="open-send-modal">Send Message</button>
 </nav>
 <div class="container">

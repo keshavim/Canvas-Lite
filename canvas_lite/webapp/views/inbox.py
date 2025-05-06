@@ -23,16 +23,12 @@ def inbox(request):
     # For the send form
     users = User.objects.exclude(id=request.user.id).order_by('username')
     
-    tempplate_name =  None
-    if user_in_group(request, 'Admin'):
-        tempplate_name = 'admin_pages/inbox.html'
-    else:
-        tempplate_name = 'standard_pages/inbox.html'
+    group_name =  request.user.group_name
 
-
-    return render(request, tempplate_name, {
+    return render(request, 'standard_pages/inbox.html', {
         'notification_page': notification_page,
         'users': users,
+        'group_name': group_name,
     })
 
 @login_required
