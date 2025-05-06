@@ -7,12 +7,6 @@ from webapp.models import *
 from webapp.widgets import ScheduleWidget
 
 
-class AdminUserEditForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ['first_name', 'last_name', 'email']
-
-
 # forms.py
 class CourseForm(forms.ModelForm):
     class Meta:

@@ -21,8 +21,13 @@
     <button class="btn" id="open-send-modal">Send Message</button>
 </nav>
 <div class="container">
-    <!-- Inbox List -->
-    <h2>Inbox</h2>
+    <!-- Inbox Tabs -->
+    <div class="mb-3">
+        <a href="?box=received" class="btn btn-outline-primary {% if box == 'received' %}active{% endif %}">Received</a>
+        <a href="?box=sent" class="btn btn-outline-primary {% if box == 'sent' %}active{% endif %}">Sent</a>
+    </div>
+
+    <h2>{% if box == 'sent' %}Sent{% else %}Inbox{% endif %}</h2>
     <div class="list notifications-list mb-4">
         {% for user_notification in notification_page %}
         <div class="list-item notification-item {% if not user_notification.read %}unread{% endif %}">
@@ -32,12 +37,28 @@
             </div>
             <p>{{ user_notification.notification.message }}</p>
             <small>
-                From: {{ user_notification.notification.sender.username|default:"System" }}
-                {% if user_notification.read %}
-                    <span class="text-muted">Read {{ user_notification.read_at|timesince }} ago</span>
+                {% if box == 'sent' %}
+                    To:
+                    {% for recipient in user_notification.notification.recipients.all %}
+                        {{ recipient.username }}{% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+
                 {% else %}
-                    <span class="text-danger">Unread</span>
+                    From: {{ user_notification.notification.sender.username|default:"System" }}
+
+                    <form method="post" action="{% url 'toggle_notification_read' user_notification.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        {% if not user_notification.read %}
+                          <button type="submit" class="btn btn-danger">Unread</button>
+                        {% else %}
+                            <span class="text-muted">Read {{ user_notification.read_at|timesince }} ago</span>
+                            <button type="submit" class="btn">Read</button>
+                        {% endif %}
+                    </form>
+
                 {% endif %}
+
+
             </small>
         </div>
         {% empty %}
@@ -45,64 +66,45 @@
         {% endfor %}
     </div>
 
-    <!-- Pagination -->
+    <!-- Pagination  -->
     <nav class="pagination-nav">
         <ul class="pagination">
             {% if notification_page.has_previous %}
-                <li class="page-item"><a class="page-link" href="?page={{ notification_page.previous_page_number }}">Previous</a></li>
+                <li class="page-item"><a class="page-link" href="?box={{ box }}&page={{ notification_page.previous_page_number }}">Previous</a></li>
             {% endif %}
             {% for num in notification_page.paginator.page_range %}
                 <li class="page-item {% if num == notification_page.number %}active{% endif %}">
-                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                    <a class="page-link" href="?box={{ box }}&page={{ num }}">{{ num }}</a>
                 </li>
             {% endfor %}
             {% if notification_page.has_next %}
-                <li class="page-item"><a class="page-link" href="?page={{ notification_page.next_page_number }}">Next</a></li>
+                <li class="page-item"><a class="page-link" href="?box={{ box }}&page={{ notification_page.next_page_number }}">Next</a></li>
             {% endif %}
         </ul>
     </nav>
 </div>
 
-<!-- Send Message Modal -->
-<div id="send-modal" class="modal">
+
+<<!-- Floating Send Message Modal -->
+<div id="send-modal" class="modal" tabindex="-1">
     <div class="modal-content">
-        <span class="close">&times;</span>
+        <span class="close" id="close-send-modal" title="Close">&times;</span>
         <div class="card">
             <div class="card-header">
-                <h3>New Message</h3>
+                <h3>Compose</h3>
             </div>
             <div class="card-body">
-                <form id="send-form" method="POST" action="{% url 'send_notification' %}">
+                <form id="send-form" method="POST">
                     {% csrf_token %}
-                    <div class="form-group">
-                        <label>
-                            <input type="checkbox" name="all_users" id="all-users-checkbox">
-                            Send to all users
-                        </label>
-                    </div>
-                    <div class="form-group">
-                        <label for="recipients-select">Select Recipients:</label>
-                        <select multiple name="recipients" id="recipients-select">
-                            {% for user in users %}
-                            <option value="{{ user.id }}">{{ user.username }} ({{ user.get_group_name_display }})</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="subject">Subject</label>
-                        <input type="text" id="subject" name="subject" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message" name="message" rows="4" required></textarea>
-                    </div>
-                    <button type="submit" class="btn">Send</button>
-                    <button type="button" class="btn btn-secondary" id="cancel-send">Cancel</button>
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-primary">Send</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+
 
 {% endblock %}
 
