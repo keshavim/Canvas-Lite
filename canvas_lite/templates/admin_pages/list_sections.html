@@ -34,7 +34,7 @@
             {% if model_name == 'user' %}
                 <a href="{% url 'unclaim_section' model.id section.id %}" class="btn">Unclaim</a>
             {% endif %}
-            {% if section.schedule.items %}
+            {% if section.schedule %}
                 <div class="schedule">Schedule: {{ section.schedule|format_schedule }}</div>
             {% else %}
                 <div class="schedule">No schedule data</div>

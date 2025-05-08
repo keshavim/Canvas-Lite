@@ -1,61 +1,23 @@
+/* ========== Base Layout & Typography ========== */
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
-    background: #2f343a;    /* Lighter gray */
-    color: #e1e4e8;         /* Soft off-white */
+    background: #2f343a;
+    color: #e1e4e8;
     margin: 0;
     padding: 0;
 }
 
 header {
-    background: #3c4148;    /* Medium gray */
+    background: #3c4148;
     color: #e1e4e8;
     padding: 1.2rem 2rem;
     margin-bottom: 1rem;
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
 }
-
 header h1 {
     margin: 0;
     font-size: 2rem;
     letter-spacing: 1px;
-}
-
-nav {
-    background: #3a3f46;    /* Medium gray */
-    padding: 0.7rem 2rem;
-    margin-bottom: 1.5rem;
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    border-bottom: 1px solid #4e545c; /* Softer border */
-}
-
-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    gap: 1rem;
-}
-
-nav a,
-nav .btn,
-nav button {
-    text-decoration: none;
-    color: #d1d5db;         /* Lighter gray text */
-    background: #4e545c;    /* Slightly lighter gray */
-    padding: 0.5rem 1.2rem;
-    border-radius: 4px;
-    transition: background 0.2s, color 0.2s;
-    font-weight: 500;
-    border: none;
-}
-
-nav a:hover,
-nav .btn:hover,
-nav button:hover {
-    background: #5f656e;    /* Hover medium gray */
-    color: #fff;
 }
 
 .container {
@@ -64,48 +26,154 @@ nav button:hover {
     padding: 1rem;
 }
 
+/* ========== Navigation ========== */
+nav {
+    background: #3a3f46;
+    padding: 0.7rem 2rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    border-bottom: 1px solid #4e545c;
+}
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 1rem;
+}
+nav a,
+nav .btn,
+nav button {
+    text-decoration: none;
+    color: #d1d5db;
+    background: #4e545c;
+    padding: 0.5rem 1.2rem;
+    border-radius: 4px;
+    transition: background 0.2s, color 0.2s;
+    font-weight: 500;
+    border: none;
+}
+nav a:hover,
+nav .btn:hover,
+nav button:hover {
+    background: #5f656e;
+    color: #fff;
+}
+
+/* ========== Cards ========== */
 .card {
-    background: #3c4148;    /* Medium gray */
+    background: #3c4148;
     border: 1px solid #4e545c;
     border-radius: 6px;
     padding: 1rem;
     margin-bottom: 1.2rem;
     box-shadow: 0 1px 4px rgba(0,0,0,0.18);
 }
+.card-header {
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 0.5em;
+    margin-bottom: 0.5em;
+    background: inherit;
+}
+.card-body {
+    padding: 0.5em 0 0 0;
+}
+.form-card {
+    background: inherit;
+    border: none;
+    padding: 0;
+    margin-bottom: 1rem;
+}
 
-.list {
+/* ========== Lists ========== */
+.list,
+.notifications-list,
+.list.user-list {
     list-style: none;
     padding: 0;
-    margin: 0;
+    margin: 0 0 1rem 0;
 }
-
-.list li {
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #4e545c;
+.list li,
+.list-item {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #dee2e6;
+    background: inherit;
+    transition: background 0.15s;
 }
-
-.list li:last-child {
+.list li:last-child,
+.list-item:last-child {
     border-bottom: none;
 }
+.list-item.active,
+.list-item.unread {
+    background: #e9ecef;
+    font-weight: bold;
+}
 
-/* Improve input/button contrast */
-input, select, textarea {
-    background: #3a3f46;    /* Medium gray */
-    color: #e1e4e8;
-    border: 1px solid #4e545c;
+/* ========== Badges ========== */
+.badge {
+    display: inline-block;
+    padding: 0.2em 0.6em;
+    font-size: 0.85em;
+    border-radius: 0.5em;
+    font-weight: 600;
+    vertical-align: middle;
+}
+.badge-danger {
+    background: #dc3545;
+    color: #fff;
+}
+.badge-success {
+    background: #28a745;
+    color: #fff;
+}
+
+/* ========== Alerts ========== */
+.alert {
+    padding: 1em;
     border-radius: 4px;
-    padding: 0.4rem;
+    margin: 1em 0;
+    font-size: 1em;
+}
+.alert-info {
+    background: #e9f7fe;
+    color: #0275d8;
 }
 
-input:focus, select:focus, textarea:focus {
-    outline: none;
-    border-color: #7a8ca8;  /* Muted blue-gray for focus */
+/* ========== Pagination ========== */
+.pagination {
+    display: flex;
+    gap: 0.25em;
+    list-style: none;
+    padding: 0;
+    margin: 1em 0;
+}
+.page-item.active .page-link {
+    font-weight: bold;
+    background: #007bff;
+    color: #fff !important;
+    border-radius: 4px;
+}
+.page-link {
+    display: block;
+    padding: 0.4em 0.9em;
+    text-decoration: none;
+    color: inherit;
+    background: #f8f9fa;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+.page-link:hover {
+    background: #e2e6ea;
 }
 
+/* ========== Buttons ========== */
 .btn,
 button.btn {
     display: inline-block;
-    background: #5a6b8a;    /* Muted blue-gray */
+    background: #5a6b8a;
     color: #e1e4e8 !important;
     border: none;
     padding: 0.45rem 1.1rem;
@@ -117,40 +185,182 @@ button.btn {
     font-weight: 500;
     transition: background 0.2s;
 }
-
 .btn:hover,
 button.btn:hover {
-    background: #7a8ca8;    /* Lighter muted blue-gray */
+    background: #7a8ca8;
 }
-
 .btn-danger, button.btn-danger {
-    background: #b94e4e;    /* Softer red */
+    background: #b94e4e;
     color: #fff !important;
 }
 .btn-danger:hover, button.btn-danger:hover {
     background: #a71d2a;
 }
-
 .btn-secondary, button.btn-secondary {
-    background: #848b94;    /* Softer gray */
+    background: #848b94;
     color: #fff !important;
 }
 .btn-secondary:hover, button.btn-secondary:hover {
     background: #5f656e;
 }
-
 .btn-claim, button.btn-claim {
-    background: #5a8a6b;    /* Softer green */
+    background: #5a8a6b;
     color: #fff !important;
 }
 .btn-claim:hover, button.btn-claim:hover {
     background: #417a5a;
 }
 
-/* Optional: style forms for better appearance */
-.form-card {
-    background: inherit;
-    border: none;
-    padding: 0;
-    margin-bottom: 1rem;
+/* ========== Forms & Inputs ========== */
+input, select, textarea,
+input[type="text"], textarea {
+    background: #3a3f46;
+    color: #e1e4e8;
+    border: 1px solid #4e545c;
+    border-radius: 4px;
+    padding: 0.4rem;
+    width: 100%;
+    font-size: 1rem;
+    margin: 10px 0 18px 0;
+    transition: border 0.2s;
 }
+input:focus, select:focus, textarea:focus,
+input[type="text"]:focus, textarea:focus {
+    outline: none;
+    border-color: #7a8ca8;
+}
+/* Inputs and selects full width */
+.form-group input[type="text"],
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    margin-top: 0.25rem;
+}
+/* Make the checkbox group a flex row */
+.checkbox-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+}
+
+/* Make each label a flex row-reverse to swap order */
+.checkbox-row label {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0;
+}
+
+/* Remove default margin from checkbox inputs */
+.checkbox-row input[type="checkbox"] {
+    margin: 0;
+}
+
+
+/* ========== Modal ========== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.45);
+    overflow-y: auto;
+    align-items: center;
+    justify-content: center;
+}
+.modal-content {
+    background: #fff;
+    margin: 5% auto;
+    padding: 32px 24px 24px 24px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    width: 90%;
+    max-width: 480px;
+    position: relative;
+    animation: modal-in 0.2s cubic-bezier(.4,2,.6,1) 1;
+}
+@keyframes modal-in {
+    0% { transform: scale(0.97) translateY(40px); opacity: 0;}
+    100% { transform: scale(1) translateY(0); opacity: 1;}
+}
+.close {
+    color: #888;
+    position: absolute;
+    right: 20px; top: 18px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.2s;
+    line-height: 1;
+}
+.close:hover,
+.close:focus {
+    color: #e53935;
+    text-decoration: none;
+}
+
+/* ========== MultiSelect Styling ========== */
+select[multiple] {
+    width: 100%;
+    height: 130px;
+    padding: 8px;
+    margin: 12px 0 18px 0;
+    border: 1.5px solid #b0bec5;
+    border-radius: 6px;
+    background: #fff; /* White background */
+    font-size: 1rem;
+    color: #000;      /* Black text */
+    transition: border 0.2s;
+}
+
+/* All options: black text, white background */
+select[multiple] option {
+    background: #fff; /* White background */
+    color: #000;      /* Black text */
+}
+
+/* Selected options: custom background and text color */
+select[multiple] option:checked {
+    background-color: #c8e6c9 !important; /* Light green */
+    color: #256029 !important;            /* Dark green text */
+    font-weight: bold;
+}
+
+select[multiple]:focus {
+    border-color: #1976d2;
+    outline: none;
+}
+
+.selected-list{
+    background: #c8e6c9;
+    color: #256029;
+    padding: 3px 8px;
+    margin: 2px;
+    border-radius: 4px;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 0.95em;
+}
+
+
+/* ========== Layout Utilities ========== */
+.row {
+    display: flex;
+    gap: 2rem;
+}
+.col {
+    flex: 1;
+    min-width: 240px;
+}
+.float-end { float: right; }
+.mt-4 { margin-top: 2rem; }
+.mb-3 { margin-bottom: 1rem; }
+.mb-4 { margin-bottom: 2rem; }
+.d-flex { display: flex; }
+.justify-between { justify-content: space-between; }
+.align-center { align-items: center; }
+.text-muted { color: #6c757d; }
+.text-danger { color: #dc3545; }
