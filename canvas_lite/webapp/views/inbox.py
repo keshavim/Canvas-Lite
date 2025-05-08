@@ -41,7 +41,7 @@ def inbox(request):
 
     #send part
     if request.method == 'POST':
-        form = SendMessageForm(request.POST)
+        form = SendMessageForm(request.POST, user=request.user)
         if form.is_valid():
             all_users = form.cleaned_data['all_users']
             subject = form.cleaned_data['subject']
@@ -61,7 +61,7 @@ def inbox(request):
                 return redirect('user_inbox')
     else:
         # Initial form for GET requests
-        form = SendMessageForm()
+        form = SendMessageForm(user=request.user)
 
     return render(request, 'standard_pages/inbox.html', {
         'form': form,
