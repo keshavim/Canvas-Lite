@@ -13,19 +13,6 @@
     flex: 2;
 }
 
-/* Form and input styling */
-.form-group {
-    margin-bottom: 1rem;
-    display: flex;
-    flex-direction: column;
-}
-.form-group input[type="text"],
-.form-group textarea,
-.form-group select {
-    width: 100%;
-    margin-top: 0.25rem;
-}
-
 /* List styling */
 .list.user-list, .notifications-list {
     padding: 0;

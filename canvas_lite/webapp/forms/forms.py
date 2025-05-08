@@ -58,10 +58,9 @@ class UpdateProfileForm(forms.ModelForm):
 class SendMessageForm(forms.Form):
     recipients = forms.ModelMultipleChoiceField(
         queryset=User.objects.all(),
-        widget=forms.SelectMultiple(attrs={'class': 'form-control'}),
+        widget=forms.SelectMultiple(attrs={'class': 'form-control', 'id': 'staySelected'}),
         required=True,
         label= 'Recipients',
-        help_text= 'Hold Ctrl (Windows) or Cmd (Mac) to select multiple users.',
     )
     subject = forms.CharField(
         max_length=100,
@@ -74,9 +73,18 @@ class SendMessageForm(forms.Form):
 
     all_users = forms.BooleanField(
         required=False,
-        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input', 'id': 'all-users-checkbox'}),
         label="Send to all users"
         )
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        #removes the current user form the list
+        if user is not None:
+            self.fields['recipients'].queryset = User.objects.exclude(pk=user.pk)
+        else:
+            self.fields['recipients'].queryset = User.objects.all()
 
 @login_required
 def toggle_notification_read(request, pk):
