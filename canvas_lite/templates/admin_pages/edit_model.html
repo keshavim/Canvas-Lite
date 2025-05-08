@@ -1,4 +1,5 @@
 {% extends "master_admin.html" %}
+{% load site_tags %}
 {% load static %}
 
 {% block title %}
@@ -18,10 +19,40 @@
 <div class="container">
     <form method="post" class="form-card">
         {% csrf_token %}
-        {{ form.as_p }}
+        {% for field in form.visible_fields %}
+           <div class="form-group" id="{{ field.auto_id }}-group">
+            {{ field.label_tag }}
+
+            {% if field.name == "schedule" %}
+              <div class="checkbox-row">
+                {# Just render the subwidget; Django outputs each checkbox in a label #}
+                {{ field.subwidgets.0 }}
+              </div>
+              {# Render the rest of the subwidgets (time, semester, year) #}
+              {% for subwidget in field.subwidgets %}
+                {% if not forloop.first %}
+                  <div class="mb-2">{{ subwidget }}</div>
+                {% endif %}
+              {% endfor %}
+            {% else %}
+              {{ field }}
+            {% endif %}
+
+            {% if field.errors %}
+              <div class="text-danger">{{ field.errors }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
         <button type="submit" class="btn">Save Changes</button>
-        <a href="{% url 'delete_model' model_name=model_name pk=object.id %}" class="btn btn-danger">Delete {{ model_name|title }}</a>
+        <a href="{% url 'delete_model' model_name=model_name pk=object.id %}" class="btn btn-danger">
+            Delete {{ model_name|title }}
+        </a>
     </form>
+
+
+
+
+
     <nav style="margin-top: 1rem;">
         {% if model_name == 'course' or model_name == 'section' %}
             <a href="{% url 'courses_list' %}" class="btn btn-secondary">Back to Courses</a>

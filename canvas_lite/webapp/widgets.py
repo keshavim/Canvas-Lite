@@ -1,26 +1,20 @@
-from django.forms import TextInput, MultiWidget, TimeInput
+from datetime import datetime
+
+from django import forms
 import json
 
-from django.forms.widgets import NumberInput, CheckboxSelectMultiple, Select, SelectMultiple
-
-from webapp.models.section import SEASON_CHOICES, WEEKDAY_CHOICES
+from webapp.models.section import WEEKDAY_CHOICES, SEASON_CHOICES
 
 
-class SingleSelect(Select):
-    def __init__(self, choices, attrs=None):
-        super().__init__(attrs)
-        self.choices = choices
-
-
-class ScheduleWidget(MultiWidget):
+class ScheduleWidget(forms.MultiWidget):
     def __init__(self, attrs=None):
+        current_year = datetime.now().year
         widgets = [
-
-            CheckboxSelectMultiple(choices=WEEKDAY_CHOICES),
-            TimeInput(attrs={'placeholder': 'Start Time', 'format': '%H:%M'}),
-            TimeInput(attrs={'placeholder': 'End Time', 'format': '%H:%M'}),
-            SingleSelect(choices=SEASON_CHOICES, attrs={'placeholder': 'Semester'}),
-            NumberInput(attrs={'placeholder': 'Year'}),
+            forms.CheckboxSelectMultiple(choices=WEEKDAY_CHOICES),
+            forms.TimeInput(attrs={'placeholder': 'Start Time', 'type': 'time'}),
+            forms.TimeInput(attrs={'placeholder': 'End Time', 'type': 'time'}),
+            forms.Select(choices=SEASON_CHOICES, attrs={'placeholder': 'Semester'}),
+            forms.NumberInput(attrs={'placeholder': 'Year', 'value':current_year}),
         ]
         super().__init__(widgets, attrs)
 
@@ -35,22 +29,28 @@ class ScheduleWidget(MultiWidget):
                     data.get('semester'),
                     data.get('year'),
                 ]
-            except (json.JSONDecodeError, TypeError):
+            except Exception:
                 pass
         return [[], None, None, None, None]
 
-    def value_from_datadict(self, data, files, name):
-        days = data.getlist(f'{name}_0', [])
-        start_time = data.get(f'{name}_1')
-        end_time = data.get(f'{name}_2')
-        semester = data.get(f'{name}_3')
-        year = data.get(f'{name}_4')
+class ScheduleField(forms.MultiValueField):
+    def __init__(self, *args, **kwargs):
+        fields = [
+            forms.MultipleChoiceField(choices=WEEKDAY_CHOICES, required=False),
+            forms.TimeField(required=False),
+            forms.TimeField(required=False),
+            forms.ChoiceField(choices=SEASON_CHOICES, required=False),
+            forms.IntegerField(required=False),
+        ]
+        super().__init__(fields, require_all_fields=False, *args, **kwargs)
 
-        return json.dumps({
-            'days': days,
-            'start_time': start_time,
-            'end_time': end_time,
-            'semester': semester,
-            'year': year,
-        }, indent=2)
-
+    def compress(self, data_list):
+        if data_list:
+            return json.dumps({
+                'days': data_list[0],
+                'start_time': data_list[1].strftime('%H:%M') if data_list[1] else None,
+                'end_time': data_list[2].strftime('%H:%M') if data_list[2] else None,
+                'semester': data_list[3],
+                'year': data_list[4],
+            })
+        return None

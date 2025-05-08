@@ -12,6 +12,16 @@ def user_in_group(request, group_name):
     user = request.user
     return user.is_authenticated and user.groups.filter(name=group_name).exists()
 
+def toggle_notification_read(request, nid):
+    notification = UserNotification.objects.get(id=nid)
+    if notification.read:
+        notification.mark_as_unread()
+    else:
+        notification.mark_as_read()
+    # Redirect back to the page you came from or a default page
+    return redirect(request.META.get('HTTP_REFERER', 'notifications:list'))
+
+
 @login_required
 def inbox(request):
     box = request.GET.get('box', 'received')  # Default to 'received'
@@ -71,11 +81,3 @@ def inbox(request):
         'box': box,
     })
 
-def toggle_notification_read(request, nid):
-    notification = UserNotification.objects.get(id=nid)
-    if notification.read:
-        notification.mark_as_unread()
-    else:
-        notification.mark_as_read()
-    # Redirect back to the page you came from or a default page
-    return redirect(request.META.get('HTTP_REFERER', 'notifications:list'))

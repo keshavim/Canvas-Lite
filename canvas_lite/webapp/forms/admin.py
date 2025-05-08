@@ -4,7 +4,7 @@ from django import forms
 import json
 
 from webapp.models import *
-from webapp.widgets import ScheduleWidget
+from webapp.widgets import ScheduleWidget, ScheduleField
 
 
 # forms.py
@@ -21,12 +21,11 @@ class CourseForm(forms.ModelForm):
 
 
 class SectionForm(forms.ModelForm):
+    schedule = ScheduleField(widget=ScheduleWidget(), required=False)
     class Meta:
         model = Section
         fields = ['name', 'schedule', 'section_type', 'instructor']
-        widgets = {
-            'schedule': ScheduleWidget(),
-        }
+
     def __init__(self, *args, **kwargs):
         self.course = kwargs.pop('course', None)  # Remove course from kwargs
         super().__init__(*args, **kwargs)  # Now passes clean kwargs

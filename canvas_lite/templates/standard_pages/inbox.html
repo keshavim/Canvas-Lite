@@ -7,8 +7,7 @@
 
 {% block includes %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/inbox.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/inbox_send.css' %}">
-    <script src="{% static 'js/inbox.js' %}"></script>
+    <script src="{% static 'js/inbox.js' %}" defer></script>
 {% endblock %}
 
 {% block content %}
@@ -35,29 +34,40 @@
             <li class="list-item notification-item {% if not item.read %}unread{% endif %}">
                 <div class="d-flex justify-between">
                     <h5>{{ item.notification.subject }}</h5>
-                    <small>{{ item.notification.created_at|default:item.notification.created_at|timesince }} ago</small>
+                    <small>{{ item.notification.created_at|timesince }} ago</small>
                 </div>
                 <p>{{ item.notification.message }}</p>
-                <small>
+                <div>
                     {% if box == 'sent' %}
-                        To:
-                        {% for recipient in item.notification.recipients.all %}
-                            {{ recipient.username }}{% if not forloop.last %}, {% endif %}
-                        {% endfor %}
+                        <small>To:
+                            {% for recipient in item.notification.recipients.all %}
+                                {{ recipient.username }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        </small>
                     {% else %}
-                        From: {{ item.notification.sender.username|default:"System" }}
+                        <small>From: {{ item.notification.sender.username|default:"System" }}</small>
+                        <form method="post"
+                              action="{% url 'toggle_notification_read' nid=item.id %}"
+                              style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit"
+                                    class="badge float-end {% if item.read %}badge-success{% else %}badge-danger{% endif %}">
+                                {% if item.read %}
+                                    Read {{ item.read_at|timesince }} ago
+                                {% else %}
+                                    Unread
+                                {% endif %}
+                            </button>
+                        </form>
                     {% endif %}
-                    {% if item.read %}
-                        <span class="badge badge-success float-end">Read {{ item.read_at|timesince }} ago</span>
-                    {% else %}
-                        <span class="badge badge-danger float-end">Unread</span>
-                    {% endif %}
-                </small>
+
+                </div>
             </li>
         {% empty %}
-            <div class="alert alert-info">No messages found</div>
+            <li><div class="alert alert-info">No messages found</div></li>
         {% endfor %}
     </ul>
+
 
     <!-- Pagination -->
     <nav>
@@ -101,7 +111,7 @@
                     <div class="form-group" id="recipients-group">
                         {{ form.recipients.label_tag }}
                         {{ form.recipients }}
-                        <div id="selected-list" style="margin-top: 10px;"></div>
+                        <div class="selected-list" id="recipients-selected-list" style="margin-top: 10px;"></div>
                     </div>
 
                     <div class="form-group">

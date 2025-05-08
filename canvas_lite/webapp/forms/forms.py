@@ -58,7 +58,7 @@ class UpdateProfileForm(forms.ModelForm):
 class SendMessageForm(forms.Form):
     recipients = forms.ModelMultipleChoiceField(
         queryset=User.objects.all(),
-        widget=forms.SelectMultiple(attrs={'class': 'form-control', 'id': 'staySelected'}),
+        widget=forms.SelectMultiple(attrs={'class': 'form-control', 'id': 'recipients'}),
         required=True,
         label= 'Recipients',
     )
@@ -85,13 +85,3 @@ class SendMessageForm(forms.Form):
             self.fields['recipients'].queryset = User.objects.exclude(pk=user.pk)
         else:
             self.fields['recipients'].queryset = User.objects.all()
-
-@login_required
-def toggle_notification_read(request, pk):
-    notification = get_object_or_404(UserNotification, pk=pk, user=request.user)
-    if notification.read:
-        notification.mark_as_unread()
-    else:
-        notification.mark_as_read()
-    # Redirect back to the page you came from or a default page
-    return redirect(request.META.get('HTTP_REFERER', 'notifications:list'))
