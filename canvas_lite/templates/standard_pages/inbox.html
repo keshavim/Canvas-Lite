@@ -110,10 +110,11 @@
                     </div>
                     <div class="form-group" id="recipients-group">
                         {{ form.recipients.label_tag }}
-                        {{ form.recipients }}
                         <div class="selected-list" id="recipients-selected-list" style="margin-top: 10px;"></div>
+                        {{ form.recipients }}
+                        {{ form.recipients.help_text }}
                     </div>
-
+                    <br>
                     <div class="form-group">
                         {{ form.subject.label_tag }}
                         {{ form.subject }}
