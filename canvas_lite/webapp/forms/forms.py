@@ -61,6 +61,7 @@ class SendMessageForm(forms.Form):
         widget=forms.SelectMultiple(attrs={'class': 'form-control', 'id': 'recipients'}),
         required=True,
         label= 'Recipients',
+        help_text="Hold Ctrl/Cmd or Shift to select multiple options"
     )
     subject = forms.CharField(
         max_length=100,

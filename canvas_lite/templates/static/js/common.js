@@ -1,21 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('select[multiple]').forEach(function(select) {
-        // Use the select's id to find the right badge container
         var selectedList = document.getElementById(select.id + '-selected-list');
-        console.log(select.id + '-selected-list');
         if (!selectedList) return;
-
-        // Toggle selection on click (no Ctrl needed)
-        select.addEventListener('click', function(e) {
-            console.log("Clicked", e.target);
-            if (e.target.tagName === 'OPTION') {
-                e.preventDefault();
-                e.target.selected = !e.target.selected;
-                var event = new Event('change', { bubbles: true });
-                select.dispatchEvent(event);
-                console.log("inner hello");
-            }
-        });
 
         function updateSelectedList() {
             selectedList.innerHTML = '';
@@ -29,4 +15,8 @@ document.addEventListener('DOMContentLoaded', function() {
         select.addEventListener('change', updateSelectedList);
         updateSelectedList();
     });
+});
+
+window.addEventListener('DOMContentLoaded', function() {
+  document.body.style.visibility = 'visible';
 });

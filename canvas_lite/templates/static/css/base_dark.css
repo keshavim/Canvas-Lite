@@ -5,6 +5,7 @@ body {
     color: #e1e4e8;
     margin: 0;
     padding: 0;
+    visibility: hidden;
 }
 
 header {
@@ -211,24 +212,6 @@ button.btn:hover {
     background: #417a5a;
 }
 
-/* ========== Forms & Inputs ========== */
-input, select, textarea,
-input[type="text"], textarea {
-    background: #3a3f46;
-    color: #e1e4e8;
-    border: 1px solid #4e545c;
-    border-radius: 4px;
-    padding: 0.4rem;
-    width: 100%;
-    font-size: 1rem;
-    margin: 10px 0 18px 0;
-    transition: border 0.2s;
-}
-input:focus, select:focus, textarea:focus,
-input[type="text"]:focus, textarea:focus {
-    outline: none;
-    border-color: #7a8ca8;
-}
 /* Inputs and selects full width */
 .form-group input[type="text"],
 .form-group textarea,
@@ -257,7 +240,6 @@ input[type="text"]:focus, textarea:focus {
 .checkbox-row input[type="checkbox"] {
     margin: 0;
 }
-
 
 /* ========== Modal ========== */
 .modal {
@@ -302,6 +284,42 @@ input[type="text"]:focus, textarea:focus {
     text-decoration: none;
 }
 
+/* ========== Forms & Inputs ========== */
+input, textarea,
+input[type="text"], textarea {
+    background: #3a3f46;
+    color: #e1e4e8;
+    border: 1px solid #4e545c;
+    border-radius: 4px;
+    padding: 0.4rem;
+    width: 100%;
+    font-size: 1rem;
+    margin: 10px 0 18px 0;
+    transition: border 0.2s;
+}
+input:focus, textarea:focus,
+input[type="text"]:focus, textarea:focus {
+    outline: none;
+    border-color: #7a8ca8;
+}
+
+/* Single select styling */
+select:not([multiple]) {
+    background: #3a3f46;
+    color: #e1e4e8;
+    border: 1px solid #4e545c;
+    border-radius: 4px;
+    padding: 0.4rem;
+    width: 100%;
+    font-size: 1rem;
+    margin: 10px 0 18px 0;
+    transition: border 0.2s;
+}
+select:not([multiple]):focus {
+    outline: none;
+    border-color: #7a8ca8;
+}
+
 /* ========== MultiSelect Styling ========== */
 select[multiple] {
     width: 100%;
@@ -310,40 +328,46 @@ select[multiple] {
     margin: 12px 0 18px 0;
     border: 1.5px solid #b0bec5;
     border-radius: 6px;
-    background: #fff; /* White background */
+    background: #fff;
     font-size: 1rem;
-    color: #000;      /* Black text */
+    color: #000;
     transition: border 0.2s;
+    /* Try to force browser to use custom styles */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
-
-/* All options: black text, white background */
 select[multiple] option {
-    background: #fff; /* White background */
-    color: #000;      /* Black text */
+    background: #fff !important;
+    color: #000 !important;
 }
-
-/* Selected options: custom background and text color */
-select[multiple] option:checked {
-    background-color: #c8e6c9 !important; /* Light green */
-    color: #256029 !important;            /* Dark green text */
+select[multiple] option:checked,
+select[multiple] option[selected] {
+    background-color: #c8e6c9 !important;
+    color: #256029 !important;
     font-weight: bold;
 }
-
 select[multiple]:focus {
     border-color: #1976d2;
     outline: none;
 }
 
-.selected-list{
-    background: #c8e6c9;
-    color: #256029;
-    padding: 3px 8px;
-    margin: 2px;
-    border-radius: 4px;
-    display: inline-block;
-    font-weight: bold;
+.selected-list {
+    /* Remove background and padding */
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    max-height: none; /* Remove height limit */
+    overflow: visible; /* No scrollbar */
+    font-weight: normal;
     font-size: 0.95em;
 }
+
 
 
 /* ========== Layout Utilities ========== */
