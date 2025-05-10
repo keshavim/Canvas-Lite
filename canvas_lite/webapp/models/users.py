@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser, Group
 from django.db import models
 
+
 """enum type of user groups"""
 class UserType(models.TextChoices):
     TA = "T", "TA"
@@ -61,7 +62,12 @@ class User(AbstractUser):
         return self.sections_taught.all()
 
     def get_main_sections(self):
-        return self.get_sections().filter(is_main_section=True)
+        from webapp.models.section import SectionType
+
+        return self.get_sections().filter(
+            section_type=SectionType.LECTURE,
+            main_section__isnull=True
+        )
 
     def get_assigned_section_id(self, section_id):
         """

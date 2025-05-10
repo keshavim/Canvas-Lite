@@ -31,15 +31,23 @@
         </ul>
     </nav>
     {% if is_instructor %}
-        <h2>Main Sections (with Subsections)</h2>
+        <h2>Your Sections and Related Sections</h2>
         <ul>
             {% for item in main_sections_with_subsections %}
                 <li>
-                    <strong>{{ item.main_section }}</strong>
+                    <strong>
+                        <a href="{% url 'section_detail' item.main_section.id %}">
+                            {{ item.main_section }}
+                        </a>
+                    </strong>
                     {% if item.subsections %}
                         <ul>
                             {% for subsection in item.subsections %}
-                                <li>{{ subsection }}</li>
+                                <li>
+                                    <a href="{% url 'section_detail' subsection.id %}">
+                                        {{ subsection }}
+                                    </a>
+                                </li>
                             {% endfor %}
                         </ul>
                     {% else %}
@@ -48,20 +56,19 @@
                 </li>
             {% endfor %}
         </ul>
-        <h2>All Sections You Teach</h2>
-        <ul>
-            {% for section in sections %}
-                <li>{{ section }}</li>
-            {% endfor %}
-        </ul>
     {% else %} <!-- for ta -->
         <h2>Your Sections</h2>
         <ul>
             {% for section in sections %}
-                <li>{{ section }}</li>
+                <li>
+                    <a href="{% url 'section_detail' section.id %}">
+                        {{ section }}
+                    </a>
+                </li>
             {% endfor %}
         </ul>
     {% endif %}
+
 
 
 {% endblock %}

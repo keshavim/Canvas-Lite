@@ -37,6 +37,7 @@ urlpatterns = [
     path('inbox/<int:nid>/toggle/', views.toggle_notification_read, name='toggle_notification_read'),
 
     path('courses/', views.user_sections, name='user_courses'),
+    path('course/<int:pk>/', views.section_detail, name='section_detail'),
 
     # standard_pages for non-admin users
     path('calendar/', views.user_calendar, name='user_calendar'),

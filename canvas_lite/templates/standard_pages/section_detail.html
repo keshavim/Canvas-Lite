@@ -1,0 +1,46 @@
+{% extends "master_admin.html" %}
+{% load static %}
+{% load site_tags %}
+
+{% block title %}
+    Course View
+{% endblock %}
+
+
+{% block content %}
+
+    <!-- Header Section -->
+    <header>
+        <h1>Course View</h1>
+    </header>
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><a href="/">Dashboard</a></li>
+            <li><a href="/profile/">Profile</a></li>
+            <li><a href="/courses/">Courses</a></li>
+            <li><a href="/calendar/">Calender</a></li>
+            <li><a href="/inbox/">Inbox</a></li>
+            <li>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="glow-btn">Log Out</button>
+                </form>
+
+            </li>
+        </ul>
+    </nav>
+
+    <h1><strong>Course:</strong> {{ section.course.name }} - {{ section.name }}</h1>
+    <p><strong>Type:</strong> {{ section.get_section_type_display }}</p>
+    <p><strong>Description:</strong> {{ section.course.description }}</p>
+    {% if section.schedule %}
+        <p class="schedule"><strong>Schedule:</strong> {{ section.schedule|format_schedule }}</p>
+    {% else %}
+        <p class="schedule"><strong>online</strong></p>
+    {% endif %}
+
+
+
+
+{% endblock %}

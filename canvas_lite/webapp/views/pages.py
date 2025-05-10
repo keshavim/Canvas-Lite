@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.shortcuts import redirect
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
@@ -61,36 +61,24 @@ def update_user_profile(request):
 
 def user_sections(request):
     user = request.user
+
+    if not user.is_authenticated:
+        return redirect("/login")
+
     sections = user.get_sections()
     is_instructor = user.group_name == UserType.INSTRUCTOR
-
-    # Print user info to terminal
-    print(f"\n=== USER SECTIONS VIEW ===")
-    print(f"User: {user.username} (ID: {user.id})")
-    print(f"Group: {user.group_name}")
-    print(f"Total sections: {sections.count()}")
 
     main_sections_with_subsections = []
     if is_instructor:
         main_sections = user.get_main_sections()
-        print(f"\nMain sections found: {main_sections.count()}")
 
         for main_section in main_sections:
             subsections = main_section.get_subsections()
-            print(f"\nMain Section: {main_section} (ID: {main_section.id})")
-            print(f"Subsections: {subsections.count()}")
-            for sub in subsections:
-                print(f"  - Subsection: {sub} (ID: {sub.id})")
 
             main_sections_with_subsections.append({
                 'main_section': main_section,
                 'subsections': subsections,
             })
-
-    # Print regular sections
-    print("\nAll sections user is part of:")
-    for section in sections:
-        print(f"  - Section: {section} (ID: {section.id})")
 
     context = {
         'sections': sections,
@@ -98,3 +86,7 @@ def user_sections(request):
         'main_sections_with_subsections': main_sections_with_subsections,
     }
     return render(request, 'standard_pages/list_courses.html', context)
+
+def section_detail(request, pk):
+    section = get_object_or_404(Section, pk=pk)
+    return render(request, 'standard_pages/section_detail.html', {'section': section})
