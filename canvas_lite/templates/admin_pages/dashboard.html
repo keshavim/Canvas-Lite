@@ -1,4 +1,3 @@
-
 {% extends "master_admin.html" %}
 {% load static %}
 
@@ -11,32 +10,32 @@
 {% endblock %}
 
 {% block content %}
-<header>
-    <h1>Admin Dashboard</h1>
-</header>
-<nav>
-    <ul>
-        <li><a href="{% url "admin_home" %}">Dashboard</a></li>
-        {% for model in models %}
-            <li><a href="{{ model.admin_url }}">{{ model.name }}</a></li>
-        {% endfor %}
-        <li>
-            <a href="{% url "admin_inbox" %}">Inbox</a>
-        </li>
-        <li>
-            <a href="{% url "messages_list" %}">Messages List</a>
-        </li>
-        <li>
-            <form action="{% url 'logout' %}" method="post">
-                {% csrf_token %}
-                <button type="submit" class="btn">Log Out</button>
-            </form>
-        </li>
-    </ul>
-</nav>
-<div class="dashboard-wrapper container">
-    <div class="main-content">
-        <h2>Hello, {{ user.username }}!</h2>
+    <header>
+        <h1>Admin Dashboard</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="{% url "admin_home" %}">Dashboard</a></li>
+            {% for model in models %}
+                <li><a href="{{ model.admin_url }}">{{ model.name }}</a></li>
+            {% endfor %}
+            <li>
+                <a href="{% url "admin_inbox" %}">Inbox</a>
+            </li>
+            <li>
+                <a href="{% url "messages_list" %}">Messages List</a>
+            </li>
+            <li>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn">Log Out</button>
+                </form>
+            </li>
+        </ul>
+    </nav>
+    <div class="dashboard-wrapper container">
+        <div class="main-content">
+            <h2>Hello, {{ user.username }}!</h2>
+        </div>
     </div>
-</div>
 {% endblock %}

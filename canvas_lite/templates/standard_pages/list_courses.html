@@ -1,0 +1,67 @@
+{% extends "master_admin.html" %}
+{% load static %}
+{% load site_tags %}
+
+{% block title %}
+    Course View
+{% endblock %}
+
+
+{% block content %}
+
+    <!-- Header Section -->
+    <header>
+        <h1>Course View</h1>
+    </header>
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><a href="/">Dashboard</a></li>
+            <li><a href="/profile/">Profile</a></li>
+            <li><a href="/courses/">Courses</a></li>
+            <li><a href="/calendar/">Calender</a></li>
+            <li><a href="/inbox/">Inbox</a></li>
+            <li>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="glow-btn">Log Out</button>
+                </form>
+
+            </li>
+        </ul>
+    </nav>
+    {% if is_instructor %}
+        <h2>Main Sections (with Subsections)</h2>
+        <ul>
+            {% for item in main_sections_with_subsections %}
+                <li>
+                    <strong>{{ item.main_section }}</strong>
+                    {% if item.subsections %}
+                        <ul>
+                            {% for subsection in item.subsections %}
+                                <li>{{ subsection }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <em>No subsections</em>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+        <h2>All Sections You Teach</h2>
+        <ul>
+            {% for section in sections %}
+                <li>{{ section }}</li>
+            {% endfor %}
+        </ul>
+    {% else %} <!-- for ta -->
+        <h2>Your Sections</h2>
+        <ul>
+            {% for section in sections %}
+                <li>{{ section }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+
+{% endblock %}

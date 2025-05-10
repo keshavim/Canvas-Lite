@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const openBtn = document.getElementById('open-send-modal');
     const modal = document.getElementById('send-modal');
     const closeBtn = document.getElementById('close-send-modal');
@@ -7,15 +7,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Show modal
     if (openBtn && modal) {
-        openBtn.onclick = () => { modal.style.display = 'flex'; };
+        openBtn.onclick = () => {
+            modal.style.display = 'flex';
+        };
     }
 
     // Hide modal
     if (closeBtn && modal) {
-        closeBtn.onclick = () => { modal.style.display = 'none'; };
+        closeBtn.onclick = () => {
+            modal.style.display = 'none';
+        };
     }
     window.onclick = (event) => {
-        if (modal && event.target === modal) { modal.style.display = 'none'; }
+        if (modal && event.target === modal) {
+            modal.style.display = 'none';
+        }
     };
 
     // Hide/show recipients select
@@ -24,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
             recipientsGroup.style.display = allUsersCheckbox.checked ? 'none' : 'block';
         }
     }
+
     if (allUsersCheckbox) {
         allUsersCheckbox.addEventListener('change', toggleRecipients);
         toggleRecipients(); // Initial state

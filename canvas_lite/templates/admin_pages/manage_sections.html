@@ -1,0 +1,68 @@
+{% extends "master_admin.html" %}
+{% load static %}
+
+{% block title %}
+    {% if object %}
+        Edit Section
+    {% else %}
+        Add New Section
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <header>
+        <h1>
+            {% if object %}
+                Edit Section: {{ object.name }}
+            {% else %}
+                Add New Section
+            {% endif %}
+        </h1>
+    </header>
+
+    <nav style="margin-top: 1rem;">
+        <a href="{% url 'sections_list' 'course' course_id %}" class="btn btn-secondary">Back to Sections</a>
+    </nav>
+
+    <div class="container">
+        <form method="post" class="form-card">
+            {% csrf_token %}
+            {% for field in form.visible_fields %}
+                <div class="form-group" id="{{ field.auto_id }}-group">
+                    {{ field.label_tag }}
+                    {% if field.name == "schedule" %}
+                        <div class="checkbox-row">
+                            {{ field.subwidgets.0 }}
+                        </div>
+                        {% for subwidget in field.subwidgets %}
+                            {% if not forloop.first %}
+                                <div class="mb-2">{{ subwidget }}</div>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
+                    {% if field.errors %}
+                        <div class="text-danger">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <input type="hidden" name="course_id" value="{{ course_id }}">
+            <div class="form-help">
+                <p><strong>Instructions:</strong></p>
+                <ul>
+                    <li><strong>Lectures</strong> are main sections. Leave "Main section" blank when creating a lecture.</li>
+                    <li><strong>Labs/Discussions</strong> are subsections. Select a main section (lecture) as their parent.</li>
+                </ul>
+            </div>
+            <button type="submit" class="btn">
+                {% if object %}Save Changes{% else %}Create Section{% endif %}
+            </button>
+            {% if object %}
+                <a href="{% url 'delete_model' model_name='section' pk=object.id %}" class="btn btn-danger">
+                    Delete Section
+                </a>
+            {% endif %}
+        </form>
+    </div>
+{% endblock %}

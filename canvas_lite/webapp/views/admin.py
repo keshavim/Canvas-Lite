@@ -121,15 +121,36 @@ def claim_section_list(request, user_id):
     user_schedules = target_user.get_schedules()
     available_sections = Section.objects.filter(instructor__isnull=True)
 
+    import json  # Add this import at the top of your file
+
     def is_eligible(section):
-        sch = section.schedule  # Assuming this is a dict/JSON
-        # If any key is missing or empty, always eligible
-        if not sch or not sch.get('days') or not sch.get('start_time') or not sch.get('end_time'):
+        # Parse section's schedule (string → dict)
+        if isinstance(section.schedule, str):
+            try:
+                sch = json.loads(section.schedule)
+            except json.JSONDecodeError:
+                sch = {}
+        else:
+            sch = section.schedule or {}
+
+        # If section schedule is missing keys, allow eligibility
+        if not sch.get('days') or not sch.get('start_time') or not sch.get('end_time'):
             return True
-        # Check for overlap with any of the user's schedules
+
+        # Check against user's schedules
         for user_sch in user_schedules:
-            if schedules_overlap(sch, user_sch):
+            # Parse user schedule if it's a string
+            if isinstance(user_sch, str):
+                try:
+                    user_sch_dict = json.loads(user_sch)
+                except json.JSONDecodeError:
+                    continue  # Skip invalid entries
+            else:
+                user_sch_dict = user_sch
+
+            if schedules_overlap(sch, user_sch_dict):
                 return False
+
         return True
 
     filtered_sections = [section for section in available_sections if is_eligible(section)]
@@ -156,120 +177,78 @@ def unclaim_section(request,user_id, section_id):
     return redirect("sections_list", 'user', user_id)
 
 
-
 @in_groups(["Admin"])
-def create_section(request, course_id):
-    """Handle section creation specifically"""
+def manage_section(request, course_id, section_id=None):
+    """
+    Handles both creation and editing of sections.
+    If section_id is provided, edits the section.
+    Otherwise, creates a new section for the given course.
+    """
     course = get_object_or_404(Course, id=course_id)
-    form_kwargs = {'course': course}
+    section = get_object_or_404(Section, id=section_id) if section_id else None
 
     if request.method == 'POST':
-        form = SectionForm(request.POST, **form_kwargs)
+        form = SectionForm(
+            request.POST,
+            instance=section,
+            course=course
+        )
         if form.is_valid():
-            form.save()
-            return redirect('sections_list', 'course', course_id)
+            try:
+                section_obj = form.save()
+                if section:
+                    msg = f"Section '{section_obj.name}' updated successfully."
+                else:
+                    msg = f"Successfully created {section_obj.get_section_type_display()}"
+                    if section_obj.main_section:
+                        msg += f" under {section_obj.main_section.name}"
+                messages.success(request, msg)
+                return redirect('sections_list', 'course', course_id)
+            except Exception as e:
+                messages.error(request, f"Error saving section: {str(e)}")
+        else:
+            messages.error(request, "Invalid form submission. Please check the errors below.")
     else:
-        form = SectionForm(**form_kwargs)
+        form = SectionForm(instance=section, course=course)
 
     context = {
         'form': form,
-        'model_name': 'section',
         'course': course,
         'course_id': course_id,
-    }
-
-    return render(request, 'admin_pages/create_model.html', context)
-
-@in_groups(["Admin"])
-def create_model(request, model_name, course_id=None):
-    # Configuration dictionaries
-    model_config = {
-        'course': {
-            'form_class': CourseForm,
-            'success_url': 'courses_list',
-            'extra_context': {}
-        },
-        'section': {
-            'handler': lambda req, cid: create_section(req, cid),
-        },
-        'user': {
-            'form_class': UserForm,
-            'success_url': 'user_list',
-            'extra_context': {},
-            'post_save': lambda form: form.save()
+        'object': section,
+        "model_name": "section",
+        'type_choices': SectionType.choices,
+        'help_texts': {
+            'main_section': "Only required for labs/discussions",
+            'section_type': "Lectures are main sections, others are subsections"
         }
     }
 
-    config = model_config.get(model_name)
-    if not config:
-        raise Http404("Model not supported")
-
-    # Special handling for section using dedicated function
-    if model_name == 'section':
-        if not course_id:
-            raise Http404("Course ID required for sections")
-        return config['handler'](request, course_id)
-
-    # Original handling for other models
-    form_kwargs = {}
-    if 'form_kwargs' in config:
-        form_kwargs = config['form_kwargs']()
-
-    if request.method == 'POST':
-        form = config['form_class'](request.POST, **form_kwargs)
-        if form.is_valid():
-            if 'post_save' in config:
-                config['post_save'](form)
-            else:
-                form.save()
-            return redirect(config['success_url'])
-    else:
-        form = config['form_class'](**form_kwargs)
-
-    # Build context
-    context = {
-        'form': form,
-        'model_name': model_name,
-        'course_id': course_id,
-    }
-
-    if 'extra_context' in config:
-        extra = config['extra_context']() if callable(config['extra_context']) else config['extra_context']
-        context.update(extra)
-
-    template_name = 'admin_pages/create_model.html'
-    return render(request, template_name, context)
+    # Use the same template for both create and edit
+    return render(request, 'admin_pages/manage_sections.html', context)
 
 @in_groups(["Admin"])
-def edit_model(request, model_name, model_id):
-    # Model mapping dictionary
+def manage_model(request, model_name, model_id=None):
+    # Model and form mapping
     model_classes = {
         'course': Course,
-        'section': Section,
-        'user': User
+        'user': User,
     }
-
-    # Form mapping dictionary
     form_classes = {
         'course': CourseForm,
-        'section': SectionForm,
-        'user': UserForm
+        'user': UserForm,
     }
-
-    # URL mapping for redirects
     success_urls = {
         'course': 'courses_list',
-        'section': 'courses_list',
-        'user': 'user_list'
+        'user': 'user_list',
     }
 
     model_class = model_classes.get(model_name)
     form_class = form_classes.get(model_name)
-
     if not model_class or not form_class:
         raise Http404("Model not found")
 
-    instance = get_object_or_404(model_class, id=model_id)
+    instance = get_object_or_404(model_class, id=model_id) if model_id else None
 
     if request.method == 'POST':
         form = form_class(request.POST, instance=instance)
@@ -279,17 +258,14 @@ def edit_model(request, model_name, model_id):
     else:
         form = form_class(instance=instance)
 
-    # Template paths should follow the pattern 'admin_pages/edit_{model_name}.html'
-    template_name = f'admin_pages/edit_model.html'
-
     context = {
         'form': form,
-        'object': instance,  # Generic object reference
-        'model_name': model_name,  # Explicit model name
-        model_name: instance  # Maintain backward compatibility
+        'object': instance,
+        'model_name': model_name,
+        model_name: instance if instance else None,
     }
 
-    return render(request, template_name, context)
+    return render(request, 'admin_pages/manage_models.html', context)
 
 
 class UniversalDeleteView(DeleteView):

@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-  Inbox
+    Inbox
 {% endblock %}
 
 {% block includes %}
@@ -11,124 +11,128 @@
 {% endblock %}
 
 {% block content %}
-<nav>
-    {% if group_name == "Admin" %}
-        <a href="{% url "admin_home" %}">Home</a>
-    {% else %}
-        <a href="{% url "home" %}">Home</a>
-    {% endif %}
-    <button type="button" class="btn" id="open-send-modal">Send Message</button>
-</nav>
-
-<!-- the message list-->
-<div class="container">
-    <!-- Switch Buttons -->
-    <div class="btn-group mb-4">
-        <a href="?box=received" class="btn {% if box == 'received' %}btn-primary{% else %}btn-outline-primary{% endif %}">Received</a>
-        <a href="?box=sent" class="btn {% if box == 'sent' %}btn-primary{% else %}btn-outline-primary{% endif %}">Sent</a>
-    </div>
-
-    <h2>{{ box|capfirst }}</h2>
-    <ul class="notifications-list mb-4">
-        {% for item in notification_page %}
-            <li class="list-item notification-item {% if not item.read %}unread{% endif %}">
-                <div class="d-flex justify-between">
-                    <h5>{{ item.notification.subject }}</h5>
-                    <small>{{ item.notification.created_at|timesince }} ago</small>
-                </div>
-                <p>{{ item.notification.message }}</p>
-                <div>
-                    {% if box == 'sent' %}
-                        <small>To:
-                            {% for recipient in item.notification.recipients.all %}
-                                {{ recipient.username }}{% if not forloop.last %}, {% endif %}
-                            {% endfor %}
-                        </small>
-                    {% else %}
-                        <small>From: {{ item.notification.sender.username|default:"System" }}</small>
-                        <form method="post"
-                              action="{% url 'toggle_notification_read' nid=item.id %}"
-                              style="display:inline;">
-                            {% csrf_token %}
-                            <button type="submit"
-                                    class="badge float-end {% if item.read %}badge-success{% else %}badge-danger{% endif %}">
-                                {% if item.read %}
-                                    Read {{ item.read_at|timesince }} ago
-                                {% else %}
-                                    Unread
-                                {% endif %}
-                            </button>
-                        </form>
-                    {% endif %}
-
-                </div>
-            </li>
-        {% empty %}
-            <li><div class="alert alert-info">No messages found</div></li>
-        {% endfor %}
-    </ul>
-
-
-    <!-- Pagination -->
     <nav>
-        <ul class="pagination">
-            {% if notification_page.has_previous %}
-                <li class="page-item">
-                    <a class="page-link" href="?box={{ box }}&page={{ notification_page.previous_page_number }}">Previous</a>
+        {% if group_name == "Admin" %}
+            <a href="{% url "admin_home" %}">Home</a>
+        {% else %}
+            <a href="{% url "home" %}">Home</a>
+        {% endif %}
+        <button type="button" class="btn" id="open-send-modal">Send Message</button>
+    </nav>
+
+    <!-- the message list-->
+    <div class="container">
+        <!-- Switch Buttons -->
+        <div class="btn-group mb-4">
+            <a href="?box=received"
+               class="btn {% if box == 'received' %}btn-primary{% else %}btn-outline-primary{% endif %}">Received</a>
+            <a href="?box=sent" class="btn {% if box == 'sent' %}btn-primary{% else %}btn-outline-primary{% endif %}">Sent</a>
+        </div>
+
+        <h2>{{ box|capfirst }}</h2>
+        <ul class="notifications-list mb-4">
+            {% for item in notification_page %}
+                <li class="list-item notification-item {% if not item.read %}unread{% endif %}">
+                    <div class="d-flex justify-between">
+                        <h5>{{ item.notification.subject }}</h5>
+                        <small>{{ item.notification.created_at|timesince }} ago</small>
+                    </div>
+                    <p>{{ item.notification.message }}</p>
+                    <div>
+                        {% if box == 'sent' %}
+                            <small>To:
+                                {% for recipient in item.notification.recipients.all %}
+                                    {{ recipient.username }}{% if not forloop.last %}, {% endif %}
+                                {% endfor %}
+                            </small>
+                        {% else %}
+                            <small>From: {{ item.notification.sender.username|default:"System" }}</small>
+                            <form method="post"
+                                  action="{% url 'toggle_notification_read' nid=item.id %}"
+                                  style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        class="badge float-end {% if item.read %}badge-success{% else %}badge-danger{% endif %}">
+                                    {% if item.read %}
+                                        Read {{ item.read_at|timesince }} ago
+                                    {% else %}
+                                        Unread
+                                    {% endif %}
+                                </button>
+                            </form>
+                        {% endif %}
+
+                    </div>
                 </li>
-            {% endif %}
-            {% for num in notification_page.paginator.page_range %}
-                <li class="page-item {% if num == notification_page.number %}active{% endif %}">
-                    <a class="page-link" href="?box={{ box }}&page={{ num }}">{{ num }}</a>
+            {% empty %}
+                <li>
+                    <div class="alert alert-info">No messages found</div>
                 </li>
             {% endfor %}
-            {% if notification_page.has_next %}
-                <li class="page-item">
-                    <a class="page-link" href="?box={{ box }}&page={{ notification_page.next_page_number }}">Next</a>
-                </li>
-            {% endif %}
         </ul>
-    </nav>
-</div>
+
+
+        <!-- Pagination -->
+        <nav>
+            <ul class="pagination">
+                {% if notification_page.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?box={{ box }}&page={{ notification_page.previous_page_number }}">Previous</a>
+                    </li>
+                {% endif %}
+                {% for num in notification_page.paginator.page_range %}
+                    <li class="page-item {% if num == notification_page.number %}active{% endif %}">
+                        <a class="page-link" href="?box={{ box }}&page={{ num }}">{{ num }}</a>
+                    </li>
+                {% endfor %}
+                {% if notification_page.has_next %}
+                    <li class="page-item">
+                        <a class="page-link"
+                           href="?box={{ box }}&page={{ notification_page.next_page_number }}">Next</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
 
 
 
-<!-- send model -->
-<div id="send-modal" class="modal" style="display:none;">
-    <div class="modal-content">
-        <span id="close-send-modal" class="close">&times;</span>
-        <div class="card">
-            <div class="card-header">
-                <h3>New Message</h3>
-            </div>
-            <div class="card-body">
-                <form id="send-form" method="POST">
-                    {% csrf_token %}
-                    <div class="checkbox-row">
-                        {{ form.all_users.label_tag }}
-                        {{ form.all_users }}
-                    </div>
-                    <div class="form-group" id="recipients-group">
-                        {{ form.recipients.label_tag }}
-                        <div class="selected-list" id="recipients-selected-list" style="margin-top: 10px;"></div>
-                        {{ form.recipients }}
-                        {{ form.recipients.help_text }}
-                    </div>
-                    <br>
-                    <div class="form-group">
-                        {{ form.subject.label_tag }}
-                        {{ form.subject }}
-                    </div>
-                    <div class="form-group">
-                        {{ form.message.label_tag }}
-                        {{ form.message }}
-                    </div>
-                    <button type="submit" class="btn">Send</button>
-                </form>
+    <!-- send model -->
+    <div id="send-modal" class="modal" style="display:none;">
+        <div class="modal-content">
+            <span id="close-send-modal" class="close">&times;</span>
+            <div class="card">
+                <div class="card-header">
+                    <h3>New Message</h3>
+                </div>
+                <div class="card-body">
+                    <form id="send-form" method="POST">
+                        {% csrf_token %}
+                        <div class="checkbox-row">
+                            {{ form.all_users.label_tag }}
+                            {{ form.all_users }}
+                        </div>
+                        <div class="form-group" id="recipients-group">
+                            {{ form.recipients.label_tag }}
+                            <div class="selected-list" id="recipients-selected-list" style="margin-top: 10px;"></div>
+                            {{ form.recipients }}
+                            {{ form.recipients.help_text }}
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            {{ form.subject.label_tag }}
+                            {{ form.subject }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.message.label_tag }}
+                            {{ form.message }}
+                        </div>
+                        <button type="submit" class="btn">Send</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
 {% endblock %}
