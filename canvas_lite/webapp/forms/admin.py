@@ -4,6 +4,7 @@ from django import forms
 import json
 
 from webapp.models import *
+from webapp.models.section import SectionType
 from webapp.widgets import ScheduleWidget, ScheduleField
 
 
@@ -19,29 +20,59 @@ class CourseForm(forms.ModelForm):
             messages.success(request, 'Course added successfully!')
         return instance
 
-
 class SectionForm(forms.ModelForm):
     schedule = ScheduleField(widget=ScheduleWidget(), required=False)
+
     class Meta:
         model = Section
-        fields = ['name', 'schedule', 'section_type', 'instructor']
+        fields = ['name', 'schedule', 'section_type', 'instructor', 'main_section']
 
     def __init__(self, *args, **kwargs):
-        self.course = kwargs.pop('course', None)  # Remove course from kwargs
-        super().__init__(*args, **kwargs)  # Now passes clean kwargs
+        self.course = kwargs.pop('course', None)
+        super().__init__(*args, **kwargs)
 
-        # Filter instructors excluding Admin group members
+        # Exclude Admins from instructors
         if 'instructor' in self.fields:
             self.fields['instructor'].queryset = self.fields['instructor'].queryset.exclude(
                 groups__name='Admin'
             )
+        self.fields['schedule'].required = False
 
-        self.fields['schedule'].required = False  # Make entire JSON optional
+        # Only show main sections as possible parents for subsections
+        if 'main_section' in self.fields:
+            self.fields['main_section'].queryset = Section.objects.filter(
+                course=self.course, section_type=SectionType.LECTURE
+            )
 
     def save(self, commit=True):
-        instance = super().save(commit=False)
-        if self.course:
-            instance.course = self.course
+        # Extract cleaned data
+        name = self.cleaned_data['name']
+        instructor = self.cleaned_data.get('instructor')
+        schedule = self.cleaned_data.get('schedule')
+        section_type = self.cleaned_data['section_type']
+        main_section = self.cleaned_data.get('main_section')
+
+        # Main section creation
+        if not main_section and section_type == SectionType.LECTURE:
+            instance = Section.create_main_section(
+                course=self.course,
+                sec_name=name,
+                instructor=instructor,
+                schedule=schedule
+            )
+        # Subsection creation
+        elif main_section and section_type in [SectionType.LAB, SectionType.DISCUSSION]:
+            instance = main_section.create_subsection(
+                name=name,
+                sectype=section_type,
+                instructor=instructor,
+                schedule=schedule
+            )
+        else:
+            raise forms.ValidationError(
+                "Invalid section type or missing main section for subsection."
+            )
+
         if commit:
             instance.save()
         return instance

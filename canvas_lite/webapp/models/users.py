@@ -60,6 +60,9 @@ class User(AbstractUser):
         """
         return self.sections_taught.all()
 
+    def get_main_sections(self):
+        return self.get_sections().filter(is_main_section=True)
+
     def get_assigned_section_id(self, section_id):
         """
         gets the sections this user teaches from the id given. return none if not found

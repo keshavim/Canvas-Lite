@@ -1,9 +1,11 @@
 .user-list-col {
     max-width: 320px;
 }
+
 .notifications-col {
     flex: 2;
 }
+
 .notifications-list {
     /* Inherits from .list, but can override if needed */
 }

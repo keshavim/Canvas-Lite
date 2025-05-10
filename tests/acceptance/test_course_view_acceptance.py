@@ -15,6 +15,6 @@ class CourseViewAcceptanceTest(TestCase):
         self.client.login(username="courseuser", password="testpass123")
         response = self.client.get("/courses/")
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "standard_pages/course_view.html")
+        self.assertTemplateUsed(response, "standard_pages/list_courses.html")
         self.assertContains(response, "Hello, courseuser")
         self.assertContains(response, "This is your course view.")
