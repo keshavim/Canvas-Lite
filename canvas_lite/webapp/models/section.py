@@ -1,3 +1,4 @@
+import json
 from collections.abc import Iterable
 
 from django.conf import settings
@@ -31,6 +32,7 @@ class SectionType(models.TextChoices):
     LECTURE = "LEC", "Lecture"
     LAB = "LAB", "Lab"
     DISCUSSION = "DIS", "Discussion"
+
 
 """
 Model is a section of the Course Model. 
@@ -124,6 +126,8 @@ class Section(models.Model):
         self.schedule = schedule_dict
         self.save(update_fields=['schedule'])
         return True
+
+
 
     def clean(self):
         super().clean()

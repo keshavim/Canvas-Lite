@@ -1,16 +1,11 @@
-from django.contrib.auth.decorators import login_required
-from django.core.paginator import Paginator
-from django.http import JsonResponse
-from django.shortcuts import render, get_object_or_404
-from django.shortcuts import redirect
+
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import render, redirect
 from django.contrib import messages
 
-from webapp.forms import UserForm, UpdateProfileForm
-from webapp.models import *
-from webapp.models.users import UserType
+from webapp.forms import UpdateProfileForm
+
 
 
 # views for non-admin users
@@ -58,35 +53,3 @@ def update_user_profile(request):
     else:
         return redirect("/login")
 
-
-def user_sections(request):
-    user = request.user
-
-    if not user.is_authenticated:
-        return redirect("/login")
-
-    sections = user.get_sections()
-    is_instructor = user.group_name == UserType.INSTRUCTOR
-
-    main_sections_with_subsections = []
-    if is_instructor:
-        main_sections = user.get_main_sections()
-
-        for main_section in main_sections:
-            subsections = main_section.get_subsections()
-
-            main_sections_with_subsections.append({
-                'main_section': main_section,
-                'subsections': subsections,
-            })
-
-    context = {
-        'sections': sections,
-        'is_instructor': is_instructor,
-        'main_sections_with_subsections': main_sections_with_subsections,
-    }
-    return render(request, 'standard_pages/list_courses.html', context)
-
-def section_detail(request, pk):
-    section = get_object_or_404(Section, pk=pk)
-    return render(request, 'standard_pages/section_detail.html', {'section': section})

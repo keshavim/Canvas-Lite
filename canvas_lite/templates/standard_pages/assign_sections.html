@@ -1,0 +1,42 @@
+{% extends "master_admin.html" %}
+{% load static %}
+{% load site_tags %}
+
+{% block title %}Claim Available Sections{% endblock %}
+
+{% block content %}
+    <header>
+        <h1>Available TAs to Teach</h1>
+    </header>
+    <div class="container">
+        <nav>
+            <a href="{{ previous_url }}" class="btn btn-secondary">Back</a>
+        </nav>
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-between align-center">
+                <h2>Assign Instructor for {{ section.name }}</h2>
+            </div>
+            <div class="card-body">
+                {% if available_tas %}
+                    {% for ta in available_tas %}
+                        <form method="post" class="form-card">
+                            {% csrf_token %}
+                            <div style="padding: 1em; border-bottom: 1px solid #4e545c;">
+                                <strong style="font-size: 1.1em;">{{ ta.get_full_name|default:ta.username }}</strong><br>
+                                <span class="text-muted">Username:</span> {{ ta.username }}<br>
+                                <span class="text-muted">Email:</span> {{ ta.email }}<br>
+                                <span class="text-muted">Description:</span> {{ ta.description|default:"No description provided." }}
+                                <input type="hidden" name="ta_id" value="{{ ta.id }}">
+                                <div style="margin-top: 0.7em;">
+                                    <button type="submit" class="btn btn-claim">Assign</button>
+                                </div>
+                            </div>
+                        </form>
+                    {% endfor %}
+                {% else %}
+                    <div class="alert alert-info">No available TAs.</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
