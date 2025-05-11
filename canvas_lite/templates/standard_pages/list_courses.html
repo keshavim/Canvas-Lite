@@ -6,62 +6,81 @@
     Course View
 {% endblock %}
 
-
 {% block content %}
+<div class="container">
 
     <!-- Header Section -->
     <header>
         <h1>Course View</h1>
     </header>
+
     <!-- Navigation Bar -->
     <nav>
         <ul>
-            <li><a href="/">Dashboard</a></li>
-            <li><a href="/profile/">Profile</a></li>
-            <li><a href="/courses/">Courses</a></li>
-            <li><a href="/calendar/">Calender</a></li>
-            <li><a href="/inbox/">Inbox</a></li>
+            <li><a href="/" class="btn">Dashboard</a></li>
+            <li><a href="/profile/" class="btn">Profile</a></li>
+            <li><a href="/courses/" class="btn">Courses</a></li>
+            <li><a href="/calendar/" class="btn">Calendar</a></li>
+            <li><a href="/inbox/" class="btn">Inbox</a></li>
             <li>
-                <form action="{% url 'logout' %}" method="post">
+                <form action="{% url 'logout' %}" method="post" style="display:inline;">
                     {% csrf_token %}
-                    <button type="submit" class="glow-btn">Log Out</button>
+                    <button type="submit" class="btn btn-secondary">Log Out</button>
                 </form>
-
             </li>
         </ul>
     </nav>
+
     {% if is_instructor %}
-        <h2>Main Sections (with Subsections)</h2>
-        <ul>
-            {% for item in main_sections_with_subsections %}
-                <li>
-                    <strong>{{ item.main_section }}</strong>
-                    {% if item.subsections %}
-                        <ul>
-                            {% for subsection in item.subsections %}
-                                <li>{{ subsection }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <em>No subsections</em>
-                    {% endif %}
-                </li>
-            {% endfor %}
-        </ul>
-        <h2>All Sections You Teach</h2>
-        <ul>
-            {% for section in sections %}
-                <li>{{ section }}</li>
-            {% endfor %}
-        </ul>
-    {% else %} <!-- for ta -->
-        <h2>Your Sections</h2>
-        <ul>
-            {% for section in sections %}
-                <li>{{ section }}</li>
-            {% endfor %}
-        </ul>
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2>Your Sections and Related Sections</h2>
+            </div>
+            <div class="card-body">
+                <ul class="list user-list">
+                    {% for item in main_sections_with_subsections %}
+                        <li>
+                            <strong>
+                                <a href="{% url 'section_detail' item.main_section.id %}" class="btn btn-claim">
+                                    {{ item.main_section }}
+                                </a>
+                            </strong>
+                            {% if item.subsections %}
+                                <ul class="list">
+                                    {% for subsection in item.subsections %}
+                                        <li>
+                                            <a href="{% url 'section_detail' subsection.id %}" class="btn btn-secondary">
+                                                {{ subsection }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <em class="text-muted">No subsections</em>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% else %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2>Your Sections</h2>
+            </div>
+            <div class="card-body">
+                <ul class="list user-list">
+                    {% for section in sections %}
+                        <li>
+                            <a href="{% url 'section_detail' section.id %}" class="btn btn-claim">
+                                {{ section }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     {% endif %}
 
-
+</div>
 {% endblock %}

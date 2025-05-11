@@ -66,94 +66,15 @@ def user_list(request):
     })
 
 
-
-
-
-"""
-helper functions ffor fitering sections by schedules
-
-I will probably move them somewhere else
-"""
-from datetime import time
-
-def parse_time(t):
-    """Helper to parse time string (e.g., '13:00') into a time object."""
-    if not t:
-        return None
-    if isinstance(t, time):
-        return t
-    return time.fromisoformat(t)
-
-def schedules_overlap(sch1, sch2):
-    """
-    sch1, sch2: dicts with keys 'days', 'start_time', 'end_time'
-    Returns True if they overlap.
-    """
-    # If any schedule is missing days or times, treat as non-overlapping
-    if not sch1.get('days') or not sch1.get('start_time') or not sch1.get('end_time'):
-        return False
-    if not sch2.get('days') or not sch2.get('start_time') or not sch2.get('end_time'):
-        return False
-
-    # Check if any days overlap
-    days1 = set(sch1['days'])
-    days2 = set(sch2['days'])
-    if not days1.intersection(days2):
-        return False
-
-    # Check if time ranges overlap
-    start1 = parse_time(sch1['start_time'])
-    end1 = parse_time(sch1['end_time'])
-    start2 = parse_time(sch2['start_time'])
-    end2 = parse_time(sch2['end_time'])
-
-    # Overlap if start1 < end2 and start2 < end1
-    return start1 < end2 and start2 < end1
-
-
-
 """
 claim views are used by the users view to easily add and remove sections from the user
 """
 @in_groups(["Admin"])
 def claim_section_list(request, user_id):
     target_user = get_object_or_404(User, id=user_id)
-    user_schedules = target_user.get_schedules()
     available_sections = Section.objects.filter(instructor__isnull=True)
 
-    import json  # Add this import at the top of your file
-
-    def is_eligible(section):
-        # Parse section's schedule (string → dict)
-        if isinstance(section.schedule, str):
-            try:
-                sch = json.loads(section.schedule)
-            except json.JSONDecodeError:
-                sch = {}
-        else:
-            sch = section.schedule or {}
-
-        # If section schedule is missing keys, allow eligibility
-        if not sch.get('days') or not sch.get('start_time') or not sch.get('end_time'):
-            return True
-
-        # Check against user's schedules
-        for user_sch in user_schedules:
-            # Parse user schedule if it's a string
-            if isinstance(user_sch, str):
-                try:
-                    user_sch_dict = json.loads(user_sch)
-                except json.JSONDecodeError:
-                    continue  # Skip invalid entries
-            else:
-                user_sch_dict = user_sch
-
-            if schedules_overlap(sch, user_sch_dict):
-                return False
-
-        return True
-
-    filtered_sections = [section for section in available_sections if is_eligible(section)]
+    filtered_sections = [section for section in available_sections if target_user.is_eligible(section)]
 
     return render(request, 'admin_pages/claim_section_list.html', {
         'sections': filtered_sections,

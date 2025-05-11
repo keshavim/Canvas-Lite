@@ -1,0 +1,58 @@
+{% extends "master_admin.html" %}
+{% load static %}
+{% load site_tags %}
+
+{% block title %}
+    Course View
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <!-- Header Section -->
+    <header>
+        <h1>Course View</h1>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><a href="/" class="btn">Dashboard</a></li>
+            <li><a href="/profile/" class="btn">Profile</a></li>
+            <li><a href="/courses/" class="btn">Courses</a></li>
+            <li><a href="/calendar/" class="btn">Calendar</a></li>
+            <li><a href="/inbox/" class="btn">Inbox</a></li>
+            <li>
+                <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-secondary">Log Out</button>
+                </form>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-between align-center">
+            <h2>
+                <strong>Course:</strong> {{ section.course.name }} - {{ section.name }}
+            </h2>
+            {% if is_subsection %}
+                <a href="{% url 'assign_subsection_instructor' section.id %}" class="btn btn-claim float-end">
+                    Assign/Change Instructor
+                </a>
+            {% endif %}
+        </div>
+        <div class="card-body">
+            <p><strong>Instructor:</strong> {{ section.instructor }}</p>
+            <p><strong>Type:</strong> {{ section.get_section_type_display }}</p>
+            <p><strong>Description:</strong> {{ section.course.description }}</p>
+            {% if section.schedule %}
+                <p class="schedule"><strong>Schedule:</strong> {{ section.schedule|format_schedule }}</p>
+            {% else %}
+                <p class="schedule"><strong>Online</strong></p>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}
