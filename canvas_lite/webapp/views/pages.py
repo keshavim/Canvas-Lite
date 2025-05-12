@@ -3,6 +3,10 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+from django.utils.dateformat import format
+import datetime
 
 from webapp.forms import UpdateProfileForm
 
@@ -53,3 +57,17 @@ def update_user_profile(request):
     else:
         return redirect("/login")
 
+@login_required
+def calendar_events(request):
+   # Example static events — replace with DB data later
+   events = [
+       {
+           "title": "Advising Session",
+           "start": str(datetime.date.today())
+       },
+       {
+           "title": "Assignment Due",
+           "start": str(datetime.date.today() + datetime.timedelta(days=2))
+       },
+   ]
+   return JsonResponse(events, safe=False)
