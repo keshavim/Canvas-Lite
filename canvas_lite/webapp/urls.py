@@ -43,6 +43,7 @@ urlpatterns = [
     # standard_pages for non-admin users
     path('calendar/', views.user_calendar, name='user_calendar'),
 
+    path('calendar/events/', views.calendar_events, name='calendar_events'),
 
     path('profile/', views.user_profile, name='user_profile'),
 
