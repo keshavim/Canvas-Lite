@@ -4,15 +4,18 @@ from webapp.models import User, Course, Section
 class SectionAcceptanceTest(TestCase):
     def setUp(self):
         # Create sample users
-        self.admin = User.objects.create_user(username='admin', password='adminpass', role='admin')
-        self.instructor = User.objects.create_user(username='instructor', password='instructorpass', role='instructor')
-        self.ta = User.objects.create_user(username='tauser', password='tapass', role='ta')
+        self.admin = User.objects.create_superuser(
+            username='admin',
+            email='admin@test.com',
+            password='adminpass123'
+        )
+        self.client.login(username='admin', password='adminpass123')
+        self.instructor = User.objects.create_user(username='instructor', password='instructorpass')
+        self.ta = User.objects.create_user(username='tauser', password='tapass')
 
         # Create a course assigned to the instructor
         self.course = Course.objects.create(
-            title='Intro to CS',
-            semester='Fall 2025',
-            instructor=self.instructor
+            name='Intro to CS'
         )
 
         self.section_create_url = '/webapp/sections/create/'
