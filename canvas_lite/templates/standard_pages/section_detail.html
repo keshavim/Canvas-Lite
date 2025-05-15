@@ -1,5 +1,4 @@
-{% extends "master_admin.html" %}
-{% load static %}
+{% extends "base.html" %}
 {% load site_tags %}
 
 {% block title %}
@@ -22,12 +21,7 @@
             <li><a href="/courses/" class="btn">Courses</a></li>
             <li><a href="/calendar/" class="btn">Calendar</a></li>
             <li><a href="/inbox/" class="btn">Inbox</a></li>
-            <li>
-                <form action="{% url 'logout' %}" method="post" style="display:inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-secondary">Log Out</button>
-                </form>
-            </li>
+
         </ul>
     </nav>
 

@@ -1,68 +1,13 @@
-<!--this is for ta and instructor-->
-
-{% extends "master.html" %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block title %}
   Dashboard
 {% endblock %}
 
-{% block includes %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/dashboard.css' %}">
-    <style>
-        .glow-btn {
-   padding: 10px 20px;
-   color: white;
-   background-color: #e6c300;
-   border: none;
-   border-radius: 8px;
-   box-shadow: 0 0 5px #ffd700, 0 0 15px #ffd700;
-   transition: all 0.3s ease-in-out;
-   cursor: pointer;
- }
-.glow-btn:hover {
-   box-shadow: 0 0 10px #ffe866, 0 0 20px #ffe866, 0 0 30px #ffe866;
-   background-color: #ffe44d;
- }
-
- nav ul {
-   display: flex;
-   list-style: none;
-   padding: 0;
-   margin: 0 20px;
-   align-items: center;
- }
-
- nav ul li {
-   margin-right: 20px;
- }
-
- nav ul li:last-child {
-   margin-left: auto;
- }
-
- .btn {
-     padding: 10px 20px;
-   color: white;
-   background-color: #e6c300;
-   border: none;
-   border-radius: 8px;
-   box-shadow: 0 0 5px #ffd700, 0 0 15px #ffd700;
-   transition: all 0.3s ease-in-out;
-   cursor: pointer;
- }
-
- .btn:hover {
-   box-shadow: 0 0 10px #ffe866, 0 0 20px #ffe866, 0 0 30px #ffe866;
-   background-color: #ffe44d;
-     text-decoration: none;
- }
- </style>
-
-{% endblock %}
 
 {% block content %}
-
+    <div class="container">
     {% if user.is_authenticated %}
         <!-- Header Section -->
         <header>
@@ -76,13 +21,7 @@
                 <li><a href="/courses/">Courses</a></li>
                 <li><a href="/calendar/">Calendar</a></li>
                 <li><a href="/inbox/">Inbox</a></li>
-                <li>
-                    <form action="{% url 'logout' %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="glow-btn">Log Out</button>
-                    </form>
 
-                </li>
             </ul>
         </nav>
 
@@ -96,29 +35,16 @@
                 <!-- Example Cards -->
                 <div class="card">
                     <h3>Course Overview</h3>
-
                 </div>
-
-
             </div>
-
-            <!-- Notifications Sidebar -->
-            <aside class="notifications-sidebar">
-                <br><h3>Recent Notifications</h3>
-                <!-- Empty for now -->
-                <p>No new notifications.</p>
-            </aside>
         </div>
-
     {% else %}
         <!-- Header Section -->
         <header>
             <h1>Welcome to our Canvas-lite</h1>
         </header>
         <!-- Navigation Bar -->
-        <nav>
-
-        </nav>
+        <nav></nav>
 
         <!-- Main Content -->
         <div class="container">
@@ -127,5 +53,7 @@
             <a href="{% url 'user_login' %}" class="btn">Log In</a>
         </div>
     {% endif %}
+
+    </div>
 
 {% endblock %}

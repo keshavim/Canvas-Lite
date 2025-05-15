@@ -2,23 +2,13 @@
 
 <!--this is for login-->
 
-{% extends "master.html" %}
-{% load static %}
+{% extends "base.html" %}
 
 {% block title %}
   Login
 {% endblock %}
 
-{% block includes %}
-    <!-- placeholder for adding style changes in the future -->
-    <link rel="stylesheet" href="{% static 'css/base_theme.css' %}">
-    <style>
-        label, input {
-            display: block;
-            margin-bottom: 10px;
-        }
-    </style>
-{% endblock %}
+
 
 <!-- pretty basic layout for login page -->
 {% block content %}

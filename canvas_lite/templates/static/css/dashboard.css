@@ -1,15 +1,20 @@
 .dashboard-wrapper {
     display: flex;
-    gap: 20px;
+    gap: 2rem;
 }
+
 .main-content {
-    flex: 3;
+    flex: 2;
 }
+
 .notifications-sidebar {
     flex: 1;
-    border-left: 1px solid #ccc;
-    padding-left: 15px;
+    border-left: 2px solid #dee2e6;
+    padding: 1rem;
+    border-radius: 6px;
+    min-width: 220px;
 }
+
 .notifications-sidebar h3 {
     margin-top: 0;
 }

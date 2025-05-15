@@ -1,69 +1,29 @@
-{% extends "master.html" %}
-{% load static %}
+{% extends "base.html" %}
 
 {% block title %}
   Calendar
 {% endblock %}
 
 {% block includes %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/dashboard.css' %}">
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
-   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
-     <style>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
+    <style>
 
- .glow-btn {
-   padding: 10px 20px;
-   color: white;
-   background-color: #e6c300;
-   border: none;
-   border-radius: 8px;
-   box-shadow: 0 0 5px #ffd700, 0 0 15px #ffd700;
-   transition: all 0.3s ease-in-out;
-   cursor: pointer;
- }
-
-
- .glow-btn:hover {
-   box-shadow: 0 0 10px #ffe866, 0 0 20px #ffe866, 0 0 30px #ffe866;
-   background-color: #ffe44d;
- }
-
-
- nav ul {
-   display: flex;
-   list-style: none;
-   padding: 0;
-   margin: 0 20px;
-   align-items: center;
- }
-
-
- nav ul li {
-   margin-right: 20px;
- }
-
-
- nav ul li:last-child {
-   margin-left: auto;
- }
-
- #calendar {
-           max-width: 900px;
-           margin: 40px auto;
-           background-color: white;
-           padding: 20px;
-           border-radius: 12px;
-           box-shadow: 0 0 10px rgba(0,0,0,0.1);
-       }
-#calendar {
- min-height: 200px;
-}
-
- </style>
+        /* Calendar styling */
+        #calendar {
+            max-width: 900px;
+            margin: 40px auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            min-height: 200px;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
-
+    <div class="container">
     <!-- Header Section -->
     <header>
         <h1>Calendar</h1>
@@ -74,15 +34,9 @@
             <li><a href="/">Dashboard</a></li>
             <li><a href="/profile/">Profile</a></li>
             <li><a href="/courses/">Courses</a></li>
-            <li><a href="/calendar/">Calender</a></li>
+            <li><a href="/calendar/">Calendar</a></li>
             <li><a href="/inbox/">Inbox</a></li>
-            <li>
-                <form action="{% url 'logout' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="glow-btn">Log Out</button>
-                </form>
 
-            </li>
         </ul>
     </nav>
 
@@ -91,36 +45,30 @@
         <div class="main-content container">
             <h2>Hello, {{ user.username }}!</h2>
             <p>This is your calendar.</p>
-             <div id="calendar"></div>
+            <div id="calendar"></div>
         </div>
     </div>
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 
-
-<script>
- document.addEventListener('DOMContentLoaded', function () {
-   console.log("Calendar DOM loaded");
-   const calendarEl = document.getElementById('calendar');
-   if (!calendarEl) {
-     console.error("Calendar element not found");
-     return;
-   }
-
-
-   const calendar = new FullCalendar.Calendar(calendarEl, {
-     initialView: 'dayGridMonth',
-     events: "{% url 'calendar_events' %}",
-     headerToolbar: {
-       left: 'prev,next today',
-       center: 'title',
-       right: 'dayGridMonth,timeGridWeek,timeGridDay'
-     }
-   });
-
-
-   calendar.render();
-   console.log("Calendar rendered");
- });
-</script>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const calendarEl = document.getElementById('calendar');
+            if (!calendarEl) {
+                console.error("Calendar element not found");
+                return;
+            }
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                events: "{% url 'calendar_events' %}",
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                }
+            });
+            calendar.render();
+        });
+    </script>
 
 {% endblock %}

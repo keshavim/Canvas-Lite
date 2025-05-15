@@ -5,27 +5,59 @@ body {
     color: #e1e4e8;
     margin: 0;
     padding: 0;
-    visibility: hidden;
+    min-height: 100vh;
 }
 
 header {
     background: #3c4148;
     color: #e1e4e8;
-    padding: 1.2rem 2rem;
-    margin-bottom: 1rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    text-align: center;
 }
 
 header h1 {
     margin: 0;
     font-size: 2rem;
     letter-spacing: 1px;
+
+}
+
+.glow-btn {
+    padding: 10px 20px;
+    color: white;
+    background-color: #e6c300;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 0 5px #ffd700, 0 0 15px #ffd700;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+.glow-btn:hover {
+    box-shadow: 0 0 10px #ffe866, 0 0 20px #ffe866, 0 0 30px #ffe866;
+    background-color: #ffe44d;
 }
 
 .container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 1rem;
+        flex: 1 0 auto;
+    margin: 1rem;
+}
+
+
+
+/* Footer Styles */
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    background-color: #333;
+    color: white;
 }
 
 /* ========== Navigation ========== */
@@ -37,6 +69,7 @@ nav {
     gap: 1rem;
     align-items: center;
     border-bottom: 1px solid #4e545c;
+    justify-content: center;
 }
 
 nav ul {
@@ -45,6 +78,7 @@ nav ul {
     margin: 0;
     display: flex;
     gap: 1rem;
+    justify-content: center;
 }
 
 nav a,
